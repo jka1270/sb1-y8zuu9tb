@@ -51,7 +51,7 @@ export const products: Product[] = [
     category: 'Therapeutic Peptides',
     description: 'Pentadecapeptide with potent healing properties, extensively studied for tissue repair and regeneration. For Research Only - Not for human consumption.',
     price: 89.99,
-    image: 'https://images.pexels.com/photos/3786126/pexels-photo-3786126.jpeg?auto=compress&cs=tinysrgb&w=600',
+    image: 'https://img.freepik.com/premium-photo/make-up-brush_163738756.jpg',
     specifications: {
       'Molecular Formula': 'C62H98N16O22',
       'Storage': '-20°C, dry conditions',
