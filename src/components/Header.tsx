@@ -7,6 +7,7 @@ import UserMenu from './UserMenu';
 
 interface HeaderProps {
   onHome?: () => void;
+  onPeptideCategory?: (category: 'therapeutic' | 'cosmetic' | 'research' | 'custom') => void;
   onOrderHistory?: () => void;
   onInventory?: () => void;
   onAccount?: () => void;
@@ -17,7 +18,7 @@ interface HeaderProps {
   onAdmin?: () => void;
 }
 
-export default function Header({ onHome, onOrderHistory, onInventory, onAccount, onDocumentation, onAbout, onContact, onBlog, onAdmin }: HeaderProps) {
+export default function Header({ onHome, onPeptideCategory, onOrderHistory, onInventory, onAccount, onDocumentation, onAbout, onContact, onBlog, onAdmin }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [isPeptidesOpen, setIsPeptidesOpen] = useState(false);
@@ -46,10 +47,10 @@ export default function Header({ onHome, onOrderHistory, onInventory, onAccount,
               </button>
               {isPeptidesOpen && (
                 <div className="absolute left-0 top-full mt-1 w-56 bg-white shadow-lg rounded-lg border py-2 z-50">
-                  <a href="#" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Therapeutic Peptides</a>
-                  <a href="#" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Cosmetic Peptides</a>
-                  <a href="#" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Research Peptides</a>
-                  <a href="#" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Custom Synthesis</a>
+                  <button onClick={() => { onPeptideCategory?.('therapeutic'); setIsPeptidesOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Therapeutic Peptides</button>
+                  <button onClick={() => { onPeptideCategory?.('cosmetic'); setIsPeptidesOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Cosmetic Peptides</button>
+                  <button onClick={() => { onPeptideCategory?.('research'); setIsPeptidesOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Research Peptides</button>
+                  <button onClick={() => { onPeptideCategory?.('custom'); setIsPeptidesOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Custom Synthesis</button>
                 </div>
               )}
             </div>
@@ -148,10 +149,10 @@ export default function Header({ onHome, onOrderHistory, onInventory, onAccount,
               </button>
               {isPeptidesOpen && (
                 <div className="ml-4 mt-1 space-y-1">
-                  <a href="#" className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation">Therapeutic Peptides</a>
-                  <a href="#" className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation">Cosmetic Peptides</a>
-                  <a href="#" className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation">Research Peptides</a>
-                  <a href="#" className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation">Custom Synthesis</a>
+                  <button onClick={() => { onPeptideCategory?.('therapeutic'); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation w-full text-left">Therapeutic Peptides</button>
+                  <button onClick={() => { onPeptideCategory?.('cosmetic'); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation w-full text-left">Cosmetic Peptides</button>
+                  <button onClick={() => { onPeptideCategory?.('research'); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation w-full text-left">Research Peptides</button>
+                  <button onClick={() => { onPeptideCategory?.('custom'); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation w-full text-left">Custom Synthesis</button>
                 </div>
               )}
             </div>

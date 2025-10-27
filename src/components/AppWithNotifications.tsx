@@ -18,6 +18,7 @@ import AboutPage from './AboutPage';
 import ContactPage from './ContactPage';
 import BlogPage from './BlogPage';
 import AdminPanel from './AdminPanel';
+import PeptideCategoryPage from './PeptideCategoryPage';
 import NotificationContainer from './NotificationContainer';
 import { ArrowLeft } from 'lucide-react';
 import { preloadCriticalResources } from '../lib/performance';
@@ -33,6 +34,7 @@ export default function AppWithNotifications() {
   const [showContact, setShowContact] = useState(false);
   const [showBlog, setShowBlog] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
+  const [showPeptideCategory, setShowPeptideCategory] = useState<'therapeutic' | 'cosmetic' | 'research' | 'custom' | null>(null);
   const [accountPage, setAccountPage] = useState('dashboard');
   const { showNotification } = useNotification();
 
@@ -71,7 +73,16 @@ export default function AppWithNotifications() {
     setShowContact(false);
     setShowBlog(false);
     setShowAdmin(false);
+    setShowPeptideCategory(null);
     setAccountPage('dashboard');
+  };
+
+  const handlePeptideCategory = (category: 'therapeutic' | 'cosmetic' | 'research' | 'custom') => {
+    setShowPeptideCategory(category);
+  };
+
+  const handleBackFromPeptideCategory = () => {
+    setShowPeptideCategory(null);
   };
 
   const handleCheckout = () => setShowCheckout(true);
@@ -107,6 +118,17 @@ export default function AppWithNotifications() {
       setAccountPage(page);
     }
   };
+
+  if (showPeptideCategory) {
+    return (
+      <CartProvider onItemAdded={handleItemAdded}>
+        <div className="min-h-screen bg-gray-50">
+          <PeptideCategoryPage category={showPeptideCategory} onBack={handleBackFromPeptideCategory} />
+          <NotificationContainer />
+        </div>
+      </CartProvider>
+    );
+  }
 
   if (showAdmin) {
     return (
@@ -231,6 +253,7 @@ export default function AppWithNotifications() {
       <div className="min-h-screen bg-gray-50">
         <Header
           onHome={handleHome}
+          onPeptideCategory={handlePeptideCategory}
           onOrderHistory={handleOrderHistory}
           onInventory={handleInventory}
           onAccount={handleAccount}
