@@ -27,7 +27,7 @@ export default function Header({ onHome, onOrderHistory, onInventory, onAccount,
   return (
     <header className="bg-white shadow-sm border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-14 sm:h-16">
+        <div className="flex justify-center items-center h-14 sm:h-16 relative">
           {/* Desktop Navigation */}
           <nav className="hidden xl:flex space-x-4">
             <button
@@ -96,7 +96,7 @@ export default function Header({ onHome, onOrderHistory, onInventory, onAccount,
           </nav>
 
           {/* Search and Actions */}
-          <div className="flex items-center space-x-1 sm:space-x-2">
+          <div className="absolute right-0 flex items-center space-x-1 sm:space-x-2">
             <button 
               onClick={toggleCart}
               className="p-2 sm:p-3 text-gray-400 hover:text-blue-600 relative touch-manipulation"
