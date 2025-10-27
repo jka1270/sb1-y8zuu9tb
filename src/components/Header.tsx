@@ -1,4 +1,4 @@
-import { Search, ShoppingCart, User, Menu } from 'lucide-react';
+import { Search, ShoppingCart, User, Menu, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -6,6 +6,7 @@ import AuthModal from './AuthModal';
 import UserMenu from './UserMenu';
 
 interface HeaderProps {
+  onHome?: () => void;
   onOrderHistory?: () => void;
   onInventory?: () => void;
   onAccount?: () => void;
@@ -16,9 +17,10 @@ interface HeaderProps {
   onAdmin?: () => void;
 }
 
-export default function Header({ onOrderHistory, onInventory, onAccount, onDocumentation, onAbout, onContact, onBlog, onAdmin }: HeaderProps) {
+export default function Header({ onHome, onOrderHistory, onInventory, onAccount, onDocumentation, onAbout, onContact, onBlog, onAdmin }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [isPeptidesOpen, setIsPeptidesOpen] = useState(false);
   const { toggleCart, getTotalItems } = useCart();
   const { user } = useAuth();
 
@@ -28,36 +30,55 @@ export default function Header({ onOrderHistory, onInventory, onAccount, onDocum
         <div className="flex justify-between items-center h-14 sm:h-16">
           {/* Desktop Navigation */}
           <nav className="hidden xl:flex space-x-4">
-            <a href="#" className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base">Therapeutic Peptides</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base">Cosmetic Peptides</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base">Research Peptides</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base">Custom Synthesis</a>
-            <button 
+            <button
+              onClick={onHome}
+              className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
+            >
+              Home
+            </button>
+            <div className="relative" onMouseLeave={() => setIsPeptidesOpen(false)}>
+              <button
+                onMouseEnter={() => setIsPeptidesOpen(true)}
+                className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base flex items-center"
+              >
+                Peptides Catalog
+                <ChevronDown className="h-4 w-4 ml-1" />
+              </button>
+              {isPeptidesOpen && (
+                <div className="absolute left-0 top-full mt-1 w-56 bg-white shadow-lg rounded-lg border py-2 z-50">
+                  <a href="#" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Therapeutic Peptides</a>
+                  <a href="#" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Cosmetic Peptides</a>
+                  <a href="#" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Research Peptides</a>
+                  <a href="#" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Custom Synthesis</a>
+                </div>
+              )}
+            </div>
+            <button
               onClick={onBlog}
               className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
             >
               Research Hub
             </button>
-            <button 
+            <button
               onClick={onDocumentation}
               className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
             >
               Documentation
             </button>
-            <button 
+            <button
               onClick={onAbout}
               className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
             >
               About
             </button>
-            <button 
+            <button
               onClick={onContact}
               className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
             >
               Contact
             </button>
             {user && (
-              <button 
+              <button
                 onClick={onInventory}
                 className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
               >
@@ -65,7 +86,7 @@ export default function Header({ onOrderHistory, onInventory, onAccount, onDocum
               </button>
             )}
             {user && (
-              <button 
+              <button
                 onClick={onAdmin}
                 className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
               >
@@ -111,36 +132,55 @@ export default function Header({ onOrderHistory, onInventory, onAccount, onDocum
       {isMenuOpen && (
         <div className="xl:hidden bg-white border-t shadow-lg">
           <div className="px-4 py-3 space-y-1">
-            <a href="#" className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation">Therapeutic Peptides</a>
-            <a href="#" className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation">Cosmetic Peptides</a>
-            <a href="#" className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation">Research Peptides</a>
-            <a href="#" className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation">Custom Synthesis</a>
-            <button 
+            <button
+              onClick={onHome}
+              className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
+            >
+              Home
+            </button>
+            <div className="py-2">
+              <button
+                onClick={() => setIsPeptidesOpen(!isPeptidesOpen)}
+                className="flex items-center justify-between w-full py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation"
+              >
+                Peptides Catalog
+                <ChevronDown className={`h-4 w-4 transition-transform ${isPeptidesOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {isPeptidesOpen && (
+                <div className="ml-4 mt-1 space-y-1">
+                  <a href="#" className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation">Therapeutic Peptides</a>
+                  <a href="#" className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation">Cosmetic Peptides</a>
+                  <a href="#" className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation">Research Peptides</a>
+                  <a href="#" className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation">Custom Synthesis</a>
+                </div>
+              )}
+            </div>
+            <button
               onClick={onBlog}
               className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               Research Hub
             </button>
-            <button 
+            <button
               onClick={onDocumentation}
               className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               Documentation
             </button>
-            <button 
+            <button
               onClick={onAbout}
               className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               About
             </button>
-            <button 
+            <button
               onClick={onContact}
               className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               Contact
             </button>
             {user && (
-              <button 
+              <button
                 onClick={onInventory}
                 className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
               >
@@ -148,7 +188,7 @@ export default function Header({ onOrderHistory, onInventory, onAccount, onDocum
               </button>
             )}
             {user && (
-              <button 
+              <button
                 onClick={onAdmin}
                 className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
               >

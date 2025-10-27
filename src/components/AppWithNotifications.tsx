@@ -61,6 +61,19 @@ export default function AppWithNotifications() {
     preloadCriticalResources(criticalImages);
   }, []);
 
+  const handleHome = () => {
+    setShowCheckout(false);
+    setShowOrderHistory(false);
+    setShowInventory(false);
+    setShowAccount(false);
+    setShowDocumentation(false);
+    setShowAbout(false);
+    setShowContact(false);
+    setShowBlog(false);
+    setShowAdmin(false);
+    setAccountPage('dashboard');
+  };
+
   const handleCheckout = () => setShowCheckout(true);
   const handleBackFromCheckout = () => setShowCheckout(false);
   const handleOrderHistory = () => setShowOrderHistory(true);
@@ -217,6 +230,7 @@ export default function AppWithNotifications() {
     <CartProvider onItemAdded={handleItemAdded}>
       <div className="min-h-screen bg-gray-50">
         <Header
+          onHome={handleHome}
           onOrderHistory={handleOrderHistory}
           onInventory={handleInventory}
           onAccount={handleAccount}
