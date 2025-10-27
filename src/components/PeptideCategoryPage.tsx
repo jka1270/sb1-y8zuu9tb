@@ -1,7 +1,5 @@
 import { ArrowLeft } from 'lucide-react';
-import { useState } from 'react';
 import ProductGrid from './ProductGrid';
-import CategoryFilter from './CategoryFilter';
 
 interface PeptideCategoryPageProps {
   category: 'therapeutic' | 'cosmetic' | 'research' | 'custom';
@@ -33,7 +31,6 @@ const categoryInfo = {
 
 export default function PeptideCategoryPage({ category, onBack }: PeptideCategoryPageProps) {
   const info = categoryInfo[category];
-  const [selectedCategory, setSelectedCategory] = useState('all');
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -66,13 +63,6 @@ export default function PeptideCategoryPage({ category, onBack }: PeptideCategor
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-6">
-          <CategoryFilter
-            selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
-          />
-        </div>
-
         <ProductGrid />
       </div>
     </div>
