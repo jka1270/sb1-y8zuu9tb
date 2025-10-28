@@ -1,11 +1,11 @@
 import { Product, Category } from '../types';
 
 export const categories: Category[] = [
-  { id: '1', name: 'Therapeutic Peptides', description: 'Bioactive peptides for therapeutic research', productCount: 8 },
-  { id: '2', name: 'Cosmetic Peptides', description: 'Anti-aging and skin care peptides', productCount: 6 },
-  { id: '3', name: 'Research Peptides', description: 'Novel peptides for scientific studies', productCount: 7 },
-  { id: '4', name: 'Custom Synthesis', description: 'Custom peptide synthesis services', productCount: 5 },
-  { id: '5', name: 'Peptide Libraries', description: 'Comprehensive peptide screening libraries', productCount: 4 },
+  { id: '1', name: 'Therapeutic Peptides', description: 'Bioactive peptides for therapeutic research', productCount: 11 },
+  { id: '2', name: 'Cosmetic Peptides', description: 'Anti-aging and skin care peptides', productCount: 1 },
+  { id: '3', name: 'Research Peptides', description: 'Novel peptides for scientific studies', productCount: 11 },
+  { id: '4', name: 'Custom Synthesis', description: 'Custom peptide synthesis services', productCount: 0 },
+  { id: '5', name: 'Peptide Libraries', description: 'Comprehensive peptide screening libraries', productCount: 0 },
 ];
 
 export const nadProduct: Product = {
