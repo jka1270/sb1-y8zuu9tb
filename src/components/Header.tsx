@@ -2,6 +2,7 @@ import { Search, ShoppingCart, User, Menu, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useUserRole } from '../hooks/useUserRole';
 import AuthModal from './AuthModal';
 import UserMenu from './UserMenu';
 
@@ -24,6 +25,7 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
   const [isPeptidesOpen, setIsPeptidesOpen] = useState(false);
   const { toggleCart, getTotalItems } = useCart();
   const { user } = useAuth();
+  const { isAdmin } = useUserRole();
 
   return (
     <header className="bg-gradient-to-r from-blue-600 to-blue-800 shadow-sm border-b border-blue-500 border-opacity-30 xl:bg-white xl:border-gray-200 xl:from-white xl:to-white">
@@ -97,7 +99,7 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
                 Inventory
               </button>
             )}
-            {user && (
+            {user && isAdmin && (
               <button
                 onClick={onAdmin}
                 className="text-black hover:text-blue-600 font-medium text-sm lg:text-base"
@@ -194,7 +196,7 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
                 Inventory
               </button>
             )}
-            {user && (
+            {user && isAdmin && (
               <button
                 onClick={onAdmin}
                 className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
