@@ -43,7 +43,7 @@ export default function PeptideCategoryPage({ category, onBack }: PeptideCategor
           alt={info.title}
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center items-center text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             {info.title}
           </h1>
