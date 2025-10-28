@@ -91,7 +91,7 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
             >
               Contact
             </button>
-            {user && (
+            {user && isAdmin && (
               <button
                 onClick={onInventory}
                 className="text-black hover:text-blue-600 font-medium text-sm lg:text-base"
@@ -188,7 +188,7 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
             >
               Contact
             </button>
-            {user && (
+            {user && isAdmin && (
               <button
                 onClick={() => { onInventory?.(); setIsMenuOpen(false); }}
                 className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
