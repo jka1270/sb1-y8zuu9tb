@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, Filter, Eye, CreditCard as Edit, Package, Truck, CheckCircle, Clock, AlertTriangle, Download, RefreshCw } from 'lucide-react';
+import { Search, Filter, Eye, Pencil, Package, Truck, CheckCircle, Clock, AlertTriangle, Download, RefreshCw } from 'lucide-react';
 import { useOrders, Order } from '../hooks/useOrders';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -313,7 +313,7 @@ export default function AdminOrderManager() {
                             <Eye className="h-4 w-4" />
                           </button>
                           <button className="text-indigo-600 hover:text-indigo-900" title="Edit">
-                            <Edit className="h-4 w-4" />
+                            <Pencil className="h-4 w-4" />
                           </button>
                           <button className="text-green-600 hover:text-green-900" title="Download">
                             <Download className="h-4 w-4" />

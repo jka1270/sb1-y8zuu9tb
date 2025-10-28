@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Users, Package, ShoppingBag, BarChart3, Settings, Search, Filter, Plus, CreditCard as Edit, Trash2, Eye, Download, RefreshCw, AlertTriangle, CheckCircle, Clock, TrendingUp, TrendingDown } from 'lucide-react';
+import { Users, Package, ShoppingBag, BarChart3, Settings, Search, Filter, Plus, Pencil, Trash2, Eye, Download, RefreshCw, AlertTriangle, CheckCircle, Clock, TrendingUp, TrendingDown } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useUserRole } from '../hooks/useUserRole';
 import { useOrders } from '../hooks/useOrders';

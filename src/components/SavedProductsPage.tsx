@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Heart, Plus, Trash2, CreditCard as Edit, Search, Filter, Tag, Star, List, Grid2x2 as Grid } from 'lucide-react';
+import { ArrowLeft, Heart, Plus, Trash2, Pencil, Search, Filter, Tag, Star, List, Grid2x2 as Grid } from 'lucide-react';
 import { useSavedProducts } from '../hooks/useSavedProducts';
 import { products } from '../data/products';
 import { Product } from '../types';
@@ -306,7 +306,7 @@ export default function SavedProductsPage({ onBack }: SavedProductsPageProps) {
                                 onClick={() => setEditingProduct(saved.id)}
                                 className="text-blue-600 hover:text-blue-700"
                               >
-                                <Edit className="h-4 w-4" />
+                                <Pencil className="h-4 w-4" />
                               </button>
                             </div>
                           </div>
@@ -336,7 +336,7 @@ export default function SavedProductsPage({ onBack }: SavedProductsPageProps) {
                               onClick={() => setEditingProduct(saved.id)}
                               className="p-1 text-gray-400 hover:text-blue-600"
                             >
-                              <Edit className="h-4 w-4" />
+                              <Pencil className="h-4 w-4" />
                             </button>
                             <button
                               onClick={() => unsaveProduct(saved.product_id, saved.variant_id)}
