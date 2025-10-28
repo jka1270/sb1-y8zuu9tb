@@ -29,6 +29,16 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
     <header className="bg-white shadow-sm border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center items-center h-14 sm:h-16 relative">
+          {/* Mobile Menu Button - Left Side */}
+          <div className="absolute left-0 xl:hidden">
+            <button
+              className="p-2 sm:p-3 text-gray-400 hover:text-blue-600 touch-manipulation"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+          </div>
+
           {/* Desktop Navigation */}
           <nav className="hidden xl:flex space-x-4">
             <button
@@ -96,9 +106,9 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
             )}
           </nav>
 
-          {/* Search and Actions */}
+          {/* Cart and Account - Right Side */}
           <div className="absolute right-0 flex items-center space-x-1 sm:space-x-2">
-            <button 
+            <button
               onClick={toggleCart}
               className="p-2 sm:p-3 text-gray-400 hover:text-blue-600 relative touch-manipulation"
             >
@@ -112,19 +122,13 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
             {user ? (
               <UserMenu onOrderHistory={onOrderHistory} onAccount={onAccount} />
             ) : (
-              <button 
+              <button
                 onClick={() => setAuthModalOpen(true)}
                 className="p-2 sm:p-3 text-gray-400 hover:text-blue-600 touch-manipulation"
               >
                 <User className="h-5 w-5" />
               </button>
             )}
-            <button 
-              className="xl:hidden p-2 sm:p-3 text-gray-400 hover:text-blue-600 touch-manipulation"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              <Menu className="h-5 w-5" />
-            </button>
           </div>
         </div>
       </div>
