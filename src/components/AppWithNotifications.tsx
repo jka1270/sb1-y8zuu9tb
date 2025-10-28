@@ -74,7 +74,6 @@ export default function AppWithNotifications() {
     setShowBlog(false);
     setShowAdmin(false);
     setShowPeptideCategory(null);
-    setHomeCategory('');
     setAccountPage('dashboard');
   };
 
