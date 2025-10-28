@@ -187,7 +187,7 @@ export default function AppWithNotifications() {
 
         {!showPeptideCategory && !showAdmin && !showCheckout && !showOrderHistory && !showInventory && !showAccount && !showDocumentation && !showAbout && !showContact && !showBlog && (
           <>
-            <Hero />
+            <Hero onResearchGuide={handleDocumentation} />
             <ProductGrid />
             <ShippingIntegration />
           </>
