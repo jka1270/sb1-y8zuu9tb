@@ -32,6 +32,7 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
   const currentSku = selectedVariant ? selectedVariant.sku : product.sku;
   const currentInStock = selectedVariant ? selectedVariant.inStock : product.inStock;
   const isSaved = isProductSaved(product.id, selectedVariant?.id);
+  const productImage = (product.images && product.images.length > 0) ? product.images[0] : product.image;
 
   const handleAddToCart = () => {
     // Trigger blink animation
@@ -42,7 +43,7 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
       id: `${product.id}-${selectedVariant?.id || 'default'}`,
       productId: product.id,
       productName: product.name,
-      productImage: product.image,
+      productImage: productImage,
       variantId: selectedVariant?.id,
       size: selectedVariant?.size || 'Standard',
       price: currentPrice,
@@ -77,7 +78,7 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group touch-manipulation">
       <div className="relative overflow-hidden">
         <OptimizedImage
-          src={product.image} 
+          src={productImage} 
           alt={product.name}
           className="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-105 transition-transform duration-300"
           loading="lazy"

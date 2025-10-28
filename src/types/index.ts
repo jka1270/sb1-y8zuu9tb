@@ -5,6 +5,7 @@ export interface Product {
   description: string;
   price: number;
   image: string;
+  images?: string[];
   specifications: Record<string, string>;
   inStock: boolean;
   sku: string;
