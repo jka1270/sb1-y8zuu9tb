@@ -43,14 +43,14 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
           <nav className="hidden xl:flex space-x-4">
             <button
               onClick={onHome}
-              className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
+              className="text-black hover:text-blue-600 font-medium text-sm lg:text-base"
             >
               Home
             </button>
             <div className="relative" onMouseLeave={() => setIsPeptidesOpen(false)}>
               <button
                 onMouseEnter={() => setIsPeptidesOpen(true)}
-                className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base flex items-center"
+                className="text-black hover:text-blue-600 font-medium text-sm lg:text-base flex items-center"
               >
                 Peptides Catalog
                 <ChevronDown className="h-4 w-4 ml-1" />
@@ -66,32 +66,32 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
             </div>
             <button
               onClick={onBlog}
-              className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
+              className="text-black hover:text-blue-600 font-medium text-sm lg:text-base"
             >
               Research Hub
             </button>
             <button
               onClick={onDocumentation}
-              className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
+              className="text-black hover:text-blue-600 font-medium text-sm lg:text-base"
             >
               Documentation
             </button>
             <button
               onClick={onAbout}
-              className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
+              className="text-black hover:text-blue-600 font-medium text-sm lg:text-base"
             >
               About
             </button>
             <button
               onClick={onContact}
-              className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
+              className="text-black hover:text-blue-600 font-medium text-sm lg:text-base"
             >
               Contact
             </button>
             {user && (
               <button
                 onClick={onInventory}
-                className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
+                className="text-black hover:text-blue-600 font-medium text-sm lg:text-base"
               >
                 Inventory
               </button>
@@ -99,7 +99,7 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
             {user && (
               <button
                 onClick={onAdmin}
-                className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
+                className="text-black hover:text-blue-600 font-medium text-sm lg:text-base"
               >
                 Admin
               </button>
@@ -110,7 +110,7 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
           <div className="absolute right-0 flex items-center space-x-1 sm:space-x-2">
             <button
               onClick={toggleCart}
-              className="p-2 sm:p-3 text-white xl:text-gray-400 hover:text-blue-200 xl:hover:text-blue-600 relative touch-manipulation"
+              className="p-2 sm:p-3 text-white xl:text-black hover:text-blue-200 xl:hover:text-blue-600 relative touch-manipulation"
             >
               <ShoppingCart className="h-5 w-5" />
               {getTotalItems() > 0 && (
@@ -124,7 +124,7 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
             ) : (
               <button
                 onClick={() => setAuthModalOpen(true)}
-                className="p-2 sm:p-3 text-white xl:text-gray-400 hover:text-blue-200 xl:hover:text-blue-600 touch-manipulation"
+                className="p-2 sm:p-3 text-white xl:text-black hover:text-blue-200 xl:hover:text-blue-600 touch-manipulation"
               >
                 <User className="h-5 w-5" />
               </button>
