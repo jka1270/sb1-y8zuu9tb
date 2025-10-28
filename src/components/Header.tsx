@@ -32,7 +32,7 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
           {/* Mobile Menu Button - Left Side */}
           <div className="absolute left-0 xl:hidden">
             <button
-              className="p-2 sm:p-3 text-gray-400 hover:text-blue-600 touch-manipulation"
+              className="p-2 sm:p-3 text-black hover:text-blue-600 touch-manipulation"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               <Menu className="h-5 w-5" />
@@ -110,7 +110,7 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
           <div className="absolute right-0 flex items-center space-x-1 sm:space-x-2">
             <button
               onClick={toggleCart}
-              className="p-2 sm:p-3 text-gray-400 hover:text-blue-600 relative touch-manipulation"
+              className="p-2 sm:p-3 text-black hover:text-blue-600 relative touch-manipulation"
             >
               <ShoppingCart className="h-5 w-5" />
               {getTotalItems() > 0 && (
@@ -124,7 +124,7 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
             ) : (
               <button
                 onClick={() => setAuthModalOpen(true)}
-                className="p-2 sm:p-3 text-gray-400 hover:text-blue-600 touch-manipulation"
+                className="p-2 sm:p-3 text-black hover:text-blue-600 touch-manipulation"
               >
                 <User className="h-5 w-5" />
               </button>
