@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Plus, Pencil, Trash2, Search, Filter, Eye, Package, AlertTriangle, CheckCircle, Upload, Download } from 'lucide-react';
 import { products } from '../data/products';
 import { Product } from '../types';
+import ImageUpload from './ImageUpload';
 
 export default function AdminProductManager() {
   const [productList, setProductList] = useState(products);
@@ -10,8 +11,17 @@ export default function AdminProductManager() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+  const [productImages, setProductImages] = useState<string[]>([]);
 
   const categories = ['Therapeutic Peptides', 'Cosmetic Peptides', 'Research Peptides', 'Custom Synthesis'];
+
+  useEffect(() => {
+    if (editingProduct && editingProduct.image) {
+      setProductImages([editingProduct.image]);
+    } else if (!editingProduct && !showAddModal) {
+      setProductImages([]);
+    }
+  }, [editingProduct, showAddModal]);
 
   const filteredProducts = productList.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -271,6 +281,7 @@ export default function AdminProductManager() {
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50" onClick={() => {
             setShowAddModal(false);
             setEditingProduct(null);
+            setProductImages([]);
           }} />
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -375,16 +386,11 @@ export default function AdminProductManager() {
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Product Image URL
-                    </label>
-                    <input
-                      type="url"
-                      defaultValue={editingProduct?.image}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                  </div>
+                  <ImageUpload
+                    images={productImages}
+                    onImagesChange={setProductImages}
+                    maxImages={5}
+                  />
 
                   <div>
                     <label className="flex items-center">
@@ -403,6 +409,7 @@ export default function AdminProductManager() {
                       onClick={() => {
                         setShowAddModal(false);
                         setEditingProduct(null);
+                        setProductImages([]);
                       }}
                       className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
                     >
