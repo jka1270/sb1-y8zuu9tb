@@ -26,7 +26,7 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
   const { user } = useAuth();
 
   return (
-    <header className="bg-gradient-to-r from-blue-600 to-blue-800 xl:bg-white shadow-sm border-b border-blue-500 border-opacity-30 xl:border-gray-200">
+    <header className="bg-gradient-to-r from-blue-600 to-blue-800 shadow-sm border-b border-blue-500 border-opacity-30 xl:bg-white xl:border-gray-200 xl:from-white xl:to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center items-center h-14 sm:h-16 relative">
           {/* Mobile Menu Button - Left Side */}
