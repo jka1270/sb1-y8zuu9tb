@@ -141,7 +141,16 @@ export default function AppWithNotifications() {
   };
   const handleBackFromBlog = () => setShowBlog(false);
   const handleAdmin = () => {
-    handleHome();
+    setShowCheckout(false);
+    setShowOrderHistory(false);
+    setShowInventory(false);
+    setShowAccount(false);
+    setShowDocumentation(false);
+    setShowAbout(false);
+    setShowContact(false);
+    setShowBlog(false);
+    setShowPeptideCategory(null);
+    setAccountPage('dashboard');
     setShowAdmin(true);
   };
   const handleBackFromAdmin = () => setShowAdmin(false);
