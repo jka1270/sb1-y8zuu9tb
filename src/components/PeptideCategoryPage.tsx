@@ -10,22 +10,26 @@ const categoryInfo = {
   therapeutic: {
     title: 'Therapeutic Peptides',
     description: 'Explore our comprehensive collection of therapeutic peptides designed for advanced research and development in medical applications.',
-    image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg'
+    image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg',
+    categoryName: 'Therapeutic Peptides'
   },
   cosmetic: {
     title: 'Cosmetic Peptides',
     description: 'Discover premium cosmetic peptides for anti-aging, skin rejuvenation, and beauty research applications.',
-    image: 'https://images.pexels.com/photos/3786126/pexels-photo-3786126.jpeg'
+    image: 'https://images.pexels.com/photos/3786126/pexels-photo-3786126.jpeg',
+    categoryName: 'Cosmetic Peptides'
   },
   research: {
     title: 'Research Peptides',
     description: 'High-purity research peptides for cutting-edge scientific studies and laboratory applications.',
-    image: 'https://images.pexels.com/photos/3786157/pexels-photo-3786157.jpeg'
+    image: 'https://images.pexels.com/photos/3786157/pexels-photo-3786157.jpeg',
+    categoryName: 'Research Peptides'
   },
   custom: {
     title: 'Custom Synthesis',
     description: 'Custom peptide synthesis services tailored to your specific research needs with guaranteed purity and quality.',
-    image: 'https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg'
+    image: 'https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg',
+    categoryName: 'Custom Synthesis'
   }
 };
 
@@ -63,7 +67,7 @@ export default function PeptideCategoryPage({ category, onBack }: PeptideCategor
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <ProductGrid />
+        <ProductGrid initialCategory={info.categoryName} />
       </div>
     </div>
   );

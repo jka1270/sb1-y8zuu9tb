@@ -11,8 +11,12 @@ import LoadingSpinner from './LoadingSpinner';
 import { useImagePreloader } from '../hooks/useImagePreloader';
 import { useDebounce } from '../hooks/useDebounce';
 
-export default function ProductGrid() {
-  const [selectedCategory, setSelectedCategory] = useState('');
+interface ProductGridProps {
+  initialCategory?: string;
+}
+
+export default function ProductGrid({ initialCategory = '' }: ProductGridProps) {
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [filters, setFilters] = useState<FilterState>({
