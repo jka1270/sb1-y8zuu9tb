@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { products } from '../data/products';
 import ProductCard from './ProductCard';
 import ProductDetailPage from './ProductDetailPage';
@@ -30,6 +30,11 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
     sortBy: 'name',
     sortOrder: 'asc'
   });
+
+  useEffect(() => {
+    setSelectedCategory(initialCategory);
+    setFilters(prev => ({ ...prev, category: initialCategory }));
+  }, [initialCategory]);
 
   // Preload product images for better performance
   const productImages = products.map(p => p.image);
