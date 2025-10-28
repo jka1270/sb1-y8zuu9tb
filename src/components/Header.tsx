@@ -61,6 +61,8 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
                   <button onClick={() => { onPeptideCategory?.('cosmetic'); setIsPeptidesOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Cosmetic Peptides</button>
                   <button onClick={() => { onPeptideCategory?.('research'); setIsPeptidesOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Research Peptides</button>
                   <button onClick={() => { onPeptideCategory?.('custom'); setIsPeptidesOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Custom Synthesis</button>
+                  <div className="border-t my-2"></div>
+                  <button onClick={() => { onHome?.(); setIsPeptidesOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Peptide Libraries</button>
                 </div>
               )}
             </div>
@@ -157,6 +159,8 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
                   <button onClick={() => { onPeptideCategory?.('cosmetic'); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation w-full text-left">Cosmetic Peptides</button>
                   <button onClick={() => { onPeptideCategory?.('research'); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation w-full text-left">Research Peptides</button>
                   <button onClick={() => { onPeptideCategory?.('custom'); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation w-full text-left">Custom Synthesis</button>
+                  <div className="border-t my-2 mx-2"></div>
+                  <button onClick={() => { onHome?.(); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation w-full text-left">Peptide Libraries</button>
                 </div>
               )}
             </div>
