@@ -78,6 +78,7 @@ export default function AppWithNotifications() {
   };
 
   const handlePeptideCategory = (category: 'therapeutic' | 'cosmetic' | 'research' | 'custom') => {
+    handleHome();
     setShowPeptideCategory(category);
   };
 
@@ -85,13 +86,23 @@ export default function AppWithNotifications() {
     setShowPeptideCategory(null);
   };
 
-  const handleCheckout = () => setShowCheckout(true);
+  const handleCheckout = () => {
+    handleHome();
+    setShowCheckout(true);
+  };
   const handleBackFromCheckout = () => setShowCheckout(false);
-  const handleOrderHistory = () => setShowOrderHistory(true);
+  const handleOrderHistory = () => {
+    handleHome();
+    setShowOrderHistory(true);
+  };
   const handleBackFromOrderHistory = () => setShowOrderHistory(false);
-  const handleInventory = () => setShowInventory(true);
+  const handleInventory = () => {
+    handleHome();
+    setShowInventory(true);
+  };
   const handleBackFromInventory = () => setShowInventory(false);
   const handleAccount = () => {
+    handleHome();
     setShowAccount(true);
     setAccountPage('dashboard');
   };
@@ -99,15 +110,30 @@ export default function AppWithNotifications() {
     setShowAccount(false);
     setAccountPage('dashboard');
   };
-  const handleDocumentation = () => setShowDocumentation(true);
+  const handleDocumentation = () => {
+    handleHome();
+    setShowDocumentation(true);
+  };
   const handleBackFromDocumentation = () => setShowDocumentation(false);
-  const handleAbout = () => setShowAbout(true);
+  const handleAbout = () => {
+    handleHome();
+    setShowAbout(true);
+  };
   const handleBackFromAbout = () => setShowAbout(false);
-  const handleContact = () => setShowContact(true);
+  const handleContact = () => {
+    handleHome();
+    setShowContact(true);
+  };
   const handleBackFromContact = () => setShowContact(false);
-  const handleBlog = () => setShowBlog(true);
+  const handleBlog = () => {
+    handleHome();
+    setShowBlog(true);
+  };
   const handleBackFromBlog = () => setShowBlog(false);
-  const handleAdmin = () => setShowAdmin(true);
+  const handleAdmin = () => {
+    handleHome();
+    setShowAdmin(true);
+  };
   const handleBackFromAdmin = () => setShowAdmin(false);
 
   const handleAccountNavigation = (page: string) => {
