@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle, AlertTriangle, Building, User, MessageSquare, HelpCircle, Shield } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 interface ContactPageProps {
   onBack: () => void;
@@ -72,12 +73,26 @@ export default function ContactPage({ onBack }: ContactPageProps) {
     setError('');
 
     try {
-      // Simulate form submission
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // In a real implementation, this would send to your backend
-      console.log('Contact form submitted:', formData);
-      
+      const { error: submitError } = await supabase
+        .from('contact_messages')
+        .insert({
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          email: formData.email,
+          company: formData.company,
+          phone: formData.phone || null,
+          inquiry_type: formData.inquiryType,
+          subject: formData.subject,
+          message: formData.message,
+          research_area: formData.researchArea || null,
+          urgency: formData.urgency,
+          status: 'new'
+        });
+
+      if (submitError) {
+        throw submitError;
+      }
+
       setSubmitted(true);
       setFormData({
         firstName: '',
@@ -92,6 +107,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
         urgency: 'normal'
       });
     } catch (err) {
+      console.error('Error submitting contact form:', err);
       setError('Failed to submit form. Please try again.');
     } finally {
       setSubmitting(false);
