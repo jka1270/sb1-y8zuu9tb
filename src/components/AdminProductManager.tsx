@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, CreditCard as Edit, Trash2, Search, Filter, Eye, Package, AlertTriangle, CheckCircle, Upload, Download } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, Filter, Eye, Package, AlertTriangle, CheckCircle, Upload, Download } from 'lucide-react';
 import { products } from '../data/products';
 import { Product } from '../types';
 
