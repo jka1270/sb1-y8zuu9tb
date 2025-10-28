@@ -1,7 +1,7 @@
 import ProductGrid from './ProductGrid';
 
 interface PeptideCategoryPageProps {
-  category: 'therapeutic' | 'cosmetic' | 'research' | 'custom';
+  category: 'therapeutic' | 'cosmetic' | 'research' | 'custom' | 'libraries';
   onBack: () => void;
 }
 
@@ -29,6 +29,12 @@ const categoryInfo = {
     description: 'Custom peptide synthesis services tailored to your specific research needs with guaranteed purity and quality.',
     image: 'https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg',
     categoryName: 'Custom Synthesis'
+  },
+  libraries: {
+    title: 'Peptide Libraries',
+    description: 'Comprehensive peptide screening libraries for high-throughput research and drug discovery applications.',
+    image: 'https://images.pexels.com/photos/3825517/pexels-photo-3825517.jpeg',
+    categoryName: 'Peptide Libraries'
   }
 };
 

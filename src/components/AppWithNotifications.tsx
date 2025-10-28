@@ -34,8 +34,7 @@ export default function AppWithNotifications() {
   const [showContact, setShowContact] = useState(false);
   const [showBlog, setShowBlog] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
-  const [showPeptideCategory, setShowPeptideCategory] = useState<'therapeutic' | 'cosmetic' | 'research' | 'custom' | null>(null);
-  const [homeCategory, setHomeCategory] = useState<string>('');
+  const [showPeptideCategory, setShowPeptideCategory] = useState<'therapeutic' | 'cosmetic' | 'research' | 'custom' | 'libraries' | null>(null);
   const [accountPage, setAccountPage] = useState('dashboard');
   const { showNotification } = useNotification();
 
@@ -79,12 +78,7 @@ export default function AppWithNotifications() {
     setAccountPage('dashboard');
   };
 
-  const handlePeptideLibraries = () => {
-    handleHome();
-    setHomeCategory('Peptide Libraries');
-  };
-
-  const handlePeptideCategory = (category: 'therapeutic' | 'cosmetic' | 'research' | 'custom') => {
+  const handlePeptideCategory = (category: 'therapeutic' | 'cosmetic' | 'research' | 'custom' | 'libraries') => {
     handleHome();
     setShowPeptideCategory(category);
   };
@@ -158,7 +152,6 @@ export default function AppWithNotifications() {
         <Header
           onHome={handleHome}
           onPeptideCategory={handlePeptideCategory}
-          onPeptideLibraries={handlePeptideLibraries}
           onOrderHistory={handleOrderHistory}
           onInventory={handleInventory}
           onAccount={handleAccount}
@@ -222,7 +215,7 @@ export default function AppWithNotifications() {
         {!showPeptideCategory && !showAdmin && !showCheckout && !showOrderHistory && !showInventory && !showAccount && !showDocumentation && !showAbout && !showContact && !showBlog && (
           <>
             <Hero onResearchGuide={handleDocumentation} />
-            <ProductGrid initialCategory={homeCategory} />
+            <ProductGrid />
             <ShippingIntegration />
           </>
         )}
