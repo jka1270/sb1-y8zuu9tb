@@ -33,7 +33,7 @@ export default function Hero() {
               Discover our comprehensive collection of high-purity peptides, from therapeutic compounds to 
               cosmetic applications, designed to advance your research goals.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 px-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 px-4 justify-center">
               <button className="bg-white text-blue-600 px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors flex items-center justify-center text-sm sm:text-base">
                 Browse Peptides
                 <ArrowRight className="ml-2 h-4 w-4" />
