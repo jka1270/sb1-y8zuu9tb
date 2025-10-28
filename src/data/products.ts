@@ -81,7 +81,7 @@ export const products: Product[] = [
     ]
   },
   {
-    id: '8',
+    id: '2',
     name: 'CJC-1295',
     category: 'Research Peptides',
     description: 'Long-acting growth hormone releasing hormone analog for research applications. For Research Only - Not for human consumption.',
@@ -109,7 +109,7 @@ export const products: Product[] = [
     ]
   },
   {
-    id: '11',
+    id: '3',
     name: 'CJC-1295 DAC',
     category: 'Therapeutic Peptides',
     description: 'Long-acting growth hormone releasing hormone analog with Drug Affinity Complex for extended half-life and sustained release.',
@@ -144,7 +144,7 @@ export const products: Product[] = [
     ]
   },
   {
-    id: '12',
+    id: '22',
     name: 'CJC-1295 (5mg) / Ipamorelin (5mg)',
     category: 'Research Peptides',
     description: 'Synergistic combination of CJC-1295 and Ipamorelin for enhanced growth hormone research applications. For Research Only - Not for human consumption.',
@@ -305,7 +305,7 @@ export const products: Product[] = [
     ]
   },
   {
-    id: '8',
+    id: '23',
     name: 'PT-141',
     category: 'Research Peptides',
     description: 'Melanocortin receptor agonist peptide for sexual dysfunction and libido research applications.',
@@ -410,7 +410,7 @@ export const products: Product[] = [
     ]
   },
   {
-    id: '11',
+    id: '24',
     name: 'Semaglutide',
     category: 'Therapeutic Peptides',
     description: 'GLP-1 receptor agonist peptide for metabolic research and diabetes studies.',
@@ -445,7 +445,7 @@ export const products: Product[] = [
     ]
   },
   {
-    id: '12',
+    id: '25',
     name: 'Semax',
     category: 'Research Peptides',
     description: 'Synthetic heptapeptide analog of ACTH(4-10) with neuroprotective and cognitive enhancement properties for research applications.',
