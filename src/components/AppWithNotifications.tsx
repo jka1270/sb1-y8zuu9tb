@@ -79,7 +79,16 @@ export default function AppWithNotifications() {
   };
 
   const handlePeptideCategory = (category: 'therapeutic' | 'cosmetic' | 'research' | 'custom' | 'libraries') => {
-    handleHome();
+    setShowCheckout(false);
+    setShowOrderHistory(false);
+    setShowInventory(false);
+    setShowAccount(false);
+    setShowDocumentation(false);
+    setShowAbout(false);
+    setShowContact(false);
+    setShowBlog(false);
+    setShowAdmin(false);
+    setAccountPage('dashboard');
     setShowPeptideCategory(category);
   };
 
