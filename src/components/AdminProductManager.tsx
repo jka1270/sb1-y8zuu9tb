@@ -1,27 +1,71 @@
 import { useState, useEffect } from 'react';
 import { Plus, Pencil, Trash2, Search, Filter, Eye, Package, AlertTriangle, CheckCircle, Upload, Download } from 'lucide-react';
-import { products } from '../data/products';
+import { supabase } from '../lib/supabase';
 import { Product } from '../types';
 import ImageUpload from './ImageUpload';
+import LoadingSpinner from './LoadingSpinner';
 
 export default function AdminProductManager() {
-  const [productList, setProductList] = useState(products);
+  const [productList, setProductList] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [productImages, setProductImages] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const categories = ['Therapeutic Peptides', 'Cosmetic Peptides', 'Research Peptides', 'Custom Synthesis'];
 
   useEffect(() => {
-    if (editingProduct && editingProduct.image) {
-      setProductImages([editingProduct.image]);
-    } else if (!editingProduct && !showAddModal) {
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    if (editingProduct) {
+      if (editingProduct.images && editingProduct.images.length > 0) {
+        setProductImages(editingProduct.images);
+      } else if (editingProduct.image) {
+        setProductImages([editingProduct.image]);
+      }
+    } else if (!showAddModal) {
       setProductImages([]);
     }
   }, [editingProduct, showAddModal]);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      const formattedProducts: Product[] = (data || []).map((p: any) => ({
+        id: p.id,
+        name: p.name,
+        category: p.category,
+        description: p.description || '',
+        price: Number(p.price),
+        image: p.images && p.images.length > 0 ? p.images[0] : '',
+        images: p.images || [],
+        specifications: {},
+        inStock: p.in_stock,
+        sku: p.sku,
+        purity: '99%',
+        molecularWeight: '0',
+        sequence: p.sequence || ''
+      }));
+
+      setProductList(formattedProducts);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredProducts = productList.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -30,16 +74,40 @@ export default function AdminProductManager() {
     return matchesSearch && matchesCategory;
   });
 
-  const handleDeleteProduct = (productId: string) => {
+  const handleDeleteProduct = async (productId: string) => {
     if (confirm('Are you sure you want to delete this product?')) {
-      setProductList(prev => prev.filter(p => p.id !== productId));
+      try {
+        const { error } = await supabase
+          .from('products')
+          .delete()
+          .eq('id', productId);
+
+        if (error) throw error;
+
+        setProductList(prev => prev.filter(p => p.id !== productId));
+      } catch (error) {
+        console.error('Error deleting product:', error);
+        alert('Failed to delete product');
+      }
     }
   };
 
-  const handleBulkDelete = () => {
+  const handleBulkDelete = async () => {
     if (confirm(`Are you sure you want to delete ${selectedProducts.length} products?`)) {
-      setProductList(prev => prev.filter(p => !selectedProducts.includes(p.id)));
-      setSelectedProducts([]);
+      try {
+        const { error } = await supabase
+          .from('products')
+          .delete()
+          .in('id', selectedProducts);
+
+        if (error) throw error;
+
+        setProductList(prev => prev.filter(p => !selectedProducts.includes(p.id)));
+        setSelectedProducts([]);
+      } catch (error) {
+        console.error('Error deleting products:', error);
+        alert('Failed to delete products');
+      }
     }
   };
 
@@ -65,6 +133,55 @@ export default function AdminProductManager() {
       currency: 'USD',
     }).format(price);
   };
+
+  const handleSaveProduct = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    const productData = {
+      name: formData.get('name') as string,
+      sku: formData.get('sku') as string,
+      category: formData.get('category') as string,
+      description: formData.get('description') as string,
+      price: parseFloat(formData.get('price') as string),
+      sequence: formData.get('sequence') as string || null,
+      images: productImages,
+      in_stock: formData.get('inStock') === 'on'
+    };
+
+    try {
+      if (editingProduct) {
+        const { error } = await supabase
+          .from('products')
+          .update(productData)
+          .eq('id', editingProduct.id);
+
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from('products')
+          .insert([productData]);
+
+        if (error) throw error;
+      }
+
+      await fetchProducts();
+      setShowAddModal(false);
+      setEditingProduct(null);
+      setProductImages([]);
+    } catch (error) {
+      console.error('Error saving product:', error);
+      alert('Failed to save product');
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -312,7 +429,7 @@ export default function AdminProductManager() {
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
                   {editingProduct ? 'Edit Product' : 'Add New Product'}
                 </h3>
-                <form className="space-y-4">
+                <form onSubmit={handleSaveProduct} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -320,7 +437,9 @@ export default function AdminProductManager() {
                       </label>
                       <input
                         type="text"
+                        name="name"
                         defaultValue={editingProduct?.name}
+                        required
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -330,7 +449,9 @@ export default function AdminProductManager() {
                       </label>
                       <input
                         type="text"
+                        name="sku"
                         defaultValue={editingProduct?.sku}
+                        required
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -341,7 +462,9 @@ export default function AdminProductManager() {
                       Category *
                     </label>
                     <select
+                      name="category"
                       defaultValue={editingProduct?.category}
+                      required
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       <option value="">Select category</option>
@@ -356,8 +479,10 @@ export default function AdminProductManager() {
                       Description *
                     </label>
                     <textarea
+                      name="description"
                       rows={3}
                       defaultValue={editingProduct?.description}
+                      required
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
@@ -369,9 +494,11 @@ export default function AdminProductManager() {
                       </label>
                       <input
                         type="number"
+                        name="price"
                         step="0.01"
                         defaultValue={editingProduct?.price}
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        required
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
                     <div>
@@ -404,6 +531,7 @@ export default function AdminProductManager() {
                     </label>
                     <input
                       type="text"
+                      name="sequence"
                       defaultValue={editingProduct?.sequence}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
@@ -419,6 +547,7 @@ export default function AdminProductManager() {
                     <label className="flex items-center">
                       <input
                         type="checkbox"
+                        name="inStock"
                         defaultChecked={editingProduct?.inStock ?? true}
                         className="mr-2"
                       />
