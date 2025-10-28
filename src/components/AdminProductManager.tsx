@@ -215,14 +215,37 @@ export default function AdminProductManager() {
                       onChange={() => toggleProductSelection(product.id)}
                     />
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <img 
-                        src={product.image} 
-                        alt={product.name}
-                        className="w-12 h-12 object-cover rounded-lg mr-4"
-                      />
-                      <div>
+                  <td className="px-6 py-4">
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0 mr-4">
+                        {(product.images && product.images.length > 0) ? (
+                          <div className="flex flex-wrap gap-1">
+                            {product.images.slice(0, 3).map((image, idx) => (
+                              <img
+                                key={idx}
+                                src={image}
+                                alt={`${product.name} ${idx + 1}`}
+                                className="w-12 h-12 object-cover rounded-lg border border-gray-200"
+                                title={`Image ${idx + 1} of ${product.images?.length || 0}`}
+                              />
+                            ))}
+                            {product.images.length > 3 && (
+                              <div className="w-12 h-12 rounded-lg border border-gray-300 bg-gray-100 flex items-center justify-center">
+                                <span className="text-xs font-medium text-gray-600">
+                                  +{product.images.length - 3}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className="w-12 h-12 object-cover rounded-lg"
+                          />
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
                         <div className="text-sm font-medium text-gray-900">{product.name}</div>
                         <div className="text-sm text-gray-500">SKU: {product.sku}</div>
                         <div className="text-sm text-gray-500">Purity: {product.purity}</div>
