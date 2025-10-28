@@ -20,7 +20,7 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [filters, setFilters] = useState<FilterState>({
-    category: '',
+    category: initialCategory,
     purityRange: [90, 100],
     priceRange: [0, 1000],
     molecularWeightRange: [0, 10000],
@@ -39,7 +39,8 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const filteredProducts = products.filter(product => {
-    const matchesCategory = selectedCategory === '' || product.category === selectedCategory;
+    const categoryToMatch = filters.category || selectedCategory;
+    const matchesCategory = categoryToMatch === '' || product.category === categoryToMatch;
     const matchesSearch = product.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
                          product.description.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
     
@@ -130,7 +131,7 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
 
   const handleClearFilters = () => {
     setFilters({
-      category: '',
+      category: initialCategory,
       purityRange: [90, 100],
       priceRange: [0, 1000],
       molecularWeightRange: [0, 10000],
@@ -140,7 +141,7 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
       sortBy: 'name',
       sortOrder: 'asc'
     });
-    setSelectedCategory('');
+    setSelectedCategory(initialCategory);
   };
 
   const handleCategoryChange = (category: string) => {
