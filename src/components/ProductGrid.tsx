@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { products } from '../data/products';
 import ProductCard from './ProductCard';
 import ProductDetailPage from './ProductDetailPage';
 import CategoryFilter from './CategoryFilter';
@@ -10,15 +9,18 @@ import InventoryAlertsBanner from './InventoryAlertsBanner';
 import LoadingSpinner from './LoadingSpinner';
 import { useImagePreloader } from '../hooks/useImagePreloader';
 import { useDebounce } from '../hooks/useDebounce';
+import { supabase } from '../lib/supabase';
 
 interface ProductGridProps {
   initialCategory?: string;
 }
 
 export default function ProductGrid({ initialCategory = '' }: ProductGridProps) {
+  const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<FilterState>({
     category: initialCategory,
     purityRange: [90, 100],
@@ -36,10 +38,53 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
     setFilters(prev => ({ ...prev, category: initialCategory }));
   }, [initialCategory]);
 
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .order('name', { ascending: true });
+
+      if (error) throw error;
+
+      const formattedProducts: Product[] = (data || []).map((p: any) => ({
+        id: p.id,
+        name: p.name,
+        category: p.category,
+        description: p.description || '',
+        price: Number(p.price),
+        image: p.images && p.images.length > 0 ? p.images[0] : '',
+        images: p.images || [],
+        specifications: {
+          'Purity': p.purity || '≥99%',
+          'Molecular Weight': p.molecular_weight || 'N/A',
+          'Sequence': p.sequence || 'N/A',
+          'Storage': '-20°C'
+        },
+        inStock: p.in_stock,
+        sku: p.sku,
+        purity: p.purity || '≥99%',
+        molecularWeight: p.molecular_weight || '0',
+        sequence: p.sequence || ''
+      }));
+
+      setProducts(formattedProducts);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Preload product images for better performance
   const productImages = products.map(p => p.image);
   const { isLoading: imagesLoading } = useImagePreloader(productImages);
-  
+
   // Debounce search term to reduce filtering operations
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
@@ -158,8 +203,8 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
     return <ProductDetailPage product={selectedProduct} onBack={handleBackToGrid} />;
   }
 
-  // Show loading state while images are preloading
-  if (imagesLoading) {
+  // Show loading state while fetching products
+  if (loading) {
     return (
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
