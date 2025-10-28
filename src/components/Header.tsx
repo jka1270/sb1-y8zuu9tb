@@ -141,7 +141,7 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
         <div className="xl:hidden bg-white border-t shadow-lg">
           <div className="px-4 py-3 space-y-1">
             <button
-              onClick={onHome}
+              onClick={() => { onHome?.(); setIsMenuOpen(false); }}
               className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               Home
@@ -165,32 +165,32 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
               )}
             </div>
             <button
-              onClick={onBlog}
+              onClick={() => { onBlog?.(); setIsMenuOpen(false); }}
               className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               Research Hub
             </button>
             <button
-              onClick={onDocumentation}
+              onClick={() => { onDocumentation?.(); setIsMenuOpen(false); }}
               className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               Documentation
             </button>
             <button
-              onClick={onAbout}
+              onClick={() => { onAbout?.(); setIsMenuOpen(false); }}
               className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               About
             </button>
             <button
-              onClick={onContact}
+              onClick={() => { onContact?.(); setIsMenuOpen(false); }}
               className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               Contact
             </button>
             {user && (
               <button
-                onClick={onInventory}
+                onClick={() => { onInventory?.(); setIsMenuOpen(false); }}
                 className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
               >
                 Inventory
@@ -198,7 +198,7 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
             )}
             {user && isAdmin && (
               <button
-                onClick={onAdmin}
+                onClick={() => { onAdmin?.(); setIsMenuOpen(false); }}
                 className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
               >
                 Admin
