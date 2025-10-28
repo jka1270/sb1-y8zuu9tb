@@ -1,4 +1,4 @@
-import { ArrowLeft, Award, Users, Globe, CheckCircle, Shield, Microscope, Building, Calendar, Target } from 'lucide-react';
+import { Award, Users, Globe, CheckCircle, Shield, Microscope, Building, Calendar, Target } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
 
 interface AboutPageProps {
@@ -78,18 +78,6 @@ export default function AboutPage({ onBack }: AboutPageProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <button
-            onClick={onBack}
-            className="flex items-center text-blue-600 hover:text-blue-700 font-medium"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Home
-          </button>
-        </div>
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero Section */}
         <div className="text-center mb-16">

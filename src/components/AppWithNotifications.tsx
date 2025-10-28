@@ -119,135 +119,6 @@ export default function AppWithNotifications() {
     }
   };
 
-  if (showPeptideCategory) {
-    return (
-      <CartProvider onItemAdded={handleItemAdded}>
-        <div className="min-h-screen bg-gray-50">
-          <PeptideCategoryPage category={showPeptideCategory} onBack={handleBackFromPeptideCategory} />
-          <NotificationContainer />
-        </div>
-      </CartProvider>
-    );
-  }
-
-  if (showAdmin) {
-    return (
-      <CartProvider onItemAdded={handleItemAdded}>
-        <div className="min-h-screen bg-gray-50">
-          <AdminPanel onBack={handleBackFromAdmin} />
-          <NotificationContainer />
-        </div>
-      </CartProvider>
-    );
-  }
-
-  if (showCheckout) {
-    return (
-      <CartProvider onItemAdded={handleItemAdded}>
-        <div className="min-h-screen bg-gray-50">
-          <CheckoutPage onBack={handleBackFromCheckout} />
-          <NotificationContainer />
-        </div>
-      </CartProvider>
-    );
-  }
-
-  if (showOrderHistory) {
-    return (
-      <CartProvider onItemAdded={handleItemAdded}>
-        <div className="min-h-screen bg-gray-50">
-          <OrderHistoryPage onBack={handleBackFromOrderHistory} />
-          <NotificationContainer />
-        </div>
-      </CartProvider>
-    );
-  }
-
-  if (showInventory) {
-    return (
-      <CartProvider onItemAdded={handleItemAdded}>
-        <div className="min-h-screen bg-gray-50">
-          <div className="bg-white shadow-sm">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-              <button
-                onClick={handleBackFromInventory}
-                className="flex items-center text-blue-600 hover:text-blue-700 font-medium"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Shop
-              </button>
-            </div>
-          </div>
-          <InventoryDashboard />
-          <NotificationContainer />
-        </div>
-      </CartProvider>
-    );
-  }
-
-  if (showAccount) {
-    return (
-      <CartProvider onItemAdded={handleItemAdded}>
-        <div className="min-h-screen bg-gray-50">
-          {accountPage === 'dashboard' && (
-            <AccountDashboard onNavigate={handleAccountNavigation} />
-          )}
-          {accountPage === 'research-profile' && (
-            <ResearchProfilePage onBack={handleBackFromAccount} />
-          )}
-          {accountPage === 'saved-products' && (
-            <SavedProductsPage onBack={handleBackFromAccount} />
-          )}
-          <NotificationContainer />
-        </div>
-      </CartProvider>
-    );
-  }
-
-  if (showDocumentation) {
-    return (
-      <CartProvider onItemAdded={handleItemAdded}>
-        <div className="min-h-screen bg-gray-50">
-          <ResearchDocumentationPage onBack={handleBackFromDocumentation} />
-          <NotificationContainer />
-        </div>
-      </CartProvider>
-    );
-  }
-
-  if (showAbout) {
-    return (
-      <CartProvider onItemAdded={handleItemAdded}>
-        <div className="min-h-screen bg-gray-50">
-          <AboutPage onBack={handleBackFromAbout} />
-          <NotificationContainer />
-        </div>
-      </CartProvider>
-    );
-  }
-
-  if (showContact) {
-    return (
-      <CartProvider onItemAdded={handleItemAdded}>
-        <div className="min-h-screen bg-gray-50">
-          <ContactPage onBack={handleBackFromContact} />
-          <NotificationContainer />
-        </div>
-      </CartProvider>
-    );
-  }
-
-  if (showBlog) {
-    return (
-      <CartProvider onItemAdded={handleItemAdded}>
-        <div className="min-h-screen bg-gray-50">
-          <BlogPage onBack={handleBackFromBlog} />
-          <NotificationContainer />
-        </div>
-      </CartProvider>
-    );
-  }
-
   return (
     <CartProvider onItemAdded={handleItemAdded}>
       <div className="min-h-screen bg-gray-50">
@@ -263,9 +134,65 @@ export default function AppWithNotifications() {
           onBlog={handleBlog}
           onAdmin={handleAdmin}
         />
-        <Hero />
-        <ProductGrid />
-        <ShippingIntegration />
+
+        {showPeptideCategory && (
+          <PeptideCategoryPage category={showPeptideCategory} onBack={handleBackFromPeptideCategory} />
+        )}
+
+        {showAdmin && (
+          <AdminPanel onBack={handleBackFromAdmin} />
+        )}
+
+        {showCheckout && (
+          <CheckoutPage onBack={handleBackFromCheckout} />
+        )}
+
+        {showOrderHistory && (
+          <OrderHistoryPage onBack={handleBackFromOrderHistory} />
+        )}
+
+        {showInventory && (
+          <InventoryDashboard />
+        )}
+
+        {showAccount && (
+          <>
+            {accountPage === 'dashboard' && (
+              <AccountDashboard onNavigate={handleAccountNavigation} />
+            )}
+            {accountPage === 'research-profile' && (
+              <ResearchProfilePage onBack={handleBackFromAccount} />
+            )}
+            {accountPage === 'saved-products' && (
+              <SavedProductsPage onBack={handleBackFromAccount} />
+            )}
+          </>
+        )}
+
+        {showDocumentation && (
+          <ResearchDocumentationPage onBack={handleBackFromDocumentation} />
+        )}
+
+        {showAbout && (
+          <AboutPage onBack={handleBackFromAbout} />
+        )}
+
+        {showContact && (
+          <ContactPage onBack={handleBackFromContact} />
+        )}
+
+        {showBlog && (
+          <BlogPage onBack={handleBackFromBlog} />
+        )}
+
+        {!showPeptideCategory && !showAdmin && !showCheckout && !showOrderHistory && !showInventory && !showAccount && !showDocumentation && !showAbout && !showContact && !showBlog && (
+          <>
+            <Hero />
+            <ProductGrid />
+            <ShippingIntegration />
+          </>
+        )}
+
         <Footer onAbout={handleAbout} onContact={handleContact} onBlog={handleBlog} />
         <CartSidebar onCheckout={handleCheckout} />
         <NotificationContainer />

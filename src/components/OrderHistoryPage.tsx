@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Package, Truck, CheckCircle, Clock, Eye, Download, RefreshCw } from 'lucide-react';
+import { Package, Truck, CheckCircle, Clock, Eye, Download, RefreshCw } from 'lucide-react';
 import { useOrders, Order } from '../hooks/useOrders';
 import { useAuth } from '../contexts/AuthContext';
 import OrderDetailModal from './OrderDetailModal';
@@ -112,14 +112,7 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={onBack}
-              className="flex items-center text-blue-600 hover:text-blue-700 font-medium"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Shop
-            </button>
+          <div className="flex items-center justify-end">
             <button
               onClick={refetch}
               className="flex items-center text-gray-600 hover:text-gray-700"

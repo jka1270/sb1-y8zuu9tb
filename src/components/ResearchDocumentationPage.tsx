@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Download, FileText, Shield, BookOpen, Search, Filter, Star, Eye, ThumbsUp } from 'lucide-react';
+import { Download, FileText, Shield, BookOpen, Search, Filter, Star, Eye, ThumbsUp } from 'lucide-react';
 import { useResearchDocuments } from '../hooks/useResearchDocuments';
 import DocumentViewer from './DocumentViewer';
 
@@ -108,14 +108,7 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={onBack}
-              className="flex items-center text-blue-600 hover:text-blue-700 font-medium"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              {productId ? 'Back to Product' : 'Back to Shop'}
-            </button>
+          <div className="flex items-center justify-end">
             <div className="flex items-center space-x-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
