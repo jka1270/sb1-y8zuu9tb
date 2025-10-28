@@ -244,11 +244,11 @@ export default function AdminProductManager() {
                       <button className="text-blue-600 hover:text-blue-900">
                         <Eye className="h-4 w-4" />
                       </button>
-                      <button 
+                      <button
                         onClick={() => setEditingProduct(product)}
                         className="text-indigo-600 hover:text-indigo-900"
                       >
-                        <Edit className="h-4 w-4" />
+                        <Pencil className="h-4 w-4" />
                       </button>
                       <button 
                         onClick={() => handleDeleteProduct(product.id)}
