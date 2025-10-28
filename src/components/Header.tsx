@@ -26,13 +26,13 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
   const { user } = useAuth();
 
   return (
-    <header className="bg-white shadow-sm border-b">
+    <header className="bg-gradient-to-r from-blue-600 to-blue-800 shadow-sm border-b border-blue-500 border-opacity-30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center items-center h-14 sm:h-16 relative">
           {/* Mobile Menu Button - Left Side */}
           <div className="absolute left-0 xl:hidden">
             <button
-              className="p-2 sm:p-3 text-black hover:text-blue-600 touch-manipulation"
+              className="p-2 sm:p-3 text-white hover:text-blue-200 touch-manipulation"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               <Menu className="h-5 w-5" />
@@ -43,14 +43,14 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
           <nav className="hidden xl:flex space-x-4">
             <button
               onClick={onHome}
-              className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
+              className="text-white hover:text-blue-200 font-medium text-sm lg:text-base"
             >
               Home
             </button>
             <div className="relative" onMouseLeave={() => setIsPeptidesOpen(false)}>
               <button
                 onMouseEnter={() => setIsPeptidesOpen(true)}
-                className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base flex items-center"
+                className="text-white hover:text-blue-200 font-medium text-sm lg:text-base flex items-center"
               >
                 Peptides Catalog
                 <ChevronDown className="h-4 w-4 ml-1" />
@@ -66,32 +66,32 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
             </div>
             <button
               onClick={onBlog}
-              className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
+              className="text-white hover:text-blue-200 font-medium text-sm lg:text-base"
             >
               Research Hub
             </button>
             <button
               onClick={onDocumentation}
-              className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
+              className="text-white hover:text-blue-200 font-medium text-sm lg:text-base"
             >
               Documentation
             </button>
             <button
               onClick={onAbout}
-              className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
+              className="text-white hover:text-blue-200 font-medium text-sm lg:text-base"
             >
               About
             </button>
             <button
               onClick={onContact}
-              className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
+              className="text-white hover:text-blue-200 font-medium text-sm lg:text-base"
             >
               Contact
             </button>
             {user && (
               <button
                 onClick={onInventory}
-                className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
+                className="text-white hover:text-blue-200 font-medium text-sm lg:text-base"
               >
                 Inventory
               </button>
@@ -99,7 +99,7 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
             {user && (
               <button
                 onClick={onAdmin}
-                className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
+                className="text-white hover:text-blue-200 font-medium text-sm lg:text-base"
               >
                 Admin
               </button>
@@ -110,11 +110,11 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
           <div className="absolute right-0 flex items-center space-x-1 sm:space-x-2">
             <button
               onClick={toggleCart}
-              className="p-2 sm:p-3 text-black hover:text-blue-600 relative touch-manipulation"
+              className="p-2 sm:p-3 text-white hover:text-blue-200 relative touch-manipulation"
             >
               <ShoppingCart className="h-5 w-5" />
               {getTotalItems() > 0 && (
-                <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-white text-blue-600 text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center font-semibold">
                   {getTotalItems()}
                 </span>
               )}
@@ -124,7 +124,7 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
             ) : (
               <button
                 onClick={() => setAuthModalOpen(true)}
-                className="p-2 sm:p-3 text-black hover:text-blue-600 touch-manipulation"
+                className="p-2 sm:p-3 text-white hover:text-blue-200 touch-manipulation"
               >
                 <User className="h-5 w-5" />
               </button>

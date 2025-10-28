@@ -26,9 +26,9 @@ export default function UserMenu({ onOrderHistory, onAccount }: UserMenuProps) {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-1 sm:space-x-2 p-2 text-black hover:text-blue-600 rounded-lg hover:bg-gray-50 touch-manipulation"
+        className="flex items-center space-x-1 sm:space-x-2 p-2 text-white hover:text-blue-200 rounded-lg hover:bg-blue-700 touch-manipulation"
       >
-        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 text-white rounded-full flex items-center justify-center">
+        <div className="w-7 h-7 sm:w-8 sm:h-8 bg-white text-blue-600 rounded-full flex items-center justify-center">
           <User className="h-4 w-4" />
         </div>
         <span className="hidden sm:block font-medium text-sm sm:text-base max-w-24 sm:max-w-none truncate">{userDisplayName}</span>
