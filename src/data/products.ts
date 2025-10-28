@@ -45,6 +45,7 @@ export const nadProduct: Product = {
 };
 
 export const products: Product[] = [
+  nadProduct,
   {
     id: '1',
     name: 'BPC-157 (Body Protection Compound)',
