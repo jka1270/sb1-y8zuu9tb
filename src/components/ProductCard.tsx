@@ -76,9 +76,9 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group touch-manipulation">
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden cursor-pointer" onClick={() => onViewDetails(product)}>
         <OptimizedImage
-          src={productImage} 
+          src={productImage}
           alt={product.name}
           className="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-105 transition-transform duration-300"
           loading="lazy"
@@ -86,8 +86,11 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
         />
         <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
         <div className="absolute top-2 sm:top-4 right-2 sm:right-4 space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <button 
-            onClick={handleToggleSave}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleToggleSave();
+            }}
             disabled={isLoading}
             className={`bg-white p-2 sm:p-3 rounded-full shadow-md hover:bg-gray-50 touch-manipulation ${isSaved ? 'text-red-500' : 'text-gray-600'}`}
           >
@@ -97,8 +100,11 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
               <Heart className={`h-4 w-4 ${isSaved ? 'fill-current' : ''}`} />
             )}
           </button>
-          <button 
-            onClick={() => onViewDetails(product)}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onViewDetails(product);
+            }}
             className="bg-white p-2 sm:p-3 rounded-full shadow-md hover:bg-gray-50 touch-manipulation"
           >
             <Eye className="h-4 w-4 text-gray-600" />
