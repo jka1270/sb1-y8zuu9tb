@@ -201,7 +201,7 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
                 </div>
                 <div>
                   <span className="text-sm text-gray-600">Stock Status</span>
-                  <StockIndicator sku={currentSku} showDetails={true} />
+                  <StockIndicator sku={currentSku} showDetails={true} inStock={currentInStock} />
                 </div>
               </div>
             </div>

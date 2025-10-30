@@ -10,7 +10,6 @@ interface HeaderProps {
   onHome?: () => void;
   onPeptideCategory?: (category: 'therapeutic' | 'cosmetic' | 'research' | 'custom' | 'libraries') => void;
   onOrderHistory?: () => void;
-  onInventory?: () => void;
   onAccount?: () => void;
   onDocumentation?: () => void;
   onAbout?: () => void;
@@ -19,7 +18,7 @@ interface HeaderProps {
   onAdmin?: () => void;
 }
 
-export default function Header({ onHome, onPeptideCategory, onOrderHistory, onInventory, onAccount, onDocumentation, onAbout, onContact, onBlog, onAdmin }: HeaderProps) {
+export default function Header({ onHome, onPeptideCategory, onOrderHistory, onAccount, onDocumentation, onAbout, onContact, onBlog, onAdmin }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [isPeptidesOpen, setIsPeptidesOpen] = useState(false);
@@ -91,14 +90,6 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
             >
               Contact
             </button>
-            {user && isAdmin && (
-              <button
-                onClick={onInventory}
-                className="text-black hover:text-blue-600 font-medium text-sm lg:text-base"
-              >
-                Inventory
-              </button>
-            )}
             {user && isAdmin && (
               <button
                 onClick={onAdmin}
@@ -188,14 +179,6 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onIn
             >
               Contact
             </button>
-            {user && isAdmin && (
-              <button
-                onClick={() => { onInventory?.(); setIsMenuOpen(false); }}
-                className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
-              >
-                Inventory
-              </button>
-            )}
             {user && isAdmin && (
               <button
                 onClick={() => { onAdmin?.(); setIsMenuOpen(false); }}

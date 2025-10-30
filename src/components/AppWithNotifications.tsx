@@ -9,7 +9,6 @@ import Footer from './Footer';
 import CartSidebar from './CartSidebar';
 import CheckoutPage from './CheckoutPage';
 import OrderHistoryPage from './OrderHistoryPage';
-import InventoryDashboard from './InventoryDashboard';
 import AccountDashboard from './AccountDashboard';
 import ResearchProfilePage from './ResearchProfilePage';
 import SavedProductsPage from './SavedProductsPage';
@@ -27,7 +26,6 @@ import { CartItem } from '../types';
 export default function AppWithNotifications() {
   const [showCheckout, setShowCheckout] = useState(false);
   const [showOrderHistory, setShowOrderHistory] = useState(false);
-  const [showInventory, setShowInventory] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
   const [showDocumentation, setShowDocumentation] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
@@ -66,7 +64,6 @@ export default function AppWithNotifications() {
   const handleHome = () => {
     setShowCheckout(false);
     setShowOrderHistory(false);
-    setShowInventory(false);
     setShowAccount(false);
     setShowDocumentation(false);
     setShowAbout(false);
@@ -80,7 +77,6 @@ export default function AppWithNotifications() {
   const handlePeptideCategory = (category: 'therapeutic' | 'cosmetic' | 'research' | 'custom' | 'libraries') => {
     setShowCheckout(false);
     setShowOrderHistory(false);
-    setShowInventory(false);
     setShowAccount(false);
     setShowDocumentation(false);
     setShowAbout(false);
@@ -105,11 +101,6 @@ export default function AppWithNotifications() {
     setShowOrderHistory(true);
   };
   const handleBackFromOrderHistory = () => setShowOrderHistory(false);
-  const handleInventory = () => {
-    handleHome();
-    setShowInventory(true);
-  };
-  const handleBackFromInventory = () => setShowInventory(false);
   const handleAccount = () => {
     handleHome();
     setShowAccount(true);
@@ -142,7 +133,6 @@ export default function AppWithNotifications() {
   const handleAdmin = () => {
     setShowCheckout(false);
     setShowOrderHistory(false);
-    setShowInventory(false);
     setShowAccount(false);
     setShowDocumentation(false);
     setShowAbout(false);
@@ -170,7 +160,6 @@ export default function AppWithNotifications() {
           onHome={handleHome}
           onPeptideCategory={handlePeptideCategory}
           onOrderHistory={handleOrderHistory}
-          onInventory={handleInventory}
           onAccount={handleAccount}
           onDocumentation={handleDocumentation}
           onAbout={handleAbout}
@@ -193,10 +182,6 @@ export default function AppWithNotifications() {
 
         {showOrderHistory && (
           <OrderHistoryPage onBack={handleBackFromOrderHistory} />
-        )}
-
-        {showInventory && (
-          <InventoryDashboard />
         )}
 
         {showAccount && (
@@ -229,7 +214,7 @@ export default function AppWithNotifications() {
           <BlogPage onBack={handleBackFromBlog} />
         )}
 
-        {!showPeptideCategory && !showAdmin && !showCheckout && !showOrderHistory && !showInventory && !showAccount && !showDocumentation && !showAbout && !showContact && !showBlog && (
+        {!showPeptideCategory && !showAdmin && !showCheckout && !showOrderHistory && !showAccount && !showDocumentation && !showAbout && !showContact && !showBlog && (
           <>
             <Hero onResearchGuide={handleDocumentation} />
             <ProductGrid />

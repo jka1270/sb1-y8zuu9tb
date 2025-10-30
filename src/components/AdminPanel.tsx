@@ -3,7 +3,6 @@ import { Users, Package, ShoppingBag, BarChart3, Settings, Search, Filter, Plus,
 import { useAuth } from '../contexts/AuthContext';
 import { useUserRole } from '../hooks/useUserRole';
 import { useOrders } from '../hooks/useOrders';
-import { useInventory } from '../hooks/useInventory';
 import AdminProductManager from './AdminProductManager';
 import AdminOrderManager from './AdminOrderManager';
 import AdminCustomerManager from './AdminCustomerManager';
@@ -46,7 +45,6 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
     { id: 'orders', label: 'Orders', icon: ShoppingBag },
     { id: 'customers', label: 'Customers', icon: Users },
     { id: 'messages', label: 'Messages', icon: MessageSquare },
-    { id: 'inventory', label: 'Inventory', icon: Package },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
@@ -104,20 +102,6 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
           {activeTab === 'orders' && <AdminOrderManager />}
           {activeTab === 'customers' && <AdminCustomerManager />}
           {activeTab === 'messages' && <AdminMessagesManager />}
-          {activeTab === 'inventory' && (
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Inventory Management</h2>
-              <p className="text-gray-600">
-                Inventory management features are available in the main inventory dashboard.
-              </p>
-              <button
-                onClick={() => window.location.href = '/inventory'}
-                className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-              >
-                Go to Inventory Dashboard
-              </button>
-            </div>
-          )}
           {activeTab === 'settings' && (
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">System Settings</h2>

@@ -5,7 +5,6 @@ import CategoryFilter from './CategoryFilter';
 import AdvancedFilters, { FilterState } from './AdvancedFilters';
 import { Search } from 'lucide-react';
 import { Product } from '../types';
-import InventoryAlertsBanner from './InventoryAlertsBanner';
 import LoadingSpinner from './LoadingSpinner';
 import { useImagePreloader } from '../hooks/useImagePreloader';
 import { useDebounce } from '../hooks/useDebounce';
@@ -222,9 +221,6 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      {/* Inventory Alerts Banner */}
-      <InventoryAlertsBanner />
-      
       {/* Free Shipping Notice */}
       <div className="flex justify-center mb-6">
         <span className="font-bold text-sm sm:text-base text-red-600 blink-box">

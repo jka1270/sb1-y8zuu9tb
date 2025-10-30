@@ -166,7 +166,7 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
           
           {/* Stock Indicator */}
           <div className="mb-3">
-            <StockIndicator sku={currentSku} showDetails={false} />
+            <StockIndicator sku={currentSku} showDetails={false} inStock={currentInStock} />
           </div>
           
           {Object.entries(product.specifications).slice(0, 2).map(([key, value]) => (
