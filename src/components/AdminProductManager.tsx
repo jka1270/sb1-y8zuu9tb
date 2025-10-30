@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import { Product } from '../types';
 import ImageUpload from './ImageUpload';
 import LoadingSpinner from './LoadingSpinner';
+import Modal from './Modal';
 
 export default function AdminProductManager() {
   const [productList, setProductList] = useState<Product[]>([]);
@@ -14,6 +15,13 @@ export default function AdminProductManager() {
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [productImages, setProductImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    type: 'info' | 'warning' | 'success' | 'confirm';
+    onConfirm?: () => void;
+  }>({ isOpen: false, title: '', message: '', type: 'info' });
 
   const categories = ['Therapeutic Peptides', 'Cosmetic Peptides', 'Research Peptides', 'Custom Synthesis'];
 
@@ -75,40 +83,62 @@ export default function AdminProductManager() {
   });
 
   const handleDeleteProduct = async (productId: string) => {
-    if (confirm('Are you sure you want to delete this product?')) {
-      try {
-        const { error } = await supabase
-          .from('products')
-          .delete()
-          .eq('id', productId);
+    setModalState({
+      isOpen: true,
+      title: 'Delete Product',
+      message: 'Are you sure you want to delete this product? This action cannot be undone.',
+      type: 'confirm',
+      onConfirm: async () => {
+        try {
+          const { error } = await supabase
+            .from('products')
+            .delete()
+            .eq('id', productId);
 
-        if (error) throw error;
+          if (error) throw error;
 
-        setProductList(prev => prev.filter(p => p.id !== productId));
-      } catch (error) {
-        console.error('Error deleting product:', error);
-        alert('Failed to delete product');
+          setProductList(prev => prev.filter(p => p.id !== productId));
+        } catch (error) {
+          console.error('Error deleting product:', error);
+          setModalState({
+            isOpen: true,
+            title: 'Error',
+            message: 'Failed to delete product. Please try again.',
+            type: 'warning'
+          });
+        }
       }
-    }
+    });
   };
 
   const handleBulkDelete = async () => {
-    if (confirm(`Are you sure you want to delete ${selectedProducts.length} products?`)) {
-      try {
-        const { error } = await supabase
-          .from('products')
-          .delete()
-          .in('id', selectedProducts);
+    setModalState({
+      isOpen: true,
+      title: 'Delete Multiple Products',
+      message: `Are you sure you want to delete ${selectedProducts.length} products? This action cannot be undone.`,
+      type: 'confirm',
+      onConfirm: async () => {
+        try {
+          const { error } = await supabase
+            .from('products')
+            .delete()
+            .in('id', selectedProducts);
 
-        if (error) throw error;
+          if (error) throw error;
 
-        setProductList(prev => prev.filter(p => !selectedProducts.includes(p.id)));
-        setSelectedProducts([]);
-      } catch (error) {
-        console.error('Error deleting products:', error);
-        alert('Failed to delete products');
+          setProductList(prev => prev.filter(p => !selectedProducts.includes(p.id)));
+          setSelectedProducts([]);
+        } catch (error) {
+          console.error('Error deleting products:', error);
+          setModalState({
+            isOpen: true,
+            title: 'Error',
+            message: 'Failed to delete products. Please try again.',
+            type: 'warning'
+          });
+        }
       }
-    }
+    });
   };
 
   const toggleProductSelection = (productId: string) => {
@@ -171,7 +201,12 @@ export default function AdminProductManager() {
       setProductImages([]);
     } catch (error) {
       console.error('Error saving product:', error);
-      alert('Failed to save product');
+      setModalState({
+        isOpen: true,
+        title: 'Error',
+        message: 'Failed to save product. Please try again.',
+        type: 'warning'
+      });
     }
   };
 
@@ -580,6 +615,15 @@ export default function AdminProductManager() {
           </div>
         </>
       )}
+
+      <Modal
+        isOpen={modalState.isOpen}
+        onClose={() => setModalState({ ...modalState, isOpen: false })}
+        onConfirm={modalState.onConfirm}
+        title={modalState.title}
+        message={modalState.message}
+        type={modalState.type}
+      />
     </div>
   );
 }

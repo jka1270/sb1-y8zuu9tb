@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Mail, Clock, AlertCircle, CheckCircle, MessageSquare, User, Building, Phone, Filter, Search, Eye, Edit, Trash2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import Modal from './Modal';
 
 interface ContactMessage {
   id: string;
@@ -28,6 +29,13 @@ export default function AdminMessagesManager() {
   const [urgencyFilter, setUrgencyFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [adminNotes, setAdminNotes] = useState('');
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    type: 'info' | 'warning' | 'success' | 'confirm';
+    onConfirm?: () => void;
+  }>({ isOpen: false, title: '', message: '', type: 'info' });
   const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
@@ -100,23 +108,29 @@ export default function AdminMessagesManager() {
   };
 
   const deleteMessage = async (messageId: string) => {
-    if (!confirm('Are you sure you want to delete this message?')) return;
+    setModalState({
+      isOpen: true,
+      title: 'Delete Message',
+      message: 'Are you sure you want to delete this message? This action cannot be undone.',
+      type: 'confirm',
+      onConfirm: async () => {
+        try {
+          const { error } = await supabase
+            .from('contact_messages')
+            .delete()
+            .eq('id', messageId);
 
-    try {
-      const { error } = await supabase
-        .from('contact_messages')
-        .delete()
-        .eq('id', messageId);
+          if (error) throw error;
 
-      if (error) throw error;
-
-      await fetchMessages();
-      if (selectedMessage?.id === messageId) {
-        setSelectedMessage(null);
+          await fetchMessages();
+          if (selectedMessage?.id === messageId) {
+            setSelectedMessage(null);
+          }
+        } catch (error) {
+          console.error('Error deleting message:', error);
+        }
       }
-    } catch (error) {
-      console.error('Error deleting message:', error);
-    }
+    });
   };
 
   const filteredMessages = messages.filter(msg => {
@@ -425,6 +439,15 @@ export default function AdminMessagesManager() {
           )}
         </div>
       )}
+
+      <Modal
+        isOpen={modalState.isOpen}
+        onClose={() => setModalState({ ...modalState, isOpen: false })}
+        onConfirm={modalState.onConfirm}
+        title={modalState.title}
+        message={modalState.message}
+        type={modalState.type}
+      />
     </div>
   );
 }
