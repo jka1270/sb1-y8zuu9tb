@@ -20,6 +20,10 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
   );
   const [activeTab, setActiveTab] = useState('overview');
   const [quantity, setQuantity] = useState(1);
+<<<<<<< HEAD
+=======
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   const { addItem } = useCart();
   const { isProductSaved, saveProduct, unsaveProduct } = useSavedProducts();
   const { getCOABySKU } = useCOA();
@@ -29,6 +33,13 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
   const [addingToCart, setAddingToCart] = useState(false);
   const [savingProduct, setSavingProduct] = useState(false);
 
+<<<<<<< HEAD
+=======
+  const productImages = Array.isArray(product.images) && product.images.length > 0
+    ? product.images
+    : [product.image];
+
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -116,17 +127,26 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+<<<<<<< HEAD
           {/* Product Image */}
           <div className="space-y-4">
             <div className="aspect-square bg-white rounded-lg shadow-md overflow-hidden">
               <OptimizedImage
                 src={product.image}
+=======
+          {/* Product Image Gallery */}
+          <div className="space-y-4">
+            <div className="aspect-square bg-white rounded-lg shadow-md overflow-hidden">
+              <OptimizedImage
+                src={productImages[selectedImageIndex]}
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                 alt={product.name}
                 className="w-full h-full object-cover"
                 priority={true}
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
+<<<<<<< HEAD
             <div className="grid grid-cols-4 gap-2">
               {[1, 2, 3, 4].map((i) => (
                 <div key={i} className="aspect-square bg-white rounded border-2 border-gray-200 overflow-hidden">
@@ -139,6 +159,32 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
                 </div>
               ))}
             </div>
+=======
+            {productImages.length > 1 && (
+              <div className="grid grid-cols-4 gap-2">
+                {productImages.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedImageIndex(index)}
+                    className={`aspect-square bg-white rounded overflow-hidden transition-all ${
+                      selectedImageIndex === index
+                        ? 'border-2 border-blue-600 ring-2 ring-blue-200'
+                        : 'border-2 border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <OptimizedImage
+                      src={image}
+                      alt={`${product.name} view ${index + 1}`}
+                      className={`w-full h-full object-cover transition-opacity ${
+                        selectedImageIndex === index ? 'opacity-100' : 'opacity-60 hover:opacity-80'
+                      }`}
+                      loading="lazy"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
           </div>
 
           {/* Product Info */}
@@ -184,7 +230,11 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
                 </div>
                 <div>
                   <span className="text-sm text-gray-600">Stock Status</span>
+<<<<<<< HEAD
                   <StockIndicator sku={currentSku} showDetails={true} />
+=======
+                  <StockIndicator sku={currentSku} showDetails={true} inStock={currentInStock} />
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                 </div>
               </div>
             </div>

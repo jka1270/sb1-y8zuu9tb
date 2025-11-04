@@ -1,18 +1,95 @@
 import { useState, useEffect } from 'react';
+<<<<<<< HEAD
 import { Plus, CreditCard as Edit, Trash2, Search, Filter, Eye, Package, AlertTriangle, CheckCircle, Upload, Download } from 'lucide-react';
 import { products } from '../data/products';
 import { Product } from '../types';
 
 export default function AdminProductManager() {
   const [productList, setProductList] = useState(products);
+=======
+import { Plus, Pencil, Trash2, Search, Filter, Eye, Package, AlertTriangle, CheckCircle, Upload, Download } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+import { Product } from '../types';
+import ImageUpload from './ImageUpload';
+import LoadingSpinner from './LoadingSpinner';
+import Modal from './Modal';
+
+export default function AdminProductManager() {
+  const [productList, setProductList] = useState<Product[]>([]);
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+<<<<<<< HEAD
 
   const categories = ['Therapeutic Peptides', 'Cosmetic Peptides', 'Research Peptides', 'Custom Synthesis'];
 
+=======
+  const [productImages, setProductImages] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    type: 'info' | 'warning' | 'success' | 'confirm';
+    onConfirm?: () => void;
+  }>({ isOpen: false, title: '', message: '', type: 'info' });
+
+  const categories = ['Therapeutic Peptides', 'Cosmetic Peptides', 'Research Peptides', 'Custom Synthesis'];
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    if (editingProduct) {
+      if (editingProduct.images && editingProduct.images.length > 0) {
+        setProductImages(editingProduct.images);
+      } else if (editingProduct.image) {
+        setProductImages([editingProduct.image]);
+      }
+    } else if (!showAddModal) {
+      setProductImages([]);
+    }
+  }, [editingProduct, showAddModal]);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      const formattedProducts: Product[] = (data || []).map((p: any) => ({
+        id: p.id,
+        name: p.name,
+        category: p.category,
+        description: p.description || '',
+        price: Number(p.price),
+        image: p.images && p.images.length > 0 ? p.images[0] : '',
+        images: p.images || [],
+        specifications: {},
+        inStock: p.in_stock,
+        sku: p.sku,
+        purity: '99%',
+        molecularWeight: '0',
+        sequence: p.sequence || ''
+      }));
+
+      setProductList(formattedProducts);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   const filteredProducts = productList.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          product.sku.toLowerCase().includes(searchTerm.toLowerCase());
@@ -20,6 +97,7 @@ export default function AdminProductManager() {
     return matchesSearch && matchesCategory;
   });
 
+<<<<<<< HEAD
   const handleDeleteProduct = (productId: string) => {
     if (confirm('Are you sure you want to delete this product?')) {
       setProductList(prev => prev.filter(p => p.id !== productId));
@@ -31,6 +109,65 @@ export default function AdminProductManager() {
       setProductList(prev => prev.filter(p => !selectedProducts.includes(p.id)));
       setSelectedProducts([]);
     }
+=======
+  const handleDeleteProduct = async (productId: string) => {
+    setModalState({
+      isOpen: true,
+      title: 'Delete Product',
+      message: 'Are you sure you want to delete this product? This action cannot be undone.',
+      type: 'confirm',
+      onConfirm: async () => {
+        try {
+          const { error } = await supabase
+            .from('products')
+            .delete()
+            .eq('id', productId);
+
+          if (error) throw error;
+
+          setProductList(prev => prev.filter(p => p.id !== productId));
+        } catch (error) {
+          console.error('Error deleting product:', error);
+          setModalState({
+            isOpen: true,
+            title: 'Error',
+            message: 'Failed to delete product. Please try again.',
+            type: 'warning'
+          });
+        }
+      }
+    });
+  };
+
+  const handleBulkDelete = async () => {
+    setModalState({
+      isOpen: true,
+      title: 'Delete Multiple Products',
+      message: `Are you sure you want to delete ${selectedProducts.length} products? This action cannot be undone.`,
+      type: 'confirm',
+      onConfirm: async () => {
+        try {
+          const { error } = await supabase
+            .from('products')
+            .delete()
+            .in('id', selectedProducts);
+
+          if (error) throw error;
+
+          setProductList(prev => prev.filter(p => !selectedProducts.includes(p.id)));
+          setSelectedProducts([]);
+        } catch (error) {
+          console.error('Error deleting products:', error);
+          setModalState({
+            isOpen: true,
+            title: 'Error',
+            message: 'Failed to delete products. Please try again.',
+            type: 'warning'
+          });
+        }
+      }
+    });
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   };
 
   const toggleProductSelection = (productId: string) => {
@@ -56,6 +193,63 @@ export default function AdminProductManager() {
     }).format(price);
   };
 
+<<<<<<< HEAD
+=======
+  const handleSaveProduct = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    const productData = {
+      name: formData.get('name') as string,
+      sku: formData.get('sku') as string,
+      category: formData.get('category') as string,
+      description: formData.get('description') as string,
+      price: parseFloat(formData.get('price') as string),
+      sequence: formData.get('sequence') as string || null,
+      images: productImages,
+      in_stock: formData.get('inStock') === 'on'
+    };
+
+    try {
+      if (editingProduct) {
+        const { error } = await supabase
+          .from('products')
+          .update(productData)
+          .eq('id', editingProduct.id);
+
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from('products')
+          .insert([productData]);
+
+        if (error) throw error;
+      }
+
+      await fetchProducts();
+      setShowAddModal(false);
+      setEditingProduct(null);
+      setProductImages([]);
+    } catch (error) {
+      console.error('Error saving product:', error);
+      setModalState({
+        isOpen: true,
+        title: 'Error',
+        message: 'Failed to save product. Please try again.',
+        type: 'warning'
+      });
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -205,6 +399,7 @@ export default function AdminProductManager() {
                       onChange={() => toggleProductSelection(product.id)}
                     />
                   </td>
+<<<<<<< HEAD
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <img 
@@ -213,6 +408,39 @@ export default function AdminProductManager() {
                         className="w-12 h-12 object-cover rounded-lg mr-4"
                       />
                       <div>
+=======
+                  <td className="px-6 py-4">
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0 mr-4">
+                        {(product.images && product.images.length > 0) ? (
+                          <div className="flex flex-wrap gap-1">
+                            {product.images.slice(0, 3).map((image, idx) => (
+                              <img
+                                key={idx}
+                                src={image}
+                                alt={`${product.name} ${idx + 1}`}
+                                className="w-12 h-12 object-cover rounded-lg border border-gray-200"
+                                title={`Image ${idx + 1} of ${product.images?.length || 0}`}
+                              />
+                            ))}
+                            {product.images.length > 3 && (
+                              <div className="w-12 h-12 rounded-lg border border-gray-300 bg-gray-100 flex items-center justify-center">
+                                <span className="text-xs font-medium text-gray-600">
+                                  +{product.images.length - 3}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className="w-12 h-12 object-cover rounded-lg"
+                          />
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                         <div className="text-sm font-medium text-gray-900">{product.name}</div>
                         <div className="text-sm text-gray-500">SKU: {product.sku}</div>
                         <div className="text-sm text-gray-500">Purity: {product.purity}</div>
@@ -244,11 +472,19 @@ export default function AdminProductManager() {
                       <button className="text-blue-600 hover:text-blue-900">
                         <Eye className="h-4 w-4" />
                       </button>
+<<<<<<< HEAD
                       <button 
                         onClick={() => setEditingProduct(product)}
                         className="text-indigo-600 hover:text-indigo-900"
                       >
                         <Edit className="h-4 w-4" />
+=======
+                      <button
+                        onClick={() => setEditingProduct(product)}
+                        className="text-indigo-600 hover:text-indigo-900"
+                      >
+                        <Pencil className="h-4 w-4" />
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                       </button>
                       <button 
                         onClick={() => handleDeleteProduct(product.id)}
@@ -271,6 +507,10 @@ export default function AdminProductManager() {
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50" onClick={() => {
             setShowAddModal(false);
             setEditingProduct(null);
+<<<<<<< HEAD
+=======
+            setProductImages([]);
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
           }} />
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -278,7 +518,11 @@ export default function AdminProductManager() {
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
                   {editingProduct ? 'Edit Product' : 'Add New Product'}
                 </h3>
+<<<<<<< HEAD
                 <form className="space-y-4">
+=======
+                <form onSubmit={handleSaveProduct} className="space-y-4">
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -286,7 +530,13 @@ export default function AdminProductManager() {
                       </label>
                       <input
                         type="text"
+<<<<<<< HEAD
                         defaultValue={editingProduct?.name}
+=======
+                        name="name"
+                        defaultValue={editingProduct?.name}
+                        required
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -296,7 +546,13 @@ export default function AdminProductManager() {
                       </label>
                       <input
                         type="text"
+<<<<<<< HEAD
                         defaultValue={editingProduct?.sku}
+=======
+                        name="sku"
+                        defaultValue={editingProduct?.sku}
+                        required
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -307,7 +563,13 @@ export default function AdminProductManager() {
                       Category *
                     </label>
                     <select
+<<<<<<< HEAD
                       defaultValue={editingProduct?.category}
+=======
+                      name="category"
+                      defaultValue={editingProduct?.category}
+                      required
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       <option value="">Select category</option>
@@ -322,8 +584,15 @@ export default function AdminProductManager() {
                       Description *
                     </label>
                     <textarea
+<<<<<<< HEAD
                       rows={3}
                       defaultValue={editingProduct?.description}
+=======
+                      name="description"
+                      rows={3}
+                      defaultValue={editingProduct?.description}
+                      required
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
@@ -335,9 +604,17 @@ export default function AdminProductManager() {
                       </label>
                       <input
                         type="number"
+<<<<<<< HEAD
                         step="0.01"
                         defaultValue={editingProduct?.price}
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+=======
+                        name="price"
+                        step="0.01"
+                        defaultValue={editingProduct?.price}
+                        required
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                       />
                     </div>
                     <div>
@@ -370,11 +647,16 @@ export default function AdminProductManager() {
                     </label>
                     <input
                       type="text"
+<<<<<<< HEAD
+=======
+                      name="sequence"
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                       defaultValue={editingProduct?.sequence}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
 
+<<<<<<< HEAD
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Product Image URL
@@ -385,11 +667,22 @@ export default function AdminProductManager() {
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
+=======
+                  <ImageUpload
+                    images={productImages}
+                    onImagesChange={setProductImages}
+                    maxImages={5}
+                  />
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 
                   <div>
                     <label className="flex items-center">
                       <input
                         type="checkbox"
+<<<<<<< HEAD
+=======
+                        name="inStock"
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                         defaultChecked={editingProduct?.inStock ?? true}
                         className="mr-2"
                       />
@@ -403,6 +696,10 @@ export default function AdminProductManager() {
                       onClick={() => {
                         setShowAddModal(false);
                         setEditingProduct(null);
+<<<<<<< HEAD
+=======
+                        setProductImages([]);
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                       }}
                       className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
                     >
@@ -421,6 +718,18 @@ export default function AdminProductManager() {
           </div>
         </>
       )}
+<<<<<<< HEAD
+=======
+
+      <Modal
+        isOpen={modalState.isOpen}
+        onClose={() => setModalState({ ...modalState, isOpen: false })}
+        onConfirm={modalState.onConfirm}
+        title={modalState.title}
+        message={modalState.message}
+        type={modalState.type}
+      />
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
     </div>
   );
 }

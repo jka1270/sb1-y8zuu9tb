@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect } from 'react';
 import { 
   Users, 
@@ -13,12 +14,25 @@ import {
 } from 'lucide-react';
 import { useOrders } from '../hooks/useOrders';
 import { useInventory } from '../hooks/useInventory';
+=======
+import { useState } from 'react';
+import {
+  ShoppingBag,
+  DollarSign,
+  TrendingUp,
+  RefreshCw
+} from 'lucide-react';
+import { useOrders } from '../hooks/useOrders';
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 import LoadingSpinner from './LoadingSpinner';
 
 export default function AdminDashboard() {
   const { orders, loading: ordersLoading } = useOrders();
+<<<<<<< HEAD
   const { inventory, alerts, loading: inventoryLoading } = useInventory();
   const [dateRange, setDateRange] = useState('7d');
+=======
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   const [refreshing, setRefreshing] = useState(false);
 
   const formatPrice = (price: number) => {
@@ -28,6 +42,7 @@ export default function AdminDashboard() {
     }).format(price);
   };
 
+<<<<<<< HEAD
   // Calculate metrics
   const totalRevenue = orders.reduce((sum, order) => sum + order.total_amount, 0);
   const totalOrders = orders.length;
@@ -45,6 +60,19 @@ export default function AdminDashboard() {
   };
 
   if (ordersLoading || inventoryLoading) {
+=======
+  const totalRevenue = orders.reduce((sum, order) => sum + order.total_amount, 0);
+  const totalOrders = orders.length;
+  const pendingOrders = orders.filter(o => o.status === 'pending').length;
+  const recentOrders = orders.slice(0, 5);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 1000);
+  };
+
+  if (ordersLoading) {
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
     return (
       <div className="flex justify-center py-16">
         <LoadingSpinner size="lg" text="Loading dashboard data..." />
@@ -71,7 +99,10 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-8">
+<<<<<<< HEAD
       {/* Refresh Button */}
+=======
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
       <div className="flex justify-end">
         <button
           onClick={handleRefresh}
@@ -83,8 +114,12 @@ export default function AdminDashboard() {
         </button>
       </div>
 
+<<<<<<< HEAD
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+=======
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
         <div className="bg-white p-6 rounded-lg shadow-sm">
           <div className="flex items-center">
             <DollarSign className="h-8 w-8 text-green-600" />
@@ -111,6 +146,7 @@ export default function AdminDashboard() {
             </div>
           </div>
         </div>
+<<<<<<< HEAD
 
         <div className="bg-white p-6 rounded-lg shadow-sm">
           <div className="flex items-center">
@@ -163,10 +199,40 @@ export default function AdminDashboard() {
                   <span className={`text-xs px-2 py-1 rounded ${getOrderStatusColor(order.status)}`}>
                     {order.status}
                   </span>
+=======
+      </div>
+
+      <div className="bg-white rounded-lg shadow-sm p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-lg font-semibold text-gray-900">Recent Orders</h3>
+          <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+            View All
+          </button>
+        </div>
+
+        {recentOrders.length === 0 ? (
+          <p className="text-gray-500 text-center py-8">No orders yet</p>
+        ) : (
+          <div className="space-y-4">
+            {recentOrders.map((order) => (
+              <div key={order.id} className="flex items-center justify-between py-3 border-b last:border-0">
+                <div className="flex-1">
+                  <p className="font-medium text-gray-900">Order #{order.id.slice(0, 8)}</p>
+                  <p className="text-sm text-gray-500">
+                    {new Date(order.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getOrderStatusColor(order.status)}`}>
+                    {order.status}
+                  </span>
+                  <p className="font-semibold text-gray-900">{formatPrice(order.total_amount)}</p>
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                 </div>
               </div>
             ))}
           </div>
+<<<<<<< HEAD
         </div>
 
         {/* Inventory Alerts */}
@@ -227,3 +293,10 @@ export default function AdminDashboard() {
     </div>
   );
 }
+=======
+        )}
+      </div>
+    </div>
+  );
+}
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d

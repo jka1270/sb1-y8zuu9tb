@@ -1,11 +1,16 @@
+<<<<<<< HEAD
 import { Package, AlertTriangle, CheckCircle, Clock } from 'lucide-react';
 import { useInventory } from '../hooks/useInventory';
+=======
+import { Package, AlertTriangle, CheckCircle } from 'lucide-react';
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 
 interface StockIndicatorProps {
   sku: string;
   quantity?: number;
   showDetails?: boolean;
   className?: string;
+<<<<<<< HEAD
 }
 
 export default function StockIndicator({ 
@@ -30,6 +35,21 @@ export default function StockIndicator({
 
   const getStockStatus = () => {
     if (stockItem.current_stock === 0) {
+=======
+  inStock?: boolean;
+}
+
+export default function StockIndicator({
+  sku,
+  quantity = 1,
+  showDetails = false,
+  className = '',
+  inStock = true
+}: StockIndicatorProps) {
+
+  const getStockStatus = () => {
+    if (!inStock) {
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
       return {
         icon: AlertTriangle,
         color: 'text-red-600',
@@ -37,6 +57,7 @@ export default function StockIndicator({
         text: 'Out of Stock',
         available: false
       };
+<<<<<<< HEAD
     } else if (stockItem.current_stock <= stockItem.reorder_point) {
       return {
         icon: Clock,
@@ -45,6 +66,8 @@ export default function StockIndicator({
         text: 'Low Stock',
         available: inStock
       };
+=======
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
     } else {
       return {
         icon: CheckCircle,
@@ -59,9 +82,12 @@ export default function StockIndicator({
   const status = getStockStatus();
   const Icon = status.icon;
 
+<<<<<<< HEAD
   const isExpiringSoon = stockItem.expiry_date && 
     new Date(stockItem.expiry_date) <= new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
+=======
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   return (
     <div className={`${className}`}>
       <div className="flex items-center">
@@ -69,6 +95,7 @@ export default function StockIndicator({
         <span className={`text-sm font-medium ${status.color}`}>
           {status.text}
         </span>
+<<<<<<< HEAD
         {showDetails && (
           <span className="text-sm text-gray-500 ml-2">
             ({stockItem.available_stock} available)
@@ -114,3 +141,9 @@ export default function StockIndicator({
     </div>
   );
 }
+=======
+      </div>
+    </div>
+  );
+}
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d

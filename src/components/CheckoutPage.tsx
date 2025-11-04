@@ -1,9 +1,16 @@
 import { useState } from 'react';
+<<<<<<< HEAD
 import { ArrowLeft, CreditCard, Truck, Shield, AlertTriangle } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useOrders } from '../hooks/useOrders';
 import { useInventory } from '../hooks/useInventory';
+=======
+import { CreditCard, Truck, Shield, AlertTriangle, Banknote } from 'lucide-react';
+import { useCart } from '../contexts/CartContext';
+import { useAuth } from '../contexts/AuthContext';
+import { useOrders } from '../hooks/useOrders';
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 import { ShippingAddress, BillingAddress } from '../types';
 import AuthModal from './AuthModal';
 import PaymentProcessor from './PaymentProcessor';
@@ -17,7 +24,10 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
   const { state, getTotalPrice, clearCart } = useCart();
   const { user } = useAuth();
   const { createOrder } = useOrders();
+<<<<<<< HEAD
   const { reserveStock, isInStock } = useInventory();
+=======
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   const [currentStep, setCurrentStep] = useState(1);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>({
@@ -29,7 +39,11 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
     city: '',
     state: '',
     zipCode: '',
+<<<<<<< HEAD
     country: 'United States',
+=======
+    country: 'US',
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
     phone: '',
   });
   const [billingAddress, setBillingAddress] = useState<BillingAddress>({
@@ -38,7 +52,11 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
   });
   const [sameAsShipping, setSameAsShipping] = useState(true);
   const [shippingMethod, setShippingMethod] = useState('standard');
+<<<<<<< HEAD
   const [paymentMethod, setPaymentMethod] = useState('card');
+=======
+  const [paymentMethod, setPaymentMethod] = useState('cod');
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   const [placingOrder, setPlacingOrder] = useState(false);
 
   // Pre-fill form with user data if logged in
@@ -75,6 +93,7 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
   const tax = subtotal * 0.08; // 8% tax
   const total = subtotal + shippingCost + tax;
 
+<<<<<<< HEAD
   const handlePlaceOrder = async () => {
     try {
       setPlacingOrder(true);
@@ -137,10 +156,16 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
     { id: 1, name: 'Shipping', icon: Truck },
     { id: 2, name: 'Payment', icon: CreditCard },
     { id: 3, name: 'Review', icon: Shield },
+=======
+  const steps = [
+    { id: 1, name: 'Shipping', icon: Truck },
+    { id: 2, name: 'Payment', icon: CreditCard },
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   ];
 
   return (
     <div className="min-h-screen bg-gray-50">
+<<<<<<< HEAD
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -154,6 +179,8 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
         </div>
       </div>
 
+=======
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Main Content */}
@@ -333,6 +360,33 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
+<<<<<<< HEAD
+=======
+                        Country *
+                      </label>
+                      <select
+                        required
+                        value={shippingAddress.country}
+                        onChange={(e) => setShippingAddress({...shippingAddress, country: e.target.value})}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                      >
+                        <option value="US">United States</option>
+                        <option value="CA">Canada</option>
+                        <option value="GB">United Kingdom</option>
+                        <option value="AU">Australia</option>
+                        <option value="DE">Germany</option>
+                        <option value="FR">France</option>
+                        <option value="IT">Italy</option>
+                        <option value="ES">Spain</option>
+                        <option value="NL">Netherlands</option>
+                        <option value="SE">Sweden</option>
+                        <option value="CH">Switzerland</option>
+                        <option value="JP">Japan</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                         Phone *
                       </label>
                       <input
@@ -384,10 +438,36 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
 
                   <div className="mt-6 sm:mt-8 flex justify-end">
                     <button
+<<<<<<< HEAD
                       onClick={() => setCurrentStep(2)}
                       className="bg-blue-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-blue-700 text-sm sm:text-base touch-manipulation"
                     >
                       Continue to Payment
+=======
+                      onClick={() => {
+                        const requiredFields = [
+                          shippingAddress.firstName,
+                          shippingAddress.lastName,
+                          shippingAddress.company,
+                          shippingAddress.address1,
+                          shippingAddress.city,
+                          shippingAddress.state,
+                          shippingAddress.zipCode,
+                          shippingAddress.country,
+                          shippingAddress.phone
+                        ];
+
+                        if (requiredFields.some(field => !field || field.trim() === '')) {
+                          alert('Please fill in all required fields');
+                          return;
+                        }
+
+                        setCurrentStep(2);
+                      }}
+                      className="bg-blue-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-blue-700 text-sm sm:text-base touch-manipulation"
+                    >
+                      Continue to Review
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                     </button>
                   </div>
                 </div>
@@ -395,7 +475,11 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
 
               {currentStep === 2 && (
                 <div>
+<<<<<<< HEAD
                   <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Payment Information</h2>
+=======
+                  <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Review & Payment</h2>
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                   
                   <div className="space-y-4 sm:space-y-6">
                     <div>
@@ -418,23 +502,96 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
                           <input
                             type="radio"
                             name="payment"
+<<<<<<< HEAD
                             value="card"
                             checked={paymentMethod === 'card'}
+=======
+                            value="stratospay"
+                            checked={paymentMethod === 'stratospay'}
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                             onChange={(e) => setPaymentMethod(e.target.value)}
                             className="mr-3"
                           />
                           <CreditCard className="h-5 w-5 mr-2" />
+<<<<<<< HEAD
                           <span className="text-sm sm:text-base">Credit/Debit Card</span>
+=======
+                          <span className="text-sm sm:text-base">Credit Card (StratosPay)</span>
+                        </label>
+                        <label className="flex items-center p-3 sm:p-4 border rounded-lg cursor-pointer hover:bg-gray-50 touch-manipulation">
+                          <input
+                            type="radio"
+                            name="payment"
+                            value="cod"
+                            checked={paymentMethod === 'cod'}
+                            onChange={(e) => setPaymentMethod(e.target.value)}
+                            className="mr-3"
+                          />
+                          <Banknote className="h-5 w-5 mr-2" />
+                          <span className="text-sm sm:text-base">Cash on Delivery</span>
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                         </label>
                       </div>
                     </div>
 
+<<<<<<< HEAD
                     {paymentMethod === 'card' && (
                       <PaymentProcessor
                         amount={total}
                         onSuccess={(paymentData) => {
                           console.log('Payment successful:', paymentData);
                           setCurrentStep(3);
+=======
+                    {paymentMethod === 'stratospay' && billingAddress.email && (
+                      <PaymentProcessor
+                        amount={total}
+                        customerEmail={billingAddress.email}
+                        customerFirstName={billingAddress.firstName || shippingAddress.firstName}
+                        customerLastName={billingAddress.lastName || shippingAddress.lastName}
+                        externalReference={`ORDER-${Date.now()}`}
+                        onSuccess={async (paymentData) => {
+                          try {
+                            setPlacingOrder(true);
+
+                            const orderData = {
+                              subtotal,
+                              shipping_cost: shippingCost,
+                              tax_amount: tax,
+                              total_amount: total,
+                              shipping_address: shippingAddress,
+                              billing_address: billingAddress,
+                              shipping_method: shippingMethod,
+                              payment_method: 'stratospay',
+                              payment_status: 'paid',
+                              stratospay_transaction_id: paymentData.id,
+                              stratospay_reference: paymentData.external_reference,
+                              items: state.items.map(item => ({
+                                product_id: item.productId,
+                                product_name: item.productName,
+                                product_sku: item.sku,
+                                variant_id: item.variantId,
+                                size: item.size,
+                                quantity: item.quantity,
+                                unit_price: item.price,
+                                total_price: item.price * item.quantity,
+                                purity: item.purity,
+                                molecular_weight: '1000 Da',
+                              }))
+                            };
+
+                            await createOrder(orderData);
+
+                            alert('Payment successful! Your order has been placed. Check your order history to track progress.');
+                            clearCart();
+                            onBack();
+                          } catch (error) {
+                            console.error('Error creating order:', error);
+                            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+                            alert(`Payment successful but failed to create order: ${errorMessage}\n\nPlease contact support with transaction ID: ${paymentData.id}`);
+                          } finally {
+                            setPlacingOrder(false);
+                          }
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                         }}
                         onError={(error) => {
                           alert(`Payment failed: ${error}`);
@@ -443,6 +600,36 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
                       />
                     )}
 
+<<<<<<< HEAD
+=======
+                    {paymentMethod === 'cod' && (
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div className="flex items-start">
+                          <Banknote className="h-5 w-5 text-blue-600 mr-3 mt-0.5" />
+                          <div className="flex-1">
+                            <h4 className="font-medium text-blue-900 mb-2">Cash on Delivery</h4>
+                            <p className="text-sm text-blue-800">
+                              Pay with cash when your order is delivered to your doorstep. Our delivery partner will collect the payment at the time of delivery.
+                            </p>
+                            <ul className="mt-3 space-y-1 text-sm text-blue-800">
+                              <li>• Please keep exact change ready</li>
+                              <li>• Payment must be made in cash only</li>
+                              <li>• You can inspect the package before payment</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {!billingAddress.email && (
+                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
+                        <p className="text-sm text-yellow-800">
+                          Please enter your email address to proceed with your order.
+                        </p>
+                      </div>
+                    )}
+
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                     <div>
                       <label className="flex items-center">
                         <input
@@ -463,16 +650,76 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
                     >
                       Back
                     </button>
+<<<<<<< HEAD
                     <button
                       onClick={() => setCurrentStep(3)}
                       className="bg-blue-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-blue-700 text-sm sm:text-base touch-manipulation"
                     >
                       Review Order
                     </button>
+=======
+                    {paymentMethod === 'cod' && billingAddress.email && (
+                      <button
+                        onClick={async () => {
+                          try {
+                            setPlacingOrder(true);
+
+                            const orderData = {
+                              subtotal,
+                              shipping_cost: shippingCost,
+                              tax_amount: tax,
+                              total_amount: total,
+                              shipping_address: shippingAddress,
+                              billing_address: billingAddress,
+                              shipping_method: shippingMethod,
+                              payment_method: 'cod',
+                              payment_status: 'pending',
+                              items: state.items.map(item => ({
+                                product_id: item.productId,
+                                product_name: item.productName,
+                                product_sku: item.sku,
+                                variant_id: item.variantId,
+                                size: item.size,
+                                quantity: item.quantity,
+                                unit_price: item.price,
+                                total_price: item.price * item.quantity,
+                                purity: item.purity,
+                                molecular_weight: '1000 Da',
+                              }))
+                            };
+
+                            await createOrder(orderData);
+
+                            alert('Order placed successfully! You will pay cash when your order is delivered. Check your order history to track progress.');
+                            clearCart();
+                            onBack();
+                          } catch (error) {
+                            console.error('Error creating order:', error);
+                            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+                            alert(`Failed to place order: ${errorMessage}\n\nPlease try again or contact support.`);
+                          } finally {
+                            setPlacingOrder(false);
+                          }
+                        }}
+                        disabled={placingOrder}
+                        className="bg-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base touch-manipulation flex items-center justify-center"
+                      >
+                        {placingOrder ? (
+                          <>
+                            <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full mr-2" />
+                            Placing Order...
+                          </>
+                        ) : (
+                          'Place Order'
+                        )}
+                      </button>
+                    )}
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                   </div>
                 </div>
               )}
 
+<<<<<<< HEAD
               {currentStep === 3 && (
                 <div>
                   <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Review Your Order</h2>
@@ -550,6 +797,8 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
                   </div>
                 </div>
               )}
+=======
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
             </div>
           </div>
 

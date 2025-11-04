@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState } from 'react';
 import { CartProvider } from './contexts/CartContext';
 import { AuthProvider } from './contexts/AuthContext';
@@ -281,6 +282,20 @@ function App() {
             <CartSidebar onCheckout={handleCheckout} />
           </div>
         </CartProvider>
+=======
+import { AuthProvider } from './contexts/AuthContext';
+import { NotificationProvider } from './contexts/NotificationContext';
+import ErrorBoundary from './components/ErrorBoundary';
+import AppWithNotifications from './components/AppWithNotifications';
+
+function App() {
+  return (
+    <ErrorBoundary>
+      <AuthProvider>
+        <NotificationProvider>
+          <AppWithNotifications />
+        </NotificationProvider>
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
       </AuthProvider>
     </ErrorBoundary>
   );

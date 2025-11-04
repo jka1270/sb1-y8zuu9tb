@@ -1,5 +1,9 @@
 import { useState } from 'react';
+<<<<<<< HEAD
 import { ArrowLeft, Search, Calendar, User, Eye, Heart, Clock, Tag, Filter, BookOpen, FileText, TrendingUp } from 'lucide-react';
+=======
+import { Search, Calendar, User, Eye, Heart, Clock, Tag, Filter, BookOpen, FileText, TrendingUp } from 'lucide-react';
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 import { useBlog } from '../hooks/useBlog';
 import { blogCategories } from '../data/blogPosts';
 import BlogPostDetail from './BlogPostDetail';
@@ -115,6 +119,7 @@ export default function BlogPage({ onBack }: BlogPageProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
+<<<<<<< HEAD
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <button
@@ -127,6 +132,8 @@ export default function BlogPage({ onBack }: BlogPageProps) {
         </div>
       </div>
 
+=======
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Section */}
         <div className="text-center mb-12">

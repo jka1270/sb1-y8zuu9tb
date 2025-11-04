@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { ArrowLeft, Award, Users, Globe, CheckCircle, Shield, Microscope, Building, Calendar, Target } from 'lucide-react';
+=======
+import { Award, Users, Globe, CheckCircle, Shield, Microscope, Building, Calendar, Target } from 'lucide-react';
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 import OptimizedImage from './OptimizedImage';
 
 interface AboutPageProps {
@@ -78,6 +82,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
+<<<<<<< HEAD
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <button
@@ -90,6 +95,8 @@ export default function AboutPage({ onBack }: AboutPageProps) {
         </div>
       </div>
 
+=======
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero Section */}
         <div className="text-center mb-16">

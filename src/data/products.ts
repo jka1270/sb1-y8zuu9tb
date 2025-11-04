@@ -1,11 +1,19 @@
 import { Product, Category } from '../types';
 
 export const categories: Category[] = [
+<<<<<<< HEAD
   { id: '1', name: 'Therapeutic Peptides', description: 'Bioactive peptides for therapeutic research', productCount: 8 },
   { id: '2', name: 'Cosmetic Peptides', description: 'Anti-aging and skin care peptides', productCount: 6 },
   { id: '3', name: 'Research Peptides', description: 'Novel peptides for scientific studies', productCount: 7 },
   { id: '4', name: 'Custom Synthesis', description: 'Custom peptide synthesis services', productCount: 5 },
   { id: '5', name: 'Peptide Libraries', description: 'Comprehensive peptide screening libraries', productCount: 4 },
+=======
+  { id: '1', name: 'Therapeutic Peptides', description: 'Bioactive peptides for therapeutic research', productCount: 11 },
+  { id: '2', name: 'Cosmetic Peptides', description: 'Anti-aging and skin care peptides', productCount: 1 },
+  { id: '3', name: 'Research Peptides', description: 'Novel peptides for scientific studies', productCount: 11 },
+  { id: '4', name: 'Custom Synthesis', description: 'Custom peptide synthesis services', productCount: 0 },
+  { id: '5', name: 'Peptide Libraries', description: 'Comprehensive peptide screening libraries', productCount: 0 },
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 ];
 
 export const nadProduct: Product = {
@@ -45,6 +53,10 @@ export const nadProduct: Product = {
 };
 
 export const products: Product[] = [
+<<<<<<< HEAD
+=======
+  nadProduct,
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   {
     id: '1',
     name: 'BPC-157 (Body Protection Compound)',
@@ -81,7 +93,11 @@ export const products: Product[] = [
     ]
   },
   {
+<<<<<<< HEAD
     id: '8',
+=======
+    id: '2',
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
     name: 'CJC-1295',
     category: 'Research Peptides',
     description: 'Long-acting growth hormone releasing hormone analog for research applications. For Research Only - Not for human consumption.',
@@ -109,7 +125,11 @@ export const products: Product[] = [
     ]
   },
   {
+<<<<<<< HEAD
     id: '11',
+=======
+    id: '3',
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
     name: 'CJC-1295 DAC',
     category: 'Therapeutic Peptides',
     description: 'Long-acting growth hormone releasing hormone analog with Drug Affinity Complex for extended half-life and sustained release.',
@@ -144,7 +164,11 @@ export const products: Product[] = [
     ]
   },
   {
+<<<<<<< HEAD
     id: '12',
+=======
+    id: '22',
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
     name: 'CJC-1295 (5mg) / Ipamorelin (5mg)',
     category: 'Research Peptides',
     description: 'Synergistic combination of CJC-1295 and Ipamorelin for enhanced growth hormone research applications. For Research Only - Not for human consumption.',
@@ -305,7 +329,11 @@ export const products: Product[] = [
     ]
   },
   {
+<<<<<<< HEAD
     id: '8',
+=======
+    id: '23',
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
     name: 'PT-141',
     category: 'Research Peptides',
     description: 'Melanocortin receptor agonist peptide for sexual dysfunction and libido research applications.',
@@ -410,7 +438,11 @@ export const products: Product[] = [
     ]
   },
   {
+<<<<<<< HEAD
     id: '11',
+=======
+    id: '24',
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
     name: 'Semaglutide',
     category: 'Therapeutic Peptides',
     description: 'GLP-1 receptor agonist peptide for metabolic research and diabetes studies.',
@@ -445,7 +477,11 @@ export const products: Product[] = [
     ]
   },
   {
+<<<<<<< HEAD
     id: '12',
+=======
+    id: '25',
+>>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
     name: 'Semax',
     category: 'Research Peptides',
     description: 'Synthetic heptapeptide analog of ACTH(4-10) with neuroprotective and cognitive enhancement properties for research applications.',
