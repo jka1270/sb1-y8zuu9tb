@@ -3,6 +3,7 @@ import { CreditCard, Truck, Shield, AlertTriangle, Banknote } from 'lucide-react
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useOrders } from '../hooks/useOrders';
+import { useNotification } from '../contexts/NotificationContext';
 import { ShippingAddress, BillingAddress } from '../types';
 import AuthModal from './AuthModal';
 import PaymentProcessor from './PaymentProcessor';
@@ -16,6 +17,7 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
   const { state, getTotalPrice, clearCart } = useCart();
   const { user } = useAuth();
   const { createOrder } = useOrders();
+  const { showNotification } = useNotification();
   const [currentStep, setCurrentStep] = useState(1);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>({
@@ -348,7 +350,11 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
                         ];
 
                         if (requiredFields.some(field => !field || field.trim() === '')) {
-                          alert('Please fill in all required fields');
+                          showNotification({
+                            type: 'error',
+                            message: 'Please fill in all required fields',
+                            duration: 5000
+                          });
                           return;
                         }
 
@@ -449,19 +455,31 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
 
                             await createOrder(orderData);
 
-                            alert('Payment successful! Your order has been placed. Check your order history to track progress.');
+                            showNotification({
+                              type: 'success',
+                              message: 'Payment successful! Your order has been placed. Check your order history to track progress.',
+                              duration: 7000
+                            });
                             clearCart();
                             onBack();
                           } catch (error) {
                             console.error('Error creating order:', error);
                             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-                            alert(`Payment successful but failed to create order: ${errorMessage}\n\nPlease contact support with transaction ID: ${paymentData.id}`);
+                            showNotification({
+                              type: 'error',
+                              message: `Payment successful but failed to create order: ${errorMessage}. Please contact support with transaction ID: ${paymentData.id}`,
+                              duration: 10000
+                            });
                           } finally {
                             setPlacingOrder(false);
                           }
                         }}
                         onError={(error) => {
-                          alert(`Payment failed: ${error}`);
+                          showNotification({
+                            type: 'error',
+                            message: `Payment failed: ${error}`,
+                            duration: 5000
+                          });
                         }}
                         loading={placingOrder}
                       />
@@ -546,13 +564,21 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
 
                             await createOrder(orderData);
 
-                            alert('Order placed successfully! You will pay cash when your order is delivered. Check your order history to track progress.');
+                            showNotification({
+                              type: 'success',
+                              message: 'Order placed successfully! You will pay cash when your order is delivered. Check your order history to track progress.',
+                              duration: 7000
+                            });
                             clearCart();
                             onBack();
                           } catch (error) {
                             console.error('Error creating order:', error);
                             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-                            alert(`Failed to place order: ${errorMessage}\n\nPlease try again or contact support.`);
+                            showNotification({
+                              type: 'error',
+                              message: `Failed to place order: ${errorMessage}. Please try again or contact support.`,
+                              duration: 7000
+                            });
                           } finally {
                             setPlacingOrder(false);
                           }

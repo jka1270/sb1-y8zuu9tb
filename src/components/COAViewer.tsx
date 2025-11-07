@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Download, FileText, Shield, Calendar, User, Beaker, CheckCircle, AlertTriangle, X } from 'lucide-react';
 import { CertificateOfAnalysis, useCOA } from '../hooks/useCOA';
+import { useNotification } from '../contexts/NotificationContext';
 
 interface COAViewerProps {
   coa: CertificateOfAnalysis;
@@ -12,6 +13,7 @@ export default function COAViewer({ coa, onClose, orderId }: COAViewerProps) {
   const [downloading, setDownloading] = useState(false);
   const [downloadFormat, setDownloadFormat] = useState<'PDF' | 'JSON' | 'XML'>('PDF');
   const { downloadCOA } = useCOA();
+  const { showNotification } = useNotification();
 
   const handleDownload = async () => {
     try {
@@ -32,7 +34,11 @@ export default function COAViewer({ coa, onClose, orderId }: COAViewerProps) {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     } catch (error) {
-      alert('Failed to download COA. Please try again.');
+      showNotification({
+        type: 'error',
+        message: 'Failed to download COA. Please try again.',
+        duration: 5000
+      });
     } finally {
       setDownloading(false);
     }

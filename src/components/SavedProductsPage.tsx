@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowLeft, Heart, Plus, Trash2, Pencil, Search, Filter, Tag, Star, List, Grid2x2 as Grid } from 'lucide-react';
 import { useSavedProducts } from '../hooks/useSavedProducts';
+import { useNotification } from '../contexts/NotificationContext';
 import { products } from '../data/products';
 import { Product } from '../types';
 import LoadingSpinner from './LoadingSpinner';
@@ -11,12 +12,13 @@ interface SavedProductsPageProps {
 }
 
 export default function SavedProductsPage({ onBack }: SavedProductsPageProps) {
-  const { 
-    savedProducts, 
-    productLists, 
-    loading, 
-    error, 
-    unsaveProduct, 
+  const { showNotification } = useNotification();
+  const {
+    savedProducts,
+    productLists,
+    loading,
+    error,
+    unsaveProduct,
     updateSavedProduct,
     createProductList,
     addToProductList,
@@ -71,7 +73,11 @@ export default function SavedProductsPage({ onBack }: SavedProductsPageProps) {
       setNewListName('');
       setNewListDescription('');
     } catch (err) {
-      alert('Failed to create list');
+      showNotification({
+        type: 'error',
+        message: 'Failed to create list',
+        duration: 5000
+      });
     }
   };
 
@@ -80,7 +86,11 @@ export default function SavedProductsPage({ onBack }: SavedProductsPageProps) {
       await updateSavedProduct(productId, updates);
       setEditingProduct(null);
     } catch (err) {
-      alert('Failed to update product');
+      showNotification({
+        type: 'error',
+        message: 'Failed to update product',
+        duration: 5000
+      });
     }
   };
 

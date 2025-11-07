@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ArrowLeft, Save, Upload, CheckCircle, AlertTriangle, User, Building, GraduationCap, FileText, Shield } from 'lucide-react';
 import { useResearchProfile } from '../hooks/useResearchProfile';
 import { useAuth } from '../contexts/AuthContext';
+import { useNotification } from '../contexts/NotificationContext';
 import LoadingSpinner from './LoadingSpinner';
 
 interface ResearchProfilePageProps {
@@ -11,6 +12,7 @@ interface ResearchProfilePageProps {
 export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps) {
   const { profile, loading, error, createProfile, updateProfile, uploadApprovalDocument } = useResearchProfile();
   const { user } = useAuth();
+  const { showNotification } = useNotification();
   const [activeTab, setActiveTab] = useState('basic');
   const [saving, setSaving] = useState(false);
   const [uploadingDoc, setUploadingDoc] = useState(false);
@@ -70,9 +72,17 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
       } else {
         await createProfile(formData);
       }
-      alert('Research profile saved successfully!');
+      showNotification({
+        type: 'success',
+        message: 'Research profile saved successfully!',
+        duration: 3000
+      });
     } catch (err) {
-      alert('Failed to save research profile. Please try again.');
+      showNotification({
+        type: 'error',
+        message: 'Failed to save research profile. Please try again.',
+        duration: 5000
+      });
     } finally {
       setSaving(false);
     }
@@ -85,9 +95,17 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
     try {
       setUploadingDoc(true);
       await uploadApprovalDocument(file);
-      alert('Approval document uploaded successfully!');
+      showNotification({
+        type: 'success',
+        message: 'Approval document uploaded successfully!',
+        duration: 3000
+      });
     } catch (err) {
-      alert('Failed to upload document. Please try again.');
+      showNotification({
+        type: 'error',
+        message: 'Failed to upload document. Please try again.',
+        duration: 5000
+      });
     } finally {
       setUploadingDoc(false);
     }

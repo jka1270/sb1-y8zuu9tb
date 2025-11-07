@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Download, FileText, Shield, BookOpen, Search, Filter, Star, Eye, ThumbsUp } from 'lucide-react';
 import { useResearchDocuments } from '../hooks/useResearchDocuments';
+import { useNotification } from '../contexts/NotificationContext';
 import DocumentViewer from './DocumentViewer';
 
 interface ResearchDocumentationPageProps {
@@ -9,6 +10,7 @@ interface ResearchDocumentationPageProps {
 }
 
 export default function ResearchDocumentationPage({ onBack, productId }: ResearchDocumentationPageProps) {
+  const { showNotification } = useNotification();
   const {
     technicalDataSheets,
     safetyDataSheets,
@@ -50,7 +52,11 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     } catch (error) {
-      alert('Failed to download document. Please try again.');
+      showNotification({
+        type: 'error',
+        message: 'Failed to download document. Please try again.',
+        duration: 5000
+      });
     } finally {
       setDownloading(null);
     }
@@ -64,9 +70,17 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
   const handleRateProtocol = async (protocolId: string, rating: number) => {
     try {
       await rateProtocol(protocolId, rating);
-      alert('Thank you for rating this protocol!');
+      showNotification({
+        type: 'success',
+        message: 'Thank you for rating this protocol!',
+        duration: 3000
+      });
     } catch (error) {
-      alert('Failed to submit rating. Please try again.');
+      showNotification({
+        type: 'error',
+        message: 'Failed to submit rating. Please try again.',
+        duration: 5000
+      });
     }
   };
 

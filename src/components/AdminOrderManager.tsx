@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Search, Filter, Eye, Pencil, Package, Truck, CheckCircle, Clock, AlertTriangle, Download, RefreshCw } from 'lucide-react';
 import { useOrders, Order } from '../hooks/useOrders';
+import { useNotification } from '../contexts/NotificationContext';
 import LoadingSpinner from './LoadingSpinner';
 
 export default function AdminOrderManager() {
   const { orders, loading, error, updateOrderStatus, syncToShipStation, getTracking, refetch } = useOrders();
+  const { showNotification } = useNotification();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [dateFilter, setDateFilter] = useState('');
@@ -83,20 +85,36 @@ export default function AdminOrderManager() {
   const handleStatusUpdate = async (orderId: string, newStatus: string) => {
     try {
       await updateOrderStatus(orderId, newStatus);
-      alert('Order status updated successfully');
+      showNotification({
+        type: 'success',
+        message: 'Order status updated successfully',
+        duration: 3000
+      });
     } catch (error) {
-      alert('Failed to update order status');
+      showNotification({
+        type: 'error',
+        message: 'Failed to update order status',
+        duration: 5000
+      });
     }
   };
 
   const handleSyncToShipStation = async (orderId: string) => {
     try {
       const result = await syncToShipStation(orderId);
-      alert(`Order synced to ShipStation successfully! Order ID: ${result.shipstationOrderId}`);
+      showNotification({
+        type: 'success',
+        message: `Order synced to ShipStation successfully! Order ID: ${result.shipstationOrderId}`,
+        duration: 5000
+      });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.error('ShipStation sync error:', error);
-      alert(`Failed to sync to ShipStation: ${errorMessage}`);
+      showNotification({
+        type: 'error',
+        message: `Failed to sync to ShipStation: ${errorMessage}`,
+        duration: 5000
+      });
     }
   };
 
@@ -104,10 +122,18 @@ export default function AdminOrderManager() {
     try {
       const result = await getTracking(orderId);
       if (result.tracking) {
-        alert(`Tracking #: ${result.tracking.trackingNumber}\nCarrier: ${result.tracking.carrier}\nStatus: ${result.tracking.status}`);
+        showNotification({
+          type: 'info',
+          message: `Tracking #: ${result.tracking.trackingNumber} | Carrier: ${result.tracking.carrier} | Status: ${result.tracking.status}`,
+          duration: 7000
+        });
       }
     } catch (error) {
-      alert('Failed to get tracking info.');
+      showNotification({
+        type: 'error',
+        message: 'Failed to get tracking info',
+        duration: 5000
+      });
     }
   };
 
