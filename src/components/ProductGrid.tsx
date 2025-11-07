@@ -249,9 +249,10 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
         </div>
       </div>
 
-      <CategoryFilter 
+      <CategoryFilter
         selectedCategory={selectedCategory}
         onCategoryChange={handleCategoryChange}
+        products={products}
       />
 
       <AdvancedFilters
