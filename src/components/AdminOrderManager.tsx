@@ -11,6 +11,7 @@ export default function AdminOrderManager() {
   const [statusFilter, setStatusFilter] = useState('');
   const [dateFilter, setDateFilter] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const statusOptions = [
     { value: '', label: 'All Statuses' },
@@ -137,6 +138,26 @@ export default function AdminOrderManager() {
     }
   };
 
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await refetch();
+      showNotification({
+        type: 'success',
+        message: 'Orders refreshed successfully',
+        duration: 2000
+      });
+    } catch (error) {
+      showNotification({
+        type: 'error',
+        message: 'Failed to refresh orders',
+        duration: 3000
+      });
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
   const handleExportOrders = () => {
     try {
       const csvHeaders = [
@@ -213,12 +234,13 @@ export default function AdminOrderManager() {
             <p className="text-gray-600">Monitor and manage customer orders</p>
           </div>
           <div className="flex space-x-3">
-            <button 
-              onClick={refetch}
-              className="flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+            <button
+              onClick={handleRefresh}
+              disabled={refreshing}
+              className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Refresh
+              <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+              {refreshing ? 'Refreshing...' : 'Refresh Data'}
             </button>
             <button
               onClick={handleExportOrders}
