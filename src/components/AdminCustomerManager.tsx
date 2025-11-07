@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, Filter, Eye, Pencil, Mail, Phone, Building, Calendar, Package, DollarSign, Download, RefreshCw, Users, Shield, Clock } from 'lucide-react';
 import { useUserProfile } from '../hooks/useUserProfile';
+import { supabase } from '../lib/supabase';
 import LoadingSpinner from './LoadingSpinner';
 
 interface Customer {
@@ -24,66 +25,68 @@ export default function AdminCustomerManager() {
   const [verificationFilter, setVerificationFilter] = useState('');
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
 
-  // Mock customer data - in real app, this would come from Supabase
-  useEffect(() => {
-    // Simulate loading customer data
-    setTimeout(() => {
-      setCustomers([
-        {
-          id: '1',
-          first_name: 'Dr. Sarah',
-          last_name: 'Johnson',
-          email: 'sarah.johnson@university.edu',
-          company: 'Stanford University',
-          phone: '(555) 123-4567',
-          created_at: '2024-01-15T10:00:00Z',
-          total_orders: 12,
-          total_spent: 2450.75,
-          last_order_date: '2025-01-10T14:30:00Z',
-          verification_status: 'verified'
-        },
-        {
-          id: '2',
-          first_name: 'Dr. Michael',
-          last_name: 'Chen',
-          email: 'mchen@biotech.com',
-          company: 'BioTech Solutions Inc.',
-          phone: '(555) 987-6543',
-          created_at: '2024-03-22T09:15:00Z',
-          total_orders: 8,
-          total_spent: 1875.50,
-          last_order_date: '2025-01-08T11:20:00Z',
-          verification_status: 'pending'
-        },
-        {
-          id: '3',
-          first_name: 'Dr. Emily',
-          last_name: 'Rodriguez',
-          email: 'emily.r@research.org',
-          company: 'Medical Research Institute',
-          phone: '(555) 456-7890',
-          created_at: '2024-06-10T16:45:00Z',
-          total_orders: 15,
-          total_spent: 3200.25,
-          last_order_date: '2025-01-12T09:45:00Z',
-          verification_status: 'verified'
-        },
-        {
-          id: '4',
-          first_name: 'Dr. James',
-          last_name: 'Wilson',
-          email: 'jwilson@pharma.com',
-          company: 'PharmaCorp Research',
-          phone: '(555) 321-0987',
-          created_at: '2024-09-05T13:30:00Z',
-          total_orders: 5,
-          total_spent: 980.00,
-          last_order_date: '2025-01-05T15:10:00Z',
-          verification_status: 'rejected'
-        }
-      ]);
+  const fetchCustomers = async () => {
+    setLoading(true);
+    try {
+      // Get all user profiles
+      const { data: profiles, error: profilesError } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (profilesError) throw profilesError;
+
+      // Get order statistics for each user
+      const { data: orderStats, error: orderStatsError } = await supabase
+        .from('orders')
+        .select('user_id, total_amount, created_at')
+        .order('created_at', { ascending: false });
+
+      if (orderStatsError) throw orderStatsError;
+
+      // Get emails from auth.users
+      const { data: { users }, error: usersError } = await supabase.auth.admin.listUsers();
+
+      if (usersError) {
+        console.warn('Could not fetch user emails:', usersError);
+      }
+
+      // Combine data
+      const customersData: Customer[] = profiles?.map(profile => {
+        const userOrders = orderStats?.filter(order => order.user_id === profile.id) || [];
+        const totalOrders = userOrders.length;
+        const totalSpent = userOrders.reduce((sum, order) => sum + parseFloat(order.total_amount), 0);
+        const lastOrderDate = userOrders.length > 0 ? userOrders[0].created_at : undefined;
+
+        // Find email from auth users
+        const authUser = users?.find(u => u.id === profile.id);
+        const email = authUser?.email || 'N/A';
+
+        return {
+          id: profile.id,
+          first_name: profile.first_name,
+          last_name: profile.last_name,
+          email: email,
+          company: profile.company,
+          phone: profile.phone,
+          created_at: profile.created_at,
+          total_orders: totalOrders,
+          total_spent: totalSpent,
+          last_order_date: lastOrderDate,
+          verification_status: profile.is_admin ? 'admin' : 'verified'
+        };
+      }) || [];
+
+      setCustomers(customersData);
+    } catch (error) {
+      console.error('Error fetching customers:', error);
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
+  };
+
+  useEffect(() => {
+    fetchCustomers();
   }, []);
 
   const filteredCustomers = customers.filter(customer => {
@@ -141,6 +144,13 @@ export default function AdminCustomerManager() {
             <p className="text-gray-600">Manage customer accounts and research profiles</p>
           </div>
           <div className="flex space-x-3">
+            <button
+              onClick={fetchCustomers}
+              className="flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+            >
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Refresh
+            </button>
             <button className="flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
               <Download className="h-4 w-4 mr-2" />
               Export
