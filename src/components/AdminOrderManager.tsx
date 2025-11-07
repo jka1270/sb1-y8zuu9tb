@@ -140,22 +140,7 @@ export default function AdminOrderManager() {
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    try {
-      await refetch();
-      showNotification({
-        type: 'success',
-        message: 'Orders refreshed successfully',
-        duration: 2000
-      });
-    } catch (error) {
-      showNotification({
-        type: 'error',
-        message: 'Failed to refresh orders',
-        duration: 3000
-      });
-    } finally {
-      setRefreshing(false);
-    }
+    setTimeout(() => setRefreshing(false), 1000);
   };
 
   const handleExportOrders = () => {
