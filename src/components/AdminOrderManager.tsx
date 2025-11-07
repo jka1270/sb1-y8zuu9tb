@@ -137,6 +137,63 @@ export default function AdminOrderManager() {
     }
   };
 
+  const handleExportOrders = () => {
+    try {
+      const csvHeaders = [
+        'Order Number',
+        'Customer Name',
+        'Email',
+        'Status',
+        'Total',
+        'Payment Method',
+        'Date',
+        'Shipping Address',
+        'Phone'
+      ];
+
+      const csvRows = filteredOrders.map(order => [
+        order.order_number,
+        `${order.shipping_address.firstName} ${order.shipping_address.lastName}`,
+        order.user_email || 'Guest',
+        order.status,
+        formatPrice(order.total_amount),
+        order.payment_method,
+        formatDate(order.created_at),
+        `${order.shipping_address.address1}, ${order.shipping_address.city}, ${order.shipping_address.state} ${order.shipping_address.zipCode}`,
+        order.shipping_address.phone || ''
+      ]);
+
+      const csvContent = [
+        csvHeaders.join(','),
+        ...csvRows.map(row => row.map(cell => `"${cell}"`).join(','))
+      ].join('\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+
+      link.setAttribute('href', url);
+      link.setAttribute('download', `orders_export_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      showNotification({
+        type: 'success',
+        message: `Exported ${filteredOrders.length} orders successfully`,
+        duration: 3000
+      });
+    } catch (error) {
+      showNotification({
+        type: 'error',
+        message: 'Failed to export orders',
+        duration: 5000
+      });
+    }
+  };
+
   const orderStats = {
     total: orders.length,
     pending: orders.filter(o => o.status === 'pending').length,
@@ -163,7 +220,10 @@ export default function AdminOrderManager() {
               <RefreshCw className="h-4 w-4 mr-2" />
               Refresh
             </button>
-            <button className="flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+            <button
+              onClick={handleExportOrders}
+              className="flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+            >
               <Download className="h-4 w-4 mr-2" />
               Export
             </button>
