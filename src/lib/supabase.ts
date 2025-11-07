@@ -3,8 +3,15 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
+console.log('🔍 Supabase Configuration Debug:', {
+  url: supabaseUrl,
+  keyPrefix: supabaseKey?.substring(0, 20) + '...',
+  envMode: import.meta.env.MODE,
+  allEnvKeys: Object.keys(import.meta.env)
+})
+
 if (!supabaseUrl || !supabaseKey) {
-  console.error('Supabase environment variables:', {
+  console.error('❌ Supabase environment variables:', {
     url: supabaseUrl ? 'present' : 'missing',
     key: supabaseKey ? 'present' : 'missing'
   })
