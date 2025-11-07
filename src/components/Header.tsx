@@ -129,60 +129,60 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onAc
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="xl:hidden bg-white border-t shadow-lg">
+        <div className="xl:hidden bg-gradient-to-r from-blue-600 to-blue-800 border-t border-blue-500 border-opacity-30 shadow-lg">
           <div className="px-4 py-3 space-y-1">
             <button
               onClick={() => { onHome?.(); setIsMenuOpen(false); }}
-              className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
+              className="block py-3 px-2 text-white hover:text-blue-200 hover:bg-blue-700 hover:bg-opacity-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               Home
             </button>
             <div className="py-2">
               <button
                 onClick={() => setIsPeptidesOpen(!isPeptidesOpen)}
-                className="flex items-center justify-between w-full py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation"
+                className="flex items-center justify-between w-full py-3 px-2 text-white hover:text-blue-200 hover:bg-blue-700 hover:bg-opacity-50 rounded-lg transition-colors touch-manipulation"
               >
                 Peptides Catalog
                 <ChevronDown className={`h-4 w-4 transition-transform ${isPeptidesOpen ? 'rotate-180' : ''}`} />
               </button>
               {isPeptidesOpen && (
                 <div className="ml-4 mt-1 space-y-1">
-                  <button onClick={() => { onPeptideCategory?.('therapeutic'); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation w-full text-left">Therapeutic Peptides</button>
-                  <button onClick={() => { onPeptideCategory?.('cosmetic'); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation w-full text-left">Cosmetic Peptides</button>
-                  <button onClick={() => { onPeptideCategory?.('research'); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation w-full text-left">Research Peptides</button>
-                  <button onClick={() => { onPeptideCategory?.('custom'); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation w-full text-left">Custom Synthesis</button>
-                  <button onClick={() => { onPeptideCategory?.('libraries'); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation w-full text-left">Peptide Libraries</button>
+                  <button onClick={() => { onPeptideCategory?.('therapeutic'); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-white hover:text-blue-200 hover:bg-blue-700 hover:bg-opacity-50 rounded-lg transition-colors touch-manipulation w-full text-left">Therapeutic Peptides</button>
+                  <button onClick={() => { onPeptideCategory?.('cosmetic'); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-white hover:text-blue-200 hover:bg-blue-700 hover:bg-opacity-50 rounded-lg transition-colors touch-manipulation w-full text-left">Cosmetic Peptides</button>
+                  <button onClick={() => { onPeptideCategory?.('research'); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-white hover:text-blue-200 hover:bg-blue-700 hover:bg-opacity-50 rounded-lg transition-colors touch-manipulation w-full text-left">Research Peptides</button>
+                  <button onClick={() => { onPeptideCategory?.('custom'); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-white hover:text-blue-200 hover:bg-blue-700 hover:bg-opacity-50 rounded-lg transition-colors touch-manipulation w-full text-left">Custom Synthesis</button>
+                  <button onClick={() => { onPeptideCategory?.('libraries'); setIsMenuOpen(false); setIsPeptidesOpen(false); }} className="block py-2 px-2 text-white hover:text-blue-200 hover:bg-blue-700 hover:bg-opacity-50 rounded-lg transition-colors touch-manipulation w-full text-left">Peptide Libraries</button>
                 </div>
               )}
             </div>
             <button
               onClick={() => { onBlog?.(); setIsMenuOpen(false); }}
-              className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
+              className="block py-3 px-2 text-white hover:text-blue-200 hover:bg-blue-700 hover:bg-opacity-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               Research Hub
             </button>
             <button
               onClick={() => { onDocumentation?.(); setIsMenuOpen(false); }}
-              className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
+              className="block py-3 px-2 text-white hover:text-blue-200 hover:bg-blue-700 hover:bg-opacity-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               Documentation
             </button>
             <button
               onClick={() => { onAbout?.(); setIsMenuOpen(false); }}
-              className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
+              className="block py-3 px-2 text-white hover:text-blue-200 hover:bg-blue-700 hover:bg-opacity-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               About
             </button>
             <button
               onClick={() => { onContact?.(); setIsMenuOpen(false); }}
-              className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
+              className="block py-3 px-2 text-white hover:text-blue-200 hover:bg-blue-700 hover:bg-opacity-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               Contact
             </button>
             {user && isAdmin && (
               <button
                 onClick={() => { onAdmin?.(); setIsMenuOpen(false); }}
-                className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
+                className="block py-3 px-2 text-white hover:text-blue-200 hover:bg-blue-700 hover:bg-opacity-50 rounded-lg transition-colors w-full text-left touch-manipulation"
               >
                 Admin
               </button>
