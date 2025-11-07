@@ -20,15 +20,12 @@ export interface Order {
   created_at: string;
   updated_at: string;
   order_items?: OrderItem[];
-<<<<<<< HEAD
-=======
   tracking_number?: string;
   carrier?: string;
   shipped_at?: string;
   shipstation_order_id?: string;
   shipstation_status?: string;
   shipstation_synced_at?: string;
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 }
 
 export interface OrderItem {
@@ -105,11 +102,8 @@ export const useOrders = () => {
     billing_address: any;
     shipping_method: string;
     payment_method: string;
-<<<<<<< HEAD
-=======
     payment_status?: string;
     payment_transaction_id?: string;
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
     items: Array<{
       product_id: string;
       product_name: string;
@@ -124,15 +118,6 @@ export const useOrders = () => {
     }>;
   }) => {
     try {
-<<<<<<< HEAD
-      if (!user) throw new Error('User not authenticated');
-
-      // Create order
-      const { data: order, error: orderError } = await supabase
-        .from('orders')
-        .insert({
-          user_id: user.id,
-=======
       // Generate order number
       const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
 
@@ -142,7 +127,6 @@ export const useOrders = () => {
         .insert({
           user_id: user?.id || null,
           order_number: orderNumber,
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
           subtotal: orderData.subtotal,
           shipping_cost: orderData.shipping_cost,
           tax_amount: orderData.tax_amount,
@@ -151,25 +135,17 @@ export const useOrders = () => {
           billing_address: orderData.billing_address,
           shipping_method: orderData.shipping_method,
           payment_method: orderData.payment_method,
-<<<<<<< HEAD
-          payment_status: 'paid', // In demo mode
-=======
           payment_status: orderData.payment_status || 'pending',
           payment_transaction_id: orderData.payment_transaction_id,
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
           status: 'processing'
         })
         .select()
         .single();
 
-<<<<<<< HEAD
-      if (orderError) throw orderError;
-=======
       if (orderError) {
         console.error('Order creation error:', orderError);
         throw orderError;
       }
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 
       // Create order items
       const orderItems = orderData.items.map(item => ({
@@ -181,14 +157,10 @@ export const useOrders = () => {
         .from('order_items')
         .insert(orderItems);
 
-<<<<<<< HEAD
-      if (itemsError) throw itemsError;
-=======
       if (itemsError) {
         console.error('Order items creation error:', itemsError);
         throw itemsError;
       }
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 
       // Refresh orders
       cache.delete(`${CACHE_KEYS.ORDERS}_${user?.id}`);
@@ -218,8 +190,6 @@ export const useOrders = () => {
     }
   };
 
-<<<<<<< HEAD
-=======
   const syncToShipStation = async (orderId: string) => {
     try {
       const response = await fetch(
@@ -280,18 +250,14 @@ export const useOrders = () => {
     }
   };
 
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   return {
     orders,
     loading,
     error,
     createOrder,
     updateOrderStatus,
-<<<<<<< HEAD
-=======
     syncToShipStation,
     getTracking,
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
     refetch: fetchOrders
   };
 };

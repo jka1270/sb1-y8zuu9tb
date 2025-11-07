@@ -1,18 +1,10 @@
 import { useState, useEffect } from 'react';
-<<<<<<< HEAD
-import { Search, Filter, Eye, CreditCard as Edit, Package, Truck, CheckCircle, Clock, AlertTriangle, Download, RefreshCw } from 'lucide-react';
-=======
 import { Search, Filter, Eye, Pencil, Package, Truck, CheckCircle, Clock, AlertTriangle, Download, RefreshCw } from 'lucide-react';
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 import { useOrders, Order } from '../hooks/useOrders';
 import LoadingSpinner from './LoadingSpinner';
 
 export default function AdminOrderManager() {
-<<<<<<< HEAD
-  const { orders, loading, error, updateOrderStatus, refetch } = useOrders();
-=======
   const { orders, loading, error, updateOrderStatus, syncToShipStation, getTracking, refetch } = useOrders();
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [dateFilter, setDateFilter] = useState('');
@@ -97,8 +89,6 @@ export default function AdminOrderManager() {
     }
   };
 
-<<<<<<< HEAD
-=======
   const handleSyncToShipStation = async (orderId: string) => {
     try {
       const result = await syncToShipStation(orderId);
@@ -121,7 +111,6 @@ export default function AdminOrderManager() {
     }
   };
 
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   const orderStats = {
     total: orders.length,
     pending: orders.filter(o => o.status === 'pending').length,
@@ -314,21 +303,6 @@ export default function AdminOrderManager() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-<<<<<<< HEAD
-                      <div className="flex space-x-2">
-                        <button 
-                          onClick={() => setSelectedOrder(order)}
-                          className="text-blue-600 hover:text-blue-900"
-                        >
-                          <Eye className="h-4 w-4" />
-                        </button>
-                        <button className="text-indigo-600 hover:text-indigo-900">
-                          <Edit className="h-4 w-4" />
-                        </button>
-                        <button className="text-green-600 hover:text-green-900">
-                          <Download className="h-4 w-4" />
-                        </button>
-=======
                       <div className="flex flex-col gap-2">
                         <div className="flex space-x-2">
                           <button
@@ -374,7 +348,6 @@ export default function AdminOrderManager() {
                             </>
                           )}
                         </div>
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                       </div>
                     </td>
                   </tr>

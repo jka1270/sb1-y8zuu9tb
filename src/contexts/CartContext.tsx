@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, { createContext, useContext, useReducer, ReactNode } from 'react';
-=======
 import React, { createContext, useContext, useReducer, ReactNode, useCallback } from 'react';
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 import { CartItem } from '../types';
 
 interface CartState {
@@ -21,11 +17,7 @@ type CartAction =
 
 interface CartContextType {
   state: CartState;
-<<<<<<< HEAD
-  addItem: (item: CartItem) => void;
-=======
   addItem: (item: CartItem, showNotification?: boolean) => void;
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
@@ -34,10 +26,7 @@ interface CartContextType {
   closeCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
-<<<<<<< HEAD
-=======
   onItemAdded?: (item: CartItem, isNewItem: boolean) => void;
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -117,14 +106,6 @@ const initialState: CartState = {
   isOpen: false,
 };
 
-<<<<<<< HEAD
-export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [state, dispatch] = useReducer(cartReducer, initialState);
-
-  const addItem = (item: CartItem) => {
-    dispatch({ type: 'ADD_ITEM', payload: item });
-  };
-=======
 interface CartProviderProps {
   children: ReactNode;
   onItemAdded?: (item: CartItem, isNewItem: boolean) => void;
@@ -145,7 +126,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children, onItemAdde
       onItemAdded(item, !existingItem);
     }
   }, [state.items, onItemAdded]);
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 
   const removeItem = (id: string) => {
     dispatch({ type: 'REMOVE_ITEM', payload: id });
@@ -192,10 +172,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children, onItemAdde
         closeCart,
         getTotalItems,
         getTotalPrice,
-<<<<<<< HEAD
-=======
         onItemAdded,
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
       }}
     >
       {children}

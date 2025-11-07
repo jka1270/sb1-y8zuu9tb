@@ -1,9 +1,5 @@
 import { useState, useEffect } from 'react';
-<<<<<<< HEAD
-import { Search, Filter, Eye, CreditCard as Edit, Mail, Phone, Building, Calendar, Package, DollarSign, Download, RefreshCw, Users, Shield, Clock } from 'lucide-react';
-=======
 import { Search, Filter, Eye, Pencil, Mail, Phone, Building, Calendar, Package, DollarSign, Download, RefreshCw, Users, Shield, Clock } from 'lucide-react';
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 import { useUserProfile } from '../hooks/useUserProfile';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -324,11 +320,7 @@ export default function AdminCustomerManager() {
                           <Eye className="h-4 w-4" />
                         </button>
                         <button className="text-indigo-600 hover:text-indigo-900">
-<<<<<<< HEAD
-                          <Edit className="h-4 w-4" />
-=======
                           <Pencil className="h-4 w-4" />
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                         </button>
                         <button className="text-green-600 hover:text-green-900">
                           <Mail className="h-4 w-4" />

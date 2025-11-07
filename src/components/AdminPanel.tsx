@@ -1,25 +1,14 @@
-<<<<<<< HEAD
-import { useState, useEffect } from 'react';
-import { Users, Package, ShoppingBag, BarChart3, Settings, Search, Filter, Plus, CreditCard as Edit, Trash2, Eye, Download, RefreshCw, AlertTriangle, CheckCircle, Clock, TrendingUp, TrendingDown } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { useOrders } from '../hooks/useOrders';
-import { useInventory } from '../hooks/useInventory';
-=======
 import { useState } from 'react';
 import { Users, Package, ShoppingBag, BarChart3, Settings, Search, Filter, Plus, Pencil, Trash2, Eye, Download, RefreshCw, AlertTriangle, CheckCircle, Clock, TrendingUp, TrendingDown, MessageSquare } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useUserRole } from '../hooks/useUserRole';
 import { useOrders } from '../hooks/useOrders';
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 import AdminProductManager from './AdminProductManager';
 import AdminOrderManager from './AdminOrderManager';
 import AdminCustomerManager from './AdminCustomerManager';
 import AdminDashboard from './AdminDashboard';
-<<<<<<< HEAD
-=======
 import AdminMessagesManager from './AdminMessagesManager';
 import LoadingSpinner from './LoadingSpinner';
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 
 interface AdminPanelProps {
   onBack: () => void;
@@ -27,19 +16,6 @@ interface AdminPanelProps {
 
 export default function AdminPanel({ onBack }: AdminPanelProps) {
   const { user } = useAuth();
-<<<<<<< HEAD
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [isAuthorized, setIsAuthorized] = useState(false);
-
-  // Check if user is admin (in real app, this would check user roles)
-  useEffect(() => {
-    // For demo purposes, we'll allow any authenticated user
-    // In production, you'd check user roles/permissions
-    setIsAuthorized(!!user);
-  }, [user]);
-
-  if (!isAuthorized) {
-=======
   const { isAdmin, loading: roleLoading } = useUserRole();
   const [activeTab, setActiveTab] = useState('dashboard');
 
@@ -52,22 +28,12 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
   }
 
   if (!user || !isAdmin) {
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <AlertTriangle className="h-16 w-16 text-red-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h2>
           <p className="text-gray-600 mb-6">You don't have permission to access the admin panel.</p>
-<<<<<<< HEAD
-          <button
-            onClick={onBack}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
-          >
-            Back to Shop
-          </button>
-=======
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
         </div>
       </div>
     );
@@ -78,11 +44,7 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
     { id: 'products', label: 'Products', icon: Package },
     { id: 'orders', label: 'Orders', icon: ShoppingBag },
     { id: 'customers', label: 'Customers', icon: Users },
-<<<<<<< HEAD
-    { id: 'inventory', label: 'Inventory', icon: Package },
-=======
     { id: 'messages', label: 'Messages', icon: MessageSquare },
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
@@ -93,15 +55,6 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-<<<<<<< HEAD
-              <button
-                onClick={onBack}
-                className="text-gray-600 hover:text-blue-600 mr-4"
-              >
-                ← Back to Shop
-              </button>
-=======
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
               <h1 className="text-xl font-bold text-gray-900">Admin Panel</h1>
             </div>
             <div className="flex items-center space-x-4">
@@ -148,24 +101,7 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
           {activeTab === 'products' && <AdminProductManager />}
           {activeTab === 'orders' && <AdminOrderManager />}
           {activeTab === 'customers' && <AdminCustomerManager />}
-<<<<<<< HEAD
-          {activeTab === 'inventory' && (
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Inventory Management</h2>
-              <p className="text-gray-600">
-                Inventory management features are available in the main inventory dashboard.
-              </p>
-              <button
-                onClick={() => window.location.href = '/inventory'}
-                className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-              >
-                Go to Inventory Dashboard
-              </button>
-            </div>
-          )}
-=======
           {activeTab === 'messages' && <AdminMessagesManager />}
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
           {activeTab === 'settings' && (
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">System Settings</h2>

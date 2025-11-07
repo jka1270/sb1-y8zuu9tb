@@ -1,27 +1,15 @@
-<<<<<<< HEAD
-import { Search, ShoppingCart, User, Menu } from 'lucide-react';
-import { useState } from 'react';
-import { useCart } from '../contexts/CartContext';
-import { useAuth } from '../contexts/AuthContext';
-=======
 import { Search, ShoppingCart, User, Menu, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useUserRole } from '../hooks/useUserRole';
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 import AuthModal from './AuthModal';
 import UserMenu from './UserMenu';
 
 interface HeaderProps {
-<<<<<<< HEAD
-  onOrderHistory?: () => void;
-  onInventory?: () => void;
-=======
   onHome?: () => void;
   onPeptideCategory?: (category: 'therapeutic' | 'cosmetic' | 'research' | 'custom' | 'libraries') => void;
   onOrderHistory?: () => void;
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   onAccount?: () => void;
   onDocumentation?: () => void;
   onAbout?: () => void;
@@ -30,60 +18,6 @@ interface HeaderProps {
   onAdmin?: () => void;
 }
 
-<<<<<<< HEAD
-export default function Header({ onOrderHistory, onInventory, onAccount, onDocumentation, onAbout, onContact, onBlog, onAdmin }: HeaderProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [authModalOpen, setAuthModalOpen] = useState(false);
-  const { toggleCart, getTotalItems } = useCart();
-  const { user } = useAuth();
-
-  return (
-    <header className="bg-white shadow-sm border-b">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-14 sm:h-16">
-          {/* Desktop Navigation */}
-          <nav className="hidden xl:flex space-x-4">
-            <a href="#" className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base">Therapeutic Peptides</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base">Cosmetic Peptides</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base">Research Peptides</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base">Custom Synthesis</a>
-            <button 
-              onClick={onBlog}
-              className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
-            >
-              Research Hub
-            </button>
-            <button 
-              onClick={onDocumentation}
-              className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
-            >
-              Documentation
-            </button>
-            <button 
-              onClick={onAbout}
-              className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
-            >
-              About
-            </button>
-            <button 
-              onClick={onContact}
-              className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
-            >
-              Contact
-            </button>
-            {user && (
-              <button 
-                onClick={onInventory}
-                className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
-              >
-                Inventory
-              </button>
-            )}
-            {user && (
-              <button 
-                onClick={onAdmin}
-                className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base"
-=======
 export default function Header({ onHome, onPeptideCategory, onOrderHistory, onAccount, onDocumentation, onAbout, onContact, onBlog, onAdmin }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -160,24 +94,12 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onAc
               <button
                 onClick={onAdmin}
                 className="text-black hover:text-blue-600 font-medium text-sm lg:text-base"
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
               >
                 Admin
               </button>
             )}
           </nav>
 
-<<<<<<< HEAD
-          {/* Search and Actions */}
-          <div className="flex items-center space-x-1 sm:space-x-2">
-            <button 
-              onClick={toggleCart}
-              className="p-2 sm:p-3 text-gray-400 hover:text-blue-600 relative touch-manipulation"
-            >
-              <ShoppingCart className="h-5 w-5" />
-              {getTotalItems() > 0 && (
-                <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center">
-=======
           {/* Cart and Account - Right Side */}
           <div className="absolute right-0 flex items-center space-x-1 sm:space-x-2">
             <button
@@ -187,7 +109,6 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onAc
               <ShoppingCart className="h-5 w-5" />
               {getTotalItems() > 0 && (
                 <span className="absolute -top-1 -right-1 bg-white xl:bg-blue-600 text-blue-600 xl:text-white text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center font-semibold">
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                   {getTotalItems()}
                 </span>
               )}
@@ -195,28 +116,13 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onAc
             {user ? (
               <UserMenu onOrderHistory={onOrderHistory} onAccount={onAccount} />
             ) : (
-<<<<<<< HEAD
-              <button 
-                onClick={() => setAuthModalOpen(true)}
-                className="p-2 sm:p-3 text-gray-400 hover:text-blue-600 touch-manipulation"
-=======
               <button
                 onClick={() => setAuthModalOpen(true)}
                 className="p-2 sm:p-3 text-white xl:text-black hover:text-blue-200 xl:hover:text-blue-600 touch-manipulation"
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
               >
                 <User className="h-5 w-5" />
               </button>
             )}
-<<<<<<< HEAD
-            <button 
-              className="xl:hidden p-2 sm:p-3 text-gray-400 hover:text-blue-600 touch-manipulation"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              <Menu className="h-5 w-5" />
-            </button>
-=======
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
           </div>
         </div>
       </div>
@@ -225,14 +131,6 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onAc
       {isMenuOpen && (
         <div className="xl:hidden bg-white border-t shadow-lg">
           <div className="px-4 py-3 space-y-1">
-<<<<<<< HEAD
-            <a href="#" className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation">Therapeutic Peptides</a>
-            <a href="#" className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation">Cosmetic Peptides</a>
-            <a href="#" className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation">Research Peptides</a>
-            <a href="#" className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors touch-manipulation">Custom Synthesis</a>
-            <button 
-              onClick={onBlog}
-=======
             <button
               onClick={() => { onHome?.(); setIsMenuOpen(false); }}
               className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
@@ -259,61 +157,31 @@ export default function Header({ onHome, onPeptideCategory, onOrderHistory, onAc
             </div>
             <button
               onClick={() => { onBlog?.(); setIsMenuOpen(false); }}
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
               className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               Research Hub
             </button>
-<<<<<<< HEAD
-            <button 
-              onClick={onDocumentation}
-=======
             <button
               onClick={() => { onDocumentation?.(); setIsMenuOpen(false); }}
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
               className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               Documentation
             </button>
-<<<<<<< HEAD
-            <button 
-              onClick={onAbout}
-=======
             <button
               onClick={() => { onAbout?.(); setIsMenuOpen(false); }}
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
               className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               About
             </button>
-<<<<<<< HEAD
-            <button 
-              onClick={onContact}
-=======
             <button
               onClick={() => { onContact?.(); setIsMenuOpen(false); }}
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
               className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
             >
               Contact
             </button>
-<<<<<<< HEAD
-            {user && (
-              <button 
-                onClick={onInventory}
-                className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
-              >
-                Inventory
-              </button>
-            )}
-            {user && (
-              <button 
-                onClick={onAdmin}
-=======
             {user && isAdmin && (
               <button
                 onClick={() => { onAdmin?.(); setIsMenuOpen(false); }}
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                 className="block py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors w-full text-left touch-manipulation"
               >
                 Admin

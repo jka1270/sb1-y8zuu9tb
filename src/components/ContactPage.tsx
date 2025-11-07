@@ -1,10 +1,6 @@
 import { useState } from 'react';
-<<<<<<< HEAD
-import { ArrowLeft, Mail, Phone, MapPin, Clock, Send, CheckCircle, AlertTriangle, Building, User, MessageSquare, HelpCircle, Shield } from 'lucide-react';
-=======
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle, AlertTriangle, Building, User, MessageSquare, HelpCircle, Shield } from 'lucide-react';
 import { supabase } from '../lib/supabase';
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 
 interface ContactPageProps {
   onBack: () => void;
@@ -77,14 +73,6 @@ export default function ContactPage({ onBack }: ContactPageProps) {
     setError('');
 
     try {
-<<<<<<< HEAD
-      // Simulate form submission
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // In a real implementation, this would send to your backend
-      console.log('Contact form submitted:', formData);
-      
-=======
       const { error: submitError } = await supabase
         .from('contact_messages')
         .insert({
@@ -105,7 +93,6 @@ export default function ContactPage({ onBack }: ContactPageProps) {
         throw submitError;
       }
 
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
       setSubmitted(true);
       setFormData({
         firstName: '',
@@ -120,10 +107,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
         urgency: 'normal'
       });
     } catch (err) {
-<<<<<<< HEAD
-=======
       console.error('Error submitting contact form:', err);
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
       setError('Failed to submit form. Please try again.');
     } finally {
       setSubmitting(false);
@@ -195,21 +179,6 @@ export default function ContactPage({ onBack }: ContactPageProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-<<<<<<< HEAD
-      <div className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <button
-            onClick={onBack}
-            className="flex items-center text-blue-600 hover:text-blue-700 font-medium"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Home
-          </button>
-        </div>
-      </div>
-
-=======
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero Section */}
         <div className="text-center mb-16">

@@ -5,10 +5,7 @@ export interface Product {
   description: string;
   price: number;
   image: string;
-<<<<<<< HEAD
-=======
   images?: string[];
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   specifications: Record<string, string>;
   inStock: boolean;
   sku: string;

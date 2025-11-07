@@ -1,28 +1,10 @@
-<<<<<<< HEAD
-import { useState } from 'react';
-import { products } from '../data/products';
-=======
 import { useState, useEffect } from 'react';
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 import ProductCard from './ProductCard';
 import ProductDetailPage from './ProductDetailPage';
 import CategoryFilter from './CategoryFilter';
 import AdvancedFilters, { FilterState } from './AdvancedFilters';
 import { Search } from 'lucide-react';
 import { Product } from '../types';
-<<<<<<< HEAD
-import InventoryAlertsBanner from './InventoryAlertsBanner';
-import LoadingSpinner from './LoadingSpinner';
-import { useImagePreloader } from '../hooks/useImagePreloader';
-import { useDebounce } from '../hooks/useDebounce';
-
-export default function ProductGrid() {
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [filters, setFilters] = useState<FilterState>({
-    category: '',
-=======
 import LoadingSpinner from './LoadingSpinner';
 import { useImagePreloader } from '../hooks/useImagePreloader';
 import { useDebounce } from '../hooks/useDebounce';
@@ -40,7 +22,6 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<FilterState>({
     category: initialCategory,
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
     purityRange: [90, 100],
     priceRange: [0, 1000],
     molecularWeightRange: [0, 10000],
@@ -51,12 +32,6 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
     sortOrder: 'asc'
   });
 
-<<<<<<< HEAD
-  // Preload product images for better performance
-  const productImages = products.map(p => p.image);
-  const { isLoading: imagesLoading } = useImagePreloader(productImages);
-  
-=======
   useEffect(() => {
     setSelectedCategory(initialCategory);
     setFilters(prev => ({ ...prev, category: initialCategory }));
@@ -109,17 +84,12 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
   const productImages = products.map(p => p.image);
   const { isLoading: imagesLoading } = useImagePreloader(productImages);
 
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   // Debounce search term to reduce filtering operations
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const filteredProducts = products.filter(product => {
-<<<<<<< HEAD
-    const matchesCategory = selectedCategory === '' || product.category === selectedCategory;
-=======
     const categoryToMatch = filters.category || selectedCategory;
     const matchesCategory = categoryToMatch === '' || product.category === categoryToMatch;
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
     const matchesSearch = product.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
                          product.description.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
     
@@ -210,11 +180,7 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
 
   const handleClearFilters = () => {
     setFilters({
-<<<<<<< HEAD
-      category: '',
-=======
       category: initialCategory,
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
       purityRange: [90, 100],
       priceRange: [0, 1000],
       molecularWeightRange: [0, 10000],
@@ -224,11 +190,7 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
       sortBy: 'name',
       sortOrder: 'asc'
     });
-<<<<<<< HEAD
-    setSelectedCategory('');
-=======
     setSelectedCategory(initialCategory);
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   };
 
   const handleCategoryChange = (category: string) => {
@@ -240,13 +202,8 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
     return <ProductDetailPage product={selectedProduct} onBack={handleBackToGrid} />;
   }
 
-<<<<<<< HEAD
-  // Show loading state while images are preloading
-  if (imagesLoading) {
-=======
   // Show loading state while fetching products
   if (loading) {
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
     return (
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
@@ -264,12 +221,6 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-<<<<<<< HEAD
-      {/* Inventory Alerts Banner */}
-      <InventoryAlertsBanner />
-      
-=======
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
       {/* Free Shipping Notice */}
       <div className="flex justify-center mb-6">
         <span className="font-bold text-sm sm:text-base text-red-600 blink-box">
