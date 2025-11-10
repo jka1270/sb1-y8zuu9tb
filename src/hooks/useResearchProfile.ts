@@ -70,13 +70,19 @@ export const useResearchProfile = () => {
     try {
       if (!user) throw new Error('User not authenticated');
 
-      console.log('Creating profile with data:', { id: user.id, ...profileData });
+      const cleanedData = {
+        ...profileData,
+        ethics_training_date: profileData.ethics_training_date || null,
+        safety_training_date: profileData.safety_training_date || null,
+      };
+
+      console.log('Creating profile with data:', { id: user.id, ...cleanedData });
 
       const { data, error } = await supabase
         .from('research_profiles')
         .insert({
           id: user.id,
-          ...profileData,
+          ...cleanedData,
           updated_at: new Date().toISOString()
         })
         .select()
@@ -100,10 +106,16 @@ export const useResearchProfile = () => {
     try {
       if (!user) throw new Error('User not authenticated');
 
+      const cleanedUpdates = {
+        ...updates,
+        ethics_training_date: updates.ethics_training_date || null,
+        safety_training_date: updates.safety_training_date || null,
+      };
+
       const { data, error } = await supabase
         .from('research_profiles')
         .update({
-          ...updates,
+          ...cleanedUpdates,
           updated_at: new Date().toISOString()
         })
         .eq('id', user.id)
