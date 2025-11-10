@@ -17,6 +17,7 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
   const { showNotification } = useNotification();
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -96,6 +97,26 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
     shipped: orders.filter(o => o.status === 'shipped').length,
     delivered: orders.filter(o => o.status === 'delivered').length,
     cancelled: orders.filter(o => o.status === 'cancelled').length,
+  };
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    try {
+      await refetch();
+      showNotification({
+        type: 'success',
+        message: 'Orders refreshed successfully',
+        duration: 2000
+      });
+    } catch (error) {
+      showNotification({
+        type: 'error',
+        message: 'Failed to refresh orders',
+        duration: 3000
+      });
+    } finally {
+      setIsRefreshing(false);
+    }
   };
 
   const handleDownloadInvoice = (order: Order) => {
@@ -275,10 +296,11 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-end">
             <button
-              onClick={refetch}
-              className="flex items-center text-gray-600 hover:text-gray-700"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className="flex items-center text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              <RefreshCw className="h-4 w-4 mr-2" />
+              <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
               Refresh
             </button>
           </div>
@@ -336,10 +358,11 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
           <div className="bg-red-50 border border-red-200 p-4 rounded-lg mb-8">
             <p className="text-red-800">Error loading orders: {error}</p>
             <button
-              onClick={refetch}
-              className="mt-2 text-red-600 hover:text-red-700 font-medium"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className="mt-2 text-red-600 hover:text-red-700 font-medium disabled:opacity-50"
             >
-              Try again
+              {isRefreshing ? 'Refreshing...' : 'Try again'}
             </button>
           </div>
         )}

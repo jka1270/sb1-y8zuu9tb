@@ -59,17 +59,24 @@ export const useOrders = () => {
     }
   }, [user]);
 
-  const fetchOrders = async () => {
+  const fetchOrders = async (skipCache = false) => {
     try {
       setLoading(true);
-      
-      // Check cache first
+      setError(null);
+
       const cacheKey = `${CACHE_KEYS.ORDERS}_${user?.id}`;
-      const cachedOrders = cache.get(cacheKey);
-      if (cachedOrders) {
-        setOrders(cachedOrders);
-        setLoading(false);
-        return;
+
+      // Check cache first (unless skipCache is true)
+      if (!skipCache) {
+        const cachedOrders = cache.get(cacheKey);
+        if (cachedOrders) {
+          setOrders(cachedOrders);
+          setLoading(false);
+          return;
+        }
+      } else {
+        // Clear cache when skipCache is true
+        cache.delete(cacheKey);
       }
 
       const { data: ordersData, error: ordersError } = await supabase
@@ -83,7 +90,7 @@ export const useOrders = () => {
       if (ordersError) throw ordersError;
 
       setOrders(ordersData || []);
-      
+
       // Cache the results
       cache.set(cacheKey, ordersData || [], 2 * 60 * 1000); // 2 minutes
     } catch (err) {
@@ -258,6 +265,6 @@ export const useOrders = () => {
     updateOrderStatus,
     syncToShipStation,
     getTracking,
-    refetch: fetchOrders
+    refetch: () => fetchOrders(true)
   };
 };
