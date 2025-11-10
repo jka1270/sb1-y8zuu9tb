@@ -130,9 +130,15 @@ export const useSavedProducts = () => {
     try {
       if (!user) throw new Error('User not authenticated');
 
+      // Check if product is already saved
+      const isAlreadySaved = isProductSaved(productData.product_id, productData.variant_id);
+      if (isAlreadySaved) {
+        throw new Error('Product already saved - duplicate key');
+      }
+
       const { data, error } = await supabase
         .from('saved_products')
-        .upsert({
+        .insert({
           user_id: user.id,
           ...productData,
           tags: productData.tags || [],

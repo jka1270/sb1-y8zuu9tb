@@ -3,6 +3,8 @@ import { Product, ProductVariant } from '../types';
 import { useState } from 'react';
 import { useCart } from '../contexts/CartContext';
 import { useSavedProducts } from '../hooks/useSavedProducts';
+import { useNotification } from '../contexts/NotificationContext';
+import { useAuth } from '../contexts/AuthContext';
 import StockIndicator from './StockIndicator';
 import OptimizedImage from './OptimizedImage';
 import LoadingSpinner from './LoadingSpinner';
@@ -19,6 +21,8 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
   const [isBlinking, setIsBlinking] = useState(false);
   const { addItem } = useCart();
   const { isProductSaved, saveProduct, unsaveProduct } = useSavedProducts();
+  const { showNotification } = useNotification();
+  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const formatPrice = (price: number) => {
@@ -55,10 +59,24 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
   };
 
   const handleToggleSave = async () => {
+    if (!user) {
+      showNotification({
+        type: 'warning',
+        message: 'Please log in to save products to your favorites',
+        duration: 3000
+      });
+      return;
+    }
+
     try {
       setIsLoading(true);
       if (isSaved) {
         await unsaveProduct(product.id, selectedVariant?.id);
+        showNotification({
+          type: 'success',
+          message: 'Product removed from favorites',
+          duration: 3000
+        });
       } else {
         await saveProduct({
           product_id: product.id,
@@ -66,9 +84,27 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
           variant_id: selectedVariant?.id,
           priority: 'medium'
         });
+        showNotification({
+          type: 'success',
+          message: 'Product added to favorites',
+          duration: 3000
+        });
       }
     } catch (error) {
       console.error('Error toggling save:', error);
+      if (error instanceof Error && error.message.includes('duplicate')) {
+        showNotification({
+          type: 'info',
+          message: 'This product is already in your favorites',
+          duration: 3000
+        });
+      } else {
+        showNotification({
+          type: 'error',
+          message: 'Failed to update favorites',
+          duration: 3000
+        });
+      }
     } finally {
       setIsLoading(false);
     }

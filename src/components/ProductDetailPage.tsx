@@ -3,6 +3,8 @@ import { ArrowLeft, Download, ShoppingCart, Heart, Share2, AlertTriangle, Thermo
 import { Product, ProductVariant } from '../types';
 import { useCart } from '../contexts/CartContext';
 import { useSavedProducts } from '../hooks/useSavedProducts';
+import { useNotification } from '../contexts/NotificationContext';
+import { useAuth } from '../contexts/AuthContext';
 import { useCOA } from '../hooks/useCOA';
 import StockIndicator from './StockIndicator';
 import COAViewer from './COAViewer';
@@ -23,6 +25,8 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { addItem } = useCart();
   const { isProductSaved, saveProduct, unsaveProduct } = useSavedProducts();
+  const { showNotification } = useNotification();
+  const { user } = useAuth();
   const { getCOABySKU } = useCOA();
   const [showCOA, setShowCOA] = useState(false);
   const [selectedCOA, setSelectedCOA] = useState<any>(null);
@@ -68,10 +72,24 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
   };
 
   const handleToggleSave = async () => {
+    if (!user) {
+      showNotification({
+        type: 'warning',
+        message: 'Please log in to save products to your favorites',
+        duration: 3000
+      });
+      return;
+    }
+
     try {
       setSavingProduct(true);
       if (isSaved) {
         await unsaveProduct(product.id, selectedVariant?.id);
+        showNotification({
+          type: 'success',
+          message: 'Product removed from favorites',
+          duration: 3000
+        });
       } else {
         await saveProduct({
           product_id: product.id,
@@ -79,9 +97,27 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
           variant_id: selectedVariant?.id,
           priority: 'medium'
         });
+        showNotification({
+          type: 'success',
+          message: 'Product added to favorites',
+          duration: 3000
+        });
       }
     } catch (error) {
       console.error('Error toggling save:', error);
+      if (error instanceof Error && error.message.includes('duplicate')) {
+        showNotification({
+          type: 'info',
+          message: 'This product is already in your favorites',
+          duration: 3000
+        });
+      } else {
+        showNotification({
+          type: 'error',
+          message: 'Failed to update favorites',
+          duration: 3000
+        });
+      }
     } finally {
       setSavingProduct(false);
     }
