@@ -527,7 +527,7 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
                         <input
                           type="checkbox"
                           checked={formData.ethics_training_completed}
-                          onChange={(e) => setFormData({...formData, ethics_training_completed: e.target.checked})}
+                          onChange={(e) => setFormData({...formData, ethics_training_completed: e.target.checked, ethics_training_date: e.target.checked ? formData.ethics_training_date : ''})}
                           className="mr-3 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                         />
                         <span className="text-sm font-medium text-gray-700">
@@ -557,7 +557,7 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
                         <input
                           type="checkbox"
                           checked={formData.safety_training_completed}
-                          onChange={(e) => setFormData({...formData, safety_training_completed: e.target.checked})}
+                          onChange={(e) => setFormData({...formData, safety_training_completed: e.target.checked, safety_training_date: e.target.checked ? formData.safety_training_date : ''})}
                           className="mr-3 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                         />
                         <span className="text-sm font-medium text-gray-700">
