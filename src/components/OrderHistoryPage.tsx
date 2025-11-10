@@ -119,7 +119,7 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
       pdf.setFont('helvetica', 'bold');
       pdf.text('Invoice Number:', 20, yPos);
       pdf.setFont('helvetica', 'normal');
-      pdf.text(order.order_number, 60, yPos);
+      pdf.text(order.order_number || 'N/A', 60, yPos);
 
       yPos += 6;
       pdf.setFont('helvetica', 'bold');
@@ -131,38 +131,50 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
       pdf.setFont('helvetica', 'bold');
       pdf.text('Payment Status:', 20, yPos);
       pdf.setFont('helvetica', 'normal');
-      pdf.text(order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1), 60, yPos);
+      pdf.text((order.payment_status || 'pending').charAt(0).toUpperCase() + (order.payment_status || 'pending').slice(1), 60, yPos);
 
       yPos += 6;
       pdf.setFont('helvetica', 'bold');
       pdf.text('Order Status:', 20, yPos);
       pdf.setFont('helvetica', 'normal');
-      pdf.text(order.status.charAt(0).toUpperCase() + order.status.slice(1), 60, yPos);
+      pdf.text((order.status || 'processing').charAt(0).toUpperCase() + (order.status || 'processing').slice(1), 60, yPos);
 
       yPos += 12;
       pdf.setFont('helvetica', 'bold');
       pdf.text('Bill To:', 20, yPos);
       pdf.setFont('helvetica', 'normal');
 
-      yPos += 6;
-      pdf.text(`${order.shipping_address.firstName} ${order.shipping_address.lastName}`, 20, yPos);
+      const addr = order.shipping_address || {};
 
-      if (order.shipping_address.company) {
+      yPos += 6;
+      const fullName = [addr.firstName, addr.lastName].filter(Boolean).join(' ') || 'N/A';
+      pdf.text(fullName, 20, yPos);
+
+      if (addr.company) {
         yPos += 5;
-        pdf.text(order.shipping_address.company, 20, yPos);
+        pdf.text(addr.company, 20, yPos);
       }
 
-      yPos += 5;
-      pdf.text(order.shipping_address.address1, 20, yPos);
+      if (addr.address1) {
+        yPos += 5;
+        pdf.text(addr.address1, 20, yPos);
+      }
 
-      yPos += 5;
-      pdf.text(`${order.shipping_address.city}, ${order.shipping_address.state} ${order.shipping_address.zipCode}`, 20, yPos);
+      if (addr.city || addr.state || addr.zipCode) {
+        yPos += 5;
+        const cityStateZip = [addr.city, `${addr.state || ''} ${addr.zipCode || ''}`.trim()].filter(Boolean).join(', ');
+        pdf.text(cityStateZip, 20, yPos);
+      }
 
-      yPos += 5;
-      pdf.text(order.shipping_address.email, 20, yPos);
+      if (addr.email) {
+        yPos += 5;
+        pdf.text(addr.email, 20, yPos);
+      }
 
-      yPos += 5;
-      pdf.text(order.shipping_address.phone, 20, yPos);
+      if (addr.phone) {
+        yPos += 5;
+        pdf.text(addr.phone, 20, yPos);
+      }
 
       yPos += 15;
       pdf.setFont('helvetica', 'bold');
@@ -235,10 +247,11 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
       });
     } catch (error) {
       console.error('Error downloading invoice:', error);
+      console.error('Order data:', order);
       showNotification({
         type: 'error',
-        message: 'Failed to download invoice',
-        duration: 3000
+        message: `Failed to download invoice: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        duration: 5000
       });
     }
   };
