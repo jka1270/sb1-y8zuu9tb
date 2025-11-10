@@ -1,8 +1,35 @@
 import { useState, useEffect } from 'react';
-import { Search, Filter, Eye, Pencil, Mail, Phone, Building, Calendar, Package, DollarSign, Download, RefreshCw, Users, Shield, Clock } from 'lucide-react';
+import { Search, Filter, Eye, Pencil, Mail, Phone, Building, Calendar, Package, DollarSign, Download, RefreshCw, Users, Shield, Clock, FileText, CheckCircle, XCircle, GraduationCap, Award } from 'lucide-react';
 import { useUserProfile } from '../hooks/useUserProfile';
 import { supabase } from '../lib/supabase';
 import LoadingSpinner from './LoadingSpinner';
+
+interface ResearchProfile {
+  institution_type: string;
+  research_areas: string[];
+  position_title: string;
+  department: string;
+  supervisor_name?: string;
+  supervisor_email?: string;
+  years_experience: number;
+  education_level: string;
+  specializations: string[];
+  publications_count: number;
+  orcid_id?: string;
+  research_interests?: string;
+  current_projects?: string;
+  funding_sources: string[];
+  ethics_training_completed: boolean;
+  ethics_training_date?: string;
+  safety_training_completed: boolean;
+  safety_training_date?: string;
+  institutional_approval: boolean;
+  approval_document_url?: string;
+  verification_status: string;
+  verified_at?: string;
+  verified_by?: string;
+  rejection_reason?: string;
+}
 
 interface Customer {
   id: string;
@@ -16,6 +43,7 @@ interface Customer {
   total_spent: number;
   last_order_date?: string;
   verification_status?: string;
+  research_profile?: ResearchProfile;
 }
 
 export default function AdminCustomerManager() {
@@ -24,6 +52,9 @@ export default function AdminCustomerManager() {
   const [searchTerm, setSearchTerm] = useState('');
   const [verificationFilter, setVerificationFilter] = useState('');
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  const [showDocumentViewer, setShowDocumentViewer] = useState(false);
+  const [documentUrl, setDocumentUrl] = useState('');
+  const [processingAction, setProcessingAction] = useState(false);
 
   const fetchCustomers = async () => {
     setLoading(true);
@@ -35,6 +66,15 @@ export default function AdminCustomerManager() {
         .order('created_at', { ascending: false });
 
       if (profilesError) throw profilesError;
+
+      // Get all research profiles
+      const { data: researchProfiles, error: researchError } = await supabase
+        .from('research_profiles')
+        .select('*');
+
+      if (researchError && researchError.code !== 'PGRST116') {
+        console.error('Error fetching research profiles:', researchError);
+      }
 
       // Get order statistics for each user
       const { data: orderStats, error: orderStatsError } = await supabase
@@ -62,6 +102,9 @@ export default function AdminCustomerManager() {
         const authUser = users?.find(u => u.id === profile.id);
         const email = authUser?.email || 'N/A';
 
+        // Find research profile
+        const researchProfile = researchProfiles?.find(rp => rp.user_id === profile.id);
+
         return {
           id: profile.id,
           first_name: profile.first_name,
@@ -73,7 +116,8 @@ export default function AdminCustomerManager() {
           total_orders: totalOrders,
           total_spent: totalSpent,
           last_order_date: lastOrderDate,
-          verification_status: profile.is_admin ? 'admin' : 'verified'
+          verification_status: profile.is_admin ? 'admin' : (researchProfile?.verification_status || 'none'),
+          research_profile: researchProfile || undefined
         };
       }) || [];
 
@@ -124,6 +168,76 @@ export default function AdminCustomerManager() {
         return 'bg-red-100 text-red-800';
       default:
         return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const handleApproveVerification = async (userId: string) => {
+    if (!confirm('Are you sure you want to approve this research profile?')) return;
+
+    setProcessingAction(true);
+    try {
+      const { error } = await supabase
+        .from('research_profiles')
+        .update({
+          verification_status: 'verified',
+          verified_at: new Date().toISOString()
+        })
+        .eq('user_id', userId);
+
+      if (error) throw error;
+
+      await fetchCustomers();
+      setSelectedCustomer(null);
+      alert('Research profile approved successfully!');
+    } catch (error) {
+      console.error('Error approving verification:', error);
+      alert('Failed to approve verification. Please try again.');
+    } finally {
+      setProcessingAction(false);
+    }
+  };
+
+  const handleRejectVerification = async (userId: string) => {
+    const reason = prompt('Please provide a reason for rejection:');
+    if (!reason) return;
+
+    setProcessingAction(true);
+    try {
+      const { error } = await supabase
+        .from('research_profiles')
+        .update({
+          verification_status: 'rejected',
+          rejection_reason: reason,
+          verified_at: new Date().toISOString()
+        })
+        .eq('user_id', userId);
+
+      if (error) throw error;
+
+      await fetchCustomers();
+      setSelectedCustomer(null);
+      alert('Research profile rejected.');
+    } catch (error) {
+      console.error('Error rejecting verification:', error);
+      alert('Failed to reject verification. Please try again.');
+    } finally {
+      setProcessingAction(false);
+    }
+  };
+
+  const handleViewDocument = async (documentPath: string) => {
+    try {
+      const { data, error } = await supabase.storage
+        .from('research_documents')
+        .createSignedUrl(documentPath, 3600);
+
+      if (error) throw error;
+
+      setDocumentUrl(data.signedUrl);
+      setShowDocumentViewer(true);
+    } catch (error) {
+      console.error('Error loading document:', error);
+      alert('Failed to load document. Please try again.');
     }
   };
 
@@ -418,21 +532,186 @@ export default function AdminCustomerManager() {
                   </div>
                 </div>
 
+                {/* Research Profile Section */}
+                {selectedCustomer.research_profile && (
+                  <div className="mt-8 pt-6 border-t">
+                    <h4 className="font-medium text-gray-900 mb-4 flex items-center">
+                      <GraduationCap className="h-5 w-5 mr-2" />
+                      Research Profile
+                    </h4>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Basic Information */}
+                      <div className="space-y-3">
+                        <h5 className="text-sm font-semibold text-gray-700">Institution Details</h5>
+                        <div className="space-y-2 text-sm">
+                          <p><span className="font-medium">Type:</span> {selectedCustomer.research_profile.institution_type}</p>
+                          <p><span className="font-medium">Position:</span> {selectedCustomer.research_profile.position_title}</p>
+                          <p><span className="font-medium">Department:</span> {selectedCustomer.research_profile.department}</p>
+                          <p><span className="font-medium">Education:</span> {selectedCustomer.research_profile.education_level}</p>
+                          <p><span className="font-medium">Experience:</span> {selectedCustomer.research_profile.years_experience} years</p>
+                          {selectedCustomer.research_profile.publications_count > 0 && (
+                            <p><span className="font-medium">Publications:</span> {selectedCustomer.research_profile.publications_count}</p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Research Details */}
+                      <div className="space-y-3">
+                        <h5 className="text-sm font-semibold text-gray-700">Research Focus</h5>
+                        <div className="space-y-2 text-sm">
+                          {selectedCustomer.research_profile.research_areas.length > 0 && (
+                            <div>
+                              <span className="font-medium">Areas:</span>
+                              <div className="flex flex-wrap gap-1 mt-1">
+                                {selectedCustomer.research_profile.research_areas.map((area, idx) => (
+                                  <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
+                                    {area}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          {selectedCustomer.research_profile.specializations.length > 0 && (
+                            <div>
+                              <span className="font-medium">Specializations:</span>
+                              <div className="flex flex-wrap gap-1 mt-1">
+                                {selectedCustomer.research_profile.specializations.map((spec, idx) => (
+                                  <span key={idx} className="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">
+                                    {spec}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          {selectedCustomer.research_profile.funding_sources.length > 0 && (
+                            <div>
+                              <span className="font-medium">Funding:</span>
+                              <div className="flex flex-wrap gap-1 mt-1">
+                                {selectedCustomer.research_profile.funding_sources.map((source, idx) => (
+                                  <span key={idx} className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs">
+                                    {source}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Compliance & Training */}
+                    <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                      <h5 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+                        <Award className="h-4 w-4 mr-2" />
+                        Compliance & Training
+                      </h5>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        <div className="flex items-center space-x-2">
+                          {selectedCustomer.research_profile.ethics_training_completed ? (
+                            <CheckCircle className="h-4 w-4 text-green-600" />
+                          ) : (
+                            <XCircle className="h-4 w-4 text-red-600" />
+                          )}
+                          <span>Ethics Training</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          {selectedCustomer.research_profile.safety_training_completed ? (
+                            <CheckCircle className="h-4 w-4 text-green-600" />
+                          ) : (
+                            <XCircle className="h-4 w-4 text-red-600" />
+                          )}
+                          <span>Safety Training</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          {selectedCustomer.research_profile.institutional_approval ? (
+                            <CheckCircle className="h-4 w-4 text-green-600" />
+                          ) : (
+                            <XCircle className="h-4 w-4 text-red-600" />
+                          )}
+                          <span>Institutional Approval</span>
+                        </div>
+                      </div>
+
+                      {selectedCustomer.research_profile.approval_document_url && (
+                        <div className="mt-4">
+                          <button
+                            onClick={() => handleViewDocument(selectedCustomer.research_profile!.approval_document_url!)}
+                            className="flex items-center space-x-2 text-blue-600 hover:text-blue-800"
+                          >
+                            <FileText className="h-4 w-4" />
+                            <span>View Approval Document</span>
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {selectedCustomer.research_profile.rejection_reason && (
+                      <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <p className="text-sm font-medium text-red-800">Rejection Reason:</p>
+                        <p className="text-sm text-red-700 mt-1">{selectedCustomer.research_profile.rejection_reason}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 <div className="mt-6 pt-6 border-t">
                   <div className="flex justify-end space-x-3">
-                    <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
-                      View Orders
+                    <button
+                      onClick={() => setSelectedCustomer(null)}
+                      className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                    >
+                      Close
                     </button>
-                    <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                      Send Message
-                    </button>
-                    {selectedCustomer.verification_status === 'pending' && (
-                      <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-                        Approve Verification
-                      </button>
+                    {selectedCustomer.research_profile && selectedCustomer.verification_status === 'pending' && (
+                      <>
+                        <button
+                          onClick={() => handleRejectVerification(selectedCustomer.id)}
+                          disabled={processingAction}
+                          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 flex items-center space-x-2"
+                        >
+                          <XCircle className="h-4 w-4" />
+                          <span>{processingAction ? 'Processing...' : 'Reject'}</span>
+                        </button>
+                        <button
+                          onClick={() => handleApproveVerification(selectedCustomer.id)}
+                          disabled={processingAction}
+                          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 flex items-center space-x-2"
+                        >
+                          <CheckCircle className="h-4 w-4" />
+                          <span>{processingAction ? 'Processing...' : 'Approve'}</span>
+                        </button>
+                      </>
                     )}
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Document Viewer Modal */}
+      {showDocumentViewer && (
+        <>
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-[60]" onClick={() => setShowDocumentViewer(false)} />
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+              <div className="p-4 border-b flex justify-between items-center">
+                <h3 className="text-lg font-semibold">Approval Document</h3>
+                <button
+                  onClick={() => setShowDocumentViewer(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="p-4 overflow-auto" style={{ maxHeight: 'calc(90vh - 100px)' }}>
+                <iframe
+                  src={documentUrl}
+                  className="w-full h-[70vh] border-0"
+                  title="Approval Document"
+                />
               </div>
             </div>
           </div>
