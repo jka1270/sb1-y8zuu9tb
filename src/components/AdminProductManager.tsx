@@ -560,18 +560,6 @@ export default function AdminProductManager() {
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Sequence
-                    </label>
-                    <input
-                      type="text"
-                      name="sequence"
-                      defaultValue={editingProduct?.sequence}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                  </div>
-
                   <ImageUpload
                     images={productImages}
                     onImagesChange={setProductImages}
