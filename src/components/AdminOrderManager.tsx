@@ -143,6 +143,132 @@ export default function AdminOrderManager() {
     setTimeout(() => setRefreshing(false), 1000);
   };
 
+  const handleDownloadPDF = (order: Order) => {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      showNotification({
+        type: 'error',
+        message: 'Please allow pop-ups to download the invoice',
+        duration: 3000
+      });
+      return;
+    }
+
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Invoice - ${order.order_number}</title>
+        <style>
+          * { margin: 0; padding: 0; box-sizing: border-box; }
+          body { font-family: Arial, sans-serif; padding: 40px; color: #333; }
+          .invoice-header { border-bottom: 3px solid #2563eb; padding-bottom: 20px; margin-bottom: 30px; }
+          .invoice-header h1 { color: #2563eb; font-size: 32px; margin-bottom: 10px; }
+          .invoice-info { display: flex; justify-content: space-between; margin-bottom: 30px; }
+          .info-section h3 { color: #2563eb; margin-bottom: 10px; font-size: 14px; text-transform: uppercase; }
+          .info-section p { margin: 5px 0; line-height: 1.6; }
+          table { width: 100%; border-collapse: collapse; margin: 30px 0; }
+          th { background-color: #2563eb; color: white; padding: 12px; text-align: left; font-weight: 600; }
+          td { padding: 12px; border-bottom: 1px solid #e5e7eb; }
+          tr:hover { background-color: #f9fafb; }
+          .total-section { margin-top: 30px; text-align: right; }
+          .total-row { display: flex; justify-content: flex-end; margin: 10px 0; font-size: 16px; }
+          .total-row span:first-child { margin-right: 20px; font-weight: 600; }
+          .grand-total { font-size: 20px; color: #2563eb; font-weight: bold; border-top: 2px solid #2563eb; padding-top: 15px; margin-top: 15px; }
+          .footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 12px; }
+          @media print {
+            body { padding: 20px; }
+            button { display: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="invoice-header">
+          <h1>INVOICE</h1>
+          <p style="color: #6b7280;">Order #${order.order_number}</p>
+        </div>
+
+        <div class="invoice-info">
+          <div class="info-section">
+            <h3>Bill To:</h3>
+            <p><strong>${order.billing_address.firstName} ${order.billing_address.lastName}</strong></p>
+            ${order.billing_address.company ? `<p>${order.billing_address.company}</p>` : ''}
+            <p>${order.billing_address.street}</p>
+            ${order.billing_address.apartment ? `<p>${order.billing_address.apartment}</p>` : ''}
+            <p>${order.billing_address.city}, ${order.billing_address.state} ${order.billing_address.zipCode}</p>
+            <p>${order.billing_address.country}</p>
+            <p>Email: ${order.billing_address.email}</p>
+            <p>Phone: ${order.billing_address.phone}</p>
+          </div>
+
+          <div class="info-section">
+            <h3>Ship To:</h3>
+            <p><strong>${order.shipping_address.firstName} ${order.shipping_address.lastName}</strong></p>
+            ${order.shipping_address.company ? `<p>${order.shipping_address.company}</p>` : ''}
+            <p>${order.shipping_address.street}</p>
+            ${order.shipping_address.apartment ? `<p>${order.shipping_address.apartment}</p>` : ''}
+            <p>${order.shipping_address.city}, ${order.shipping_address.state} ${order.shipping_address.zipCode}</p>
+            <p>${order.shipping_address.country}</p>
+          </div>
+
+          <div class="info-section">
+            <h3>Invoice Details:</h3>
+            <p><strong>Date:</strong> ${formatDate(order.created_at)}</p>
+            <p><strong>Status:</strong> ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</p>
+            <p><strong>Payment:</strong> ${order.payment_status}</p>
+            ${order.tracking_number ? `<p><strong>Tracking:</strong> ${order.tracking_number}</p>` : ''}
+            ${order.carrier ? `<p><strong>Carrier:</strong> ${order.carrier}</p>` : ''}
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${order.order_items?.map(item => `
+              <tr>
+                <td>${item.product_name}</td>
+                <td>${item.quantity}</td>
+                <td>${formatPrice(item.price)}</td>
+                <td>${formatPrice(item.quantity * item.price)}</td>
+              </tr>
+            `).join('') || '<tr><td colspan="4">No items</td></tr>'}
+          </tbody>
+        </table>
+
+        <div class="total-section">
+          <div class="total-row">
+            <span>Subtotal:</span>
+            <span>${formatPrice(order.total_amount)}</span>
+          </div>
+          <div class="total-row grand-total">
+            <span>Total:</span>
+            <span>${formatPrice(order.total_amount)}</span>
+          </div>
+        </div>
+
+        <div class="footer">
+          <p>Thank you for your business!</p>
+          <p style="margin-top: 10px;">This is a computer-generated invoice.</p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+          <button onclick="window.print()" style="background-color: #2563eb; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px;">Print / Save as PDF</button>
+        </div>
+      </body>
+      </html>
+    `;
+
+    printWindow.document.write(html);
+    printWindow.document.close();
+  };
+
   const handleExportOrders = () => {
     try {
       const csvHeaders = [
@@ -405,7 +531,11 @@ export default function AdminOrderManager() {
                           >
                             <Eye className="h-4 w-4" />
                           </button>
-                          <button className="text-green-600 hover:text-green-900" title="Download">
+                          <button
+                            onClick={() => handleDownloadPDF(order)}
+                            className="text-green-600 hover:text-green-900"
+                            title="Download PDF"
+                          >
                             <Download className="h-4 w-4" />
                           </button>
                         </div>
