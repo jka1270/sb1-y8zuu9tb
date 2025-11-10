@@ -12,6 +12,8 @@ import OrderHistoryPage from './OrderHistoryPage';
 import AccountDashboard from './AccountDashboard';
 import ResearchProfilePage from './ResearchProfilePage';
 import SavedProductsPage from './SavedProductsPage';
+import UserProfilePage from './UserProfilePage';
+import PreferencesPage from './PreferencesPage';
 import ResearchDocumentationPage from './ResearchDocumentationPage';
 import AboutPage from './AboutPage';
 import ContactPage from './ContactPage';
@@ -189,11 +191,17 @@ export default function AppWithNotifications() {
             {accountPage === 'dashboard' && (
               <AccountDashboard onNavigate={handleAccountNavigation} />
             )}
+            {accountPage === 'profile' && (
+              <UserProfilePage onBack={handleBackFromAccount} />
+            )}
             {accountPage === 'research-profile' && (
               <ResearchProfilePage onBack={handleBackFromAccount} />
             )}
             {accountPage === 'saved-products' && (
               <SavedProductsPage onBack={handleBackFromAccount} />
+            )}
+            {accountPage === 'preferences' && (
+              <PreferencesPage onBack={handleBackFromAccount} />
             )}
           </>
         )}
