@@ -29,6 +29,7 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
   const [showDocumentation, setShowDocumentation] = useState(false);
   const [addingToCart, setAddingToCart] = useState(false);
   const [savingProduct, setSavingProduct] = useState(false);
+  const [showShareToast, setShowShareToast] = useState(false);
 
   const productImages = Array.isArray(product.images) && product.images.length > 0
     ? product.images
@@ -95,6 +96,30 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
     setShowDocumentation(true);
   };
 
+  const handleShare = async () => {
+    const shareData = {
+      title: product.name,
+      text: `Check out ${product.name} - ${product.description}`,
+      url: window.location.href
+    };
+
+    try {
+      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        setShowShareToast(true);
+        setTimeout(() => setShowShareToast(false), 3000);
+      }
+    } catch (error) {
+      if ((error as Error).name !== 'AbortError') {
+        await navigator.clipboard.writeText(window.location.href);
+        setShowShareToast(true);
+        setTimeout(() => setShowShareToast(false), 3000);
+      }
+    }
+  };
+
   const tabs = [
     { id: 'overview', label: 'Overview', icon: FileText },
     { id: 'specifications', label: 'Specifications', icon: Beaker },
@@ -106,6 +131,14 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Share Toast Notification */}
+      {showShareToast && (
+        <div className="fixed top-4 right-4 z-50 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2 animate-fade-in">
+          <Share2 className="h-5 w-5" />
+          <span>Link copied to clipboard!</span>
+        </div>
+      )}
+
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -175,7 +208,11 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
                       <Heart className={`h-5 w-5 ${isSaved ? 'fill-current' : ''}`} />
                     )}
                   </button>
-                  <button className="p-2 text-gray-400 hover:text-blue-500">
+                  <button
+                    onClick={handleShare}
+                    className="p-2 text-gray-400 hover:text-blue-500"
+                    title="Share product"
+                  >
                     <Share2 className="h-5 w-5" />
                   </button>
                 </div>
