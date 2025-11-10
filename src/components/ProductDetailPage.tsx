@@ -367,12 +367,24 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
                   <div className="bg-white p-6 rounded-lg shadow-sm">
                     <h4 className="font-semibold mb-4">Additional Specifications</h4>
                     <div className="space-y-3">
-                      {Object.entries(product.specifications).map(([key, value]) => (
-                        <div key={key} className="flex justify-between">
-                          <span className="text-gray-600">{key}:</span>
-                          <span className="font-medium">{value}</span>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Purity:</span>
+                        <span className="font-medium text-green-600">{product.purity}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Molecular Weight:</span>
+                        <span className="font-medium">{product.molecularWeight !== '0' && product.molecularWeight !== 'N/A' ? product.molecularWeight : 'Contact for details'}</span>
+                      </div>
+                      {product.sequence && product.sequence !== 'N/A' && (
+                        <div>
+                          <span className="text-gray-600">Sequence:</span>
+                          <p className="font-mono text-sm mt-1 p-2 bg-gray-50 rounded">{product.sequence}</p>
                         </div>
-                      ))}
+                      )}
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Storage:</span>
+                        <span className="font-medium">-20°C</span>
+                      </div>
                     </div>
                   </div>
                 </div>
