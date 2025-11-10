@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Package, Truck, CheckCircle, Clock, Eye, Download, RefreshCw } from 'lucide-react';
 import { useOrders, Order } from '../hooks/useOrders';
 import { useAuth } from '../contexts/AuthContext';
+import { useNotification } from '../contexts/NotificationContext';
 import OrderDetailModal from './OrderDetailModal';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -12,6 +13,7 @@ interface OrderHistoryPageProps {
 export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
   const { orders, loading, error, refetch } = useOrders();
   const { user } = useAuth();
+  const { showNotification } = useNotification();
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
@@ -93,6 +95,141 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
     shipped: orders.filter(o => o.status === 'shipped').length,
     delivered: orders.filter(o => o.status === 'delivered').length,
     cancelled: orders.filter(o => o.status === 'cancelled').length,
+  };
+
+  const handleDownloadInvoice = (order: Order) => {
+    try {
+      // Generate invoice HTML
+      const invoiceHTML = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <title>Invoice ${order.order_number}</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 40px; }
+            .header { text-align: center; margin-bottom: 30px; }
+            .company-name { font-size: 24px; font-weight: bold; color: #2563eb; }
+            .invoice-title { font-size: 20px; margin-top: 10px; }
+            .section { margin-bottom: 20px; }
+            .section-title { font-weight: bold; border-bottom: 2px solid #2563eb; padding-bottom: 5px; margin-bottom: 10px; }
+            .details { display: flex; justify-content: space-between; margin-bottom: 30px; }
+            .details-block { flex: 1; }
+            table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+            th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+            th { background-color: #f3f4f6; font-weight: bold; }
+            .total-row { font-weight: bold; font-size: 16px; }
+            .text-right { text-align: right; }
+            .summary { margin-top: 20px; }
+            .summary-line { display: flex; justify-content: space-between; padding: 5px 0; }
+            .grand-total { font-size: 18px; font-weight: bold; border-top: 2px solid #000; padding-top: 10px; margin-top: 10px; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="company-name">Research Peptides Direct</div>
+            <div class="invoice-title">INVOICE</div>
+          </div>
+
+          <div class="details">
+            <div class="details-block">
+              <div><strong>Invoice Number:</strong> ${order.order_number}</div>
+              <div><strong>Order Date:</strong> ${formatDate(order.created_at)}</div>
+              <div><strong>Payment Status:</strong> ${order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1)}</div>
+              <div><strong>Order Status:</strong> ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</div>
+            </div>
+            <div class="details-block">
+              <div><strong>Bill To:</strong></div>
+              <div>${order.shipping_address.firstName} ${order.shipping_address.lastName}</div>
+              <div>${order.shipping_address.company || ''}</div>
+              <div>${order.shipping_address.address1}</div>
+              <div>${order.shipping_address.city}, ${order.shipping_address.state} ${order.shipping_address.zipCode}</div>
+              <div>${order.shipping_address.email}</div>
+              <div>${order.shipping_address.phone}</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Order Items</div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>SKU</th>
+                  <th>Size</th>
+                  <th>Purity</th>
+                  <th class="text-right">Unit Price</th>
+                  <th class="text-right">Quantity</th>
+                  <th class="text-right">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${order.order_items?.map(item => `
+                  <tr>
+                    <td>${item.product_name}</td>
+                    <td>${item.product_sku}</td>
+                    <td>${item.size}</td>
+                    <td>${item.purity}</td>
+                    <td class="text-right">${formatPrice(item.unit_price)}</td>
+                    <td class="text-right">${item.quantity}</td>
+                    <td class="text-right">${formatPrice(item.total_price)}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="summary">
+            <div class="summary-line">
+              <span>Subtotal:</span>
+              <span>${formatPrice(order.subtotal)}</span>
+            </div>
+            <div class="summary-line">
+              <span>Shipping (${order.shipping_method === 'express' ? 'Express' : 'Standard'} Cold Chain):</span>
+              <span>${formatPrice(order.shipping_cost)}</span>
+            </div>
+            <div class="summary-line">
+              <span>Tax:</span>
+              <span>${formatPrice(order.tax_amount)}</span>
+            </div>
+            <div class="summary-line grand-total">
+              <span>Total:</span>
+              <span>${formatPrice(order.total_amount)}</span>
+            </div>
+          </div>
+
+          <div class="section" style="margin-top: 40px; font-size: 12px; color: #666;">
+            <p><strong>Note:</strong> This is a computer-generated invoice and does not require a signature.</p>
+            <p>For research use only. Not for human or veterinary use.</p>
+          </div>
+        </body>
+        </html>
+      `;
+
+      // Create blob and download
+      const blob = new Blob([invoiceHTML], { type: 'text/html' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `invoice-${order.order_number}.html`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      showNotification({
+        type: 'success',
+        message: 'Invoice downloaded successfully',
+        duration: 3000
+      });
+    } catch (error) {
+      console.error('Error downloading invoice:', error);
+      showNotification({
+        type: 'error',
+        message: 'Failed to download invoice',
+        duration: 3000
+      });
+    }
   };
 
   if (!user) {
@@ -306,7 +443,10 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
                             <Eye className="h-4 w-4 mr-1" />
                             View Details
                           </button>
-                          <button className="flex items-center text-gray-600 hover:text-gray-700">
+                          <button
+                            onClick={() => handleDownloadInvoice(order)}
+                            className="flex items-center text-gray-600 hover:text-gray-700"
+                          >
                             <Download className="h-4 w-4 mr-1" />
                             Download Invoice
                           </button>
