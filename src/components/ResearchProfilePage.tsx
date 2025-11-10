@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Save, Upload, CheckCircle, AlertTriangle, User, Building, GraduationCap, FileText, Shield } from 'lucide-react';
 import { useResearchProfile } from '../hooks/useResearchProfile';
 import { useAuth } from '../contexts/AuthContext';
@@ -16,6 +16,7 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
   const [activeTab, setActiveTab] = useState('basic');
   const [saving, setSaving] = useState(false);
   const [uploadingDoc, setUploadingDoc] = useState(false);
+  const formInitialized = useRef(false);
   const [formData, setFormData] = useState({
     institution_type: '',
     research_areas: [] as string[],
@@ -39,7 +40,7 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
   });
 
   useEffect(() => {
-    if (profile) {
+    if (profile && !formInitialized.current) {
       setFormData({
         institution_type: profile.institution_type || '',
         research_areas: profile.research_areas || [],
@@ -61,6 +62,7 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
         safety_training_date: profile.safety_training_date || '',
         institutional_approval: profile.institutional_approval || false,
       });
+      formInitialized.current = true;
     }
   }, [profile]);
 
