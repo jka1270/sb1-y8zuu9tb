@@ -136,15 +136,30 @@ export const useSavedProducts = () => {
         throw new Error('Product already saved - duplicate key');
       }
 
+      const insertData: any = {
+        user_id: user.id,
+        product_id: productData.product_id,
+        product_name: productData.product_name,
+        tags: productData.tags || [],
+        priority: productData.priority || 'medium',
+        last_viewed: new Date().toISOString()
+      };
+
+      // Only add variant_id if it's provided and not undefined
+      if (productData.variant_id) {
+        insertData.variant_id = productData.variant_id;
+      }
+
+      // Add optional fields if provided
+      if (productData.research_notes) insertData.research_notes = productData.research_notes;
+      if (productData.planned_use) insertData.planned_use = productData.planned_use;
+      if (productData.quantity_needed) insertData.quantity_needed = productData.quantity_needed;
+      if (productData.budget_allocated) insertData.budget_allocated = productData.budget_allocated;
+      if (productData.project_association) insertData.project_association = productData.project_association;
+
       const { data, error } = await supabase
         .from('saved_products')
-        .insert({
-          user_id: user.id,
-          ...productData,
-          tags: productData.tags || [],
-          priority: productData.priority || 'medium',
-          last_viewed: new Date().toISOString()
-        })
+        .insert(insertData)
         .select()
         .single();
 
