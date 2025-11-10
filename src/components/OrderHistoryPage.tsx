@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Package, Truck, CheckCircle, Clock, Eye, Download, RefreshCw } from 'lucide-react';
-import jsPDF from 'jspdf';
+import { jsPDF } from 'jspdf';
 import { useOrders, Order } from '../hooks/useOrders';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotification } from '../contexts/NotificationContext';
