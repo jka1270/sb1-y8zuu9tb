@@ -316,17 +316,19 @@ export const useSavedProducts = () => {
   };
 
   const isProductSaved = (productId: string, variantId?: string): boolean => {
-    return savedProducts.some(saved => 
-      saved.product_id === productId && 
-      saved.variant_id === variantId
-    );
+    return savedProducts.some(saved => {
+      const savedVariantId = saved.variant_id || null;
+      const checkVariantId = variantId || null;
+      return saved.product_id === productId && savedVariantId === checkVariantId;
+    });
   };
 
   const getSavedProduct = (productId: string, variantId?: string): SavedProduct | undefined => {
-    return savedProducts.find(saved => 
-      saved.product_id === productId && 
-      saved.variant_id === variantId
-    );
+    return savedProducts.find(saved => {
+      const savedVariantId = saved.variant_id || null;
+      const checkVariantId = variantId || null;
+      return saved.product_id === productId && savedVariantId === checkVariantId;
+    });
   };
 
   return {

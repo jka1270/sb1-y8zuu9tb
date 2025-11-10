@@ -87,7 +87,7 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
         await unsaveProduct(product.id, selectedVariant?.id);
         showNotification({
           type: 'success',
-          message: 'Product removed from favorites',
+          message: 'Removed from favorites',
           duration: 3000
         });
       } else {
@@ -99,7 +99,7 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
         });
         showNotification({
           type: 'success',
-          message: 'Product added to favorites',
+          message: 'Added to favorites',
           duration: 3000
         });
       }
@@ -233,13 +233,14 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm text-blue-600 font-medium">{product.category}</span>
                 <div className="flex space-x-2">
-                  <button 
+                  <button
                     onClick={handleToggleSave}
                     disabled={savingProduct}
-                    className={`p-2 hover:text-red-500 ${isSaved ? 'text-red-500' : 'text-gray-400'}`}
+                    className="p-2 transition-colors"
+                    style={{ color: isSaved ? '#FF0000' : '#9CA3AF' }}
                   >
                     {savingProduct ? (
-                      <div className="animate-spin h-5 w-5 border-2 border-gray-300 border-t-red-500 rounded-full" />
+                      <div className="animate-spin h-5 w-5 border-2 border-gray-300 rounded-full" style={{ borderTopColor: '#FF0000' }} />
                     ) : (
                       <Heart className={`h-5 w-5 ${isSaved ? 'fill-current' : ''}`} />
                     )}

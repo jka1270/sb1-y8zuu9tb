@@ -74,7 +74,7 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
         await unsaveProduct(product.id, selectedVariant?.id);
         showNotification({
           type: 'success',
-          message: 'Product removed from favorites',
+          message: 'Removed from favorites',
           duration: 3000
         });
       } else {
@@ -86,7 +86,7 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
         });
         showNotification({
           type: 'success',
-          message: 'Product added to favorites',
+          message: 'Added to favorites',
           duration: 3000
         });
       }
@@ -128,7 +128,8 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
               handleToggleSave();
             }}
             disabled={isLoading}
-            className={`bg-white p-2 sm:p-3 rounded-full shadow-md hover:bg-gray-50 touch-manipulation ${isSaved ? 'text-red-500' : 'text-gray-600'}`}
+            className="bg-white p-2 sm:p-3 rounded-full shadow-md hover:bg-gray-50 touch-manipulation transition-colors"
+            style={{ color: isSaved ? '#FF0000' : '#4B5563' }}
           >
             {isLoading ? (
               <div className="animate-spin h-4 w-4 border-2 border-gray-300 border-t-blue-600 rounded-full" />
