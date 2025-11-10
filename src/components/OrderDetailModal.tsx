@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { X, Package, Truck, MapPin, CreditCard, FileText, Download, ExternalLink } from 'lucide-react';
-import { jsPDF } from 'jspdf';
+import jsPDF from 'jspdf';
 import { Order } from '../hooks/useOrders';
 import { useCOA } from '../hooks/useCOA';
 import { useNotification } from '../contexts/NotificationContext';
