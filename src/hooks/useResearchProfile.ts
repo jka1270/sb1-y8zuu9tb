@@ -102,9 +102,10 @@ export const useResearchProfile = () => {
         })
         .eq('id', user.id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
+      if (!data) throw new Error('Profile not found. Please complete your research profile first.');
 
       setProfile(data);
       return data;
