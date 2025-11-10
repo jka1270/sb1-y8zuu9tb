@@ -12,6 +12,7 @@ export default function AdminProductManager() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [viewingProduct, setViewingProduct] = useState<Product | null>(null);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [productImages, setProductImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -426,18 +427,24 @@ export default function AdminProductManager() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
-                      <button className="text-blue-600 hover:text-blue-900">
+                      <button
+                        onClick={() => setViewingProduct(product)}
+                        className="text-blue-600 hover:text-blue-900"
+                        title="View Product"
+                      >
                         <Eye className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => setEditingProduct(product)}
                         className="text-indigo-600 hover:text-indigo-900"
+                        title="Edit Product"
                       >
                         <Pencil className="h-4 w-4" />
                       </button>
-                      <button 
+                      <button
                         onClick={() => handleDeleteProduct(product.id)}
                         className="text-red-600 hover:text-red-900"
+                        title="Delete Product"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -598,6 +605,122 @@ export default function AdminProductManager() {
                     </button>
                   </div>
                 </form>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* View Product Modal */}
+      {viewingProduct && (
+        <>
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50" onClick={() => setViewingProduct(null)} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-bold text-gray-900">{viewingProduct.name}</h3>
+                  <button
+                    onClick={() => setViewingProduct(null)}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
+                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                {/* Product Images */}
+                {viewingProduct.images && viewingProduct.images.length > 0 && (
+                  <div className="mb-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {viewingProduct.images.map((image, idx) => (
+                        <img
+                          key={idx}
+                          src={image}
+                          alt={`${viewingProduct.name} ${idx + 1}`}
+                          className="w-full h-48 object-cover rounded-lg border border-gray-200"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Product Details */}
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-500">SKU</label>
+                      <p className="mt-1 text-gray-900">{viewingProduct.sku}</p>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-500">Category</label>
+                      <p className="mt-1 text-gray-900">{viewingProduct.category}</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-500">Price</label>
+                      <p className="mt-1 text-gray-900 text-lg font-semibold">{formatPrice(viewingProduct.price)}</p>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-500">Stock Status</label>
+                      <p className="mt-1">
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          viewingProduct.inStock
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
+                        }`}>
+                          {viewingProduct.inStock ? 'In Stock' : 'Out of Stock'}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-500">Purity</label>
+                      <p className="mt-1 text-gray-900">{viewingProduct.purity}</p>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-500">Molecular Weight</label>
+                      <p className="mt-1 text-gray-900">{viewingProduct.molecularWeight}</p>
+                    </div>
+                  </div>
+
+                  {viewingProduct.sequence && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-500">Sequence</label>
+                      <p className="mt-1 text-gray-900 font-mono text-sm">{viewingProduct.sequence}</p>
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-500">Description</label>
+                    <p className="mt-1 text-gray-900 whitespace-pre-wrap">{viewingProduct.description}</p>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex justify-end space-x-3 mt-6 pt-6 border-t">
+                  <button
+                    onClick={() => {
+                      setViewingProduct(null);
+                      setEditingProduct(viewingProduct);
+                    }}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center"
+                  >
+                    <Pencil className="h-4 w-4 mr-2" />
+                    Edit Product
+                  </button>
+                  <button
+                    onClick={() => setViewingProduct(null)}
+                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
             </div>
           </div>
