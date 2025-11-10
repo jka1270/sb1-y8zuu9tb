@@ -127,13 +127,9 @@ export const useResearchProfile = () => {
 
       if (uploadError) throw uploadError;
 
-      const { data: { publicUrl } } = supabase.storage
-        .from('research_documents')
-        .getPublicUrl(fileName);
+      await updateProfile({ approval_document_url: fileName });
 
-      await updateProfile({ approval_document_url: publicUrl });
-
-      return publicUrl;
+      return fileName;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to upload document');
       throw err;
