@@ -78,9 +78,11 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
         duration: 3000
       });
     } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to save research profile. Please try again.';
+      console.error('Save error:', err);
       showNotification({
         type: 'error',
-        message: 'Failed to save research profile. Please try again.',
+        message: errorMessage,
         duration: 5000
       });
     } finally {

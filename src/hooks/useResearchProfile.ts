@@ -70,6 +70,8 @@ export const useResearchProfile = () => {
     try {
       if (!user) throw new Error('User not authenticated');
 
+      console.log('Creating profile with data:', { id: user.id, ...profileData });
+
       const { data, error } = await supabase
         .from('research_profiles')
         .insert({
@@ -80,12 +82,16 @@ export const useResearchProfile = () => {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw new Error(error.message || 'Failed to create research profile');
+      }
 
       setProfile(data);
       return data;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create research profile');
+      const errorMsg = err instanceof Error ? err.message : 'Failed to create research profile';
+      setError(errorMsg);
       throw err;
     }
   };
