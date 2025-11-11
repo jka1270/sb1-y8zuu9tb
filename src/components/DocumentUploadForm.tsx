@@ -100,20 +100,16 @@ export default function DocumentUploadForm({
         .getPublicUrl(filePath);
 
       let tableName = '';
-      let documentData: any = {
-        title: title.trim(),
-        description: description.trim() || null,
-        document_url: filePath,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      };
+      let documentData: any = {};
 
       if (category === 'technical') {
         tableName = 'technical_data_sheets';
         documentData = {
-          ...documentData,
           product_id: associatedProductId || 'general',
           sku: associatedProductId || 'general',
+          document_version: '1.0',
+          title: title.trim(),
+          description: description.trim() || null,
           molecular_formula: 'N/A',
           molecular_weight: 0,
           purity_specification: 'See document',
@@ -124,14 +120,19 @@ export default function DocumentUploadForm({
           research_applications: [],
           research_areas: [],
           solubility: {},
-          analytical_methods: {}
+          analytical_methods: {},
+          regulatory_status: 'Research Use Only',
+          document_url: filePath,
+          last_reviewed: new Date().toISOString(),
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         };
       } else if (category === 'safety') {
         tableName = 'safety_data_sheets';
         documentData = {
-          ...documentData,
           product_id: associatedProductId || 'general',
           sku: associatedProductId || 'general',
+          document_version: '1.0',
           sds_number: `SDS-${Date.now()}`,
           product_name: title.trim(),
           ghs_classification: {},
@@ -144,22 +145,28 @@ export default function DocumentUploadForm({
           first_aid_ingestion: 'See document',
           handling_precautions: 'See document',
           storage_requirements: 'See document',
-          personal_protective_equipment: {}
+          personal_protective_equipment: {},
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         };
       } else if (category === 'protocol') {
         tableName = 'research_protocols';
         documentData = {
-          ...documentData,
           product_id: associatedProductId || 'general',
           protocol_type: 'General',
+          title: title.trim(),
+          description: description.trim() || null,
           research_area: 'General',
           difficulty_level: 'intermediate',
           objective: description.trim() || 'See document',
           procedure_steps: {},
           author: user.email || 'Unknown',
+          version: '1.0',
           approval_status: 'pending',
           required_equipment: {},
-          required_reagents: {}
+          required_reagents: {},
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         };
       }
 
