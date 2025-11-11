@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Upload, FileText, X, CheckCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import LoadingSpinner from './LoadingSpinner';
+import { useToast } from './ToastContainer';
 
 type DocumentCategory = 'technical' | 'safety' | 'protocol';
 
@@ -18,6 +19,7 @@ export default function DocumentUploadForm({
   onSuccess,
   onCancel
 }: DocumentUploadFormProps) {
+  const toast = useToast();
   const [uploading, setUploading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [title, setTitle] = useState('');
@@ -48,12 +50,12 @@ export default function DocumentUploadForm({
       ];
 
       if (!validTypes.includes(selectedFile.type)) {
-        alert('Please upload a PDF, Word document, or text file');
+        toast.error('Invalid file type', 'Please upload a PDF, Word document, or text file');
         return;
       }
 
       if (selectedFile.size > 10 * 1024 * 1024) {
-        alert('File size must be less than 10MB');
+        toast.error('File too large', 'File size must be less than 10MB');
         return;
       }
 
@@ -68,12 +70,12 @@ export default function DocumentUploadForm({
     e.preventDefault();
 
     if (!file) {
-      alert('Please select a file to upload');
+      toast.warning('No file selected', 'Please select a file to upload');
       return;
     }
 
     if (!title.trim()) {
-      alert('Please provide a title for the document');
+      toast.warning('Title required', 'Please provide a title for the document');
       return;
     }
 
@@ -172,11 +174,11 @@ export default function DocumentUploadForm({
         throw dbError;
       }
 
-      alert('Document uploaded successfully!');
+      toast.success('Document uploaded successfully!', `${title} has been added to the system`);
       onSuccess();
     } catch (error: any) {
       console.error('Error uploading document:', error);
-      alert(`Failed to upload document: ${error.message}`);
+      toast.error('Upload failed', error.message || 'An error occurred while uploading the document. Please try again.');
     } finally {
       setUploading(false);
     }
