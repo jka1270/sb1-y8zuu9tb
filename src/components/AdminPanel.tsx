@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Users, Package, ShoppingBag, BarChart3, Settings, Search, Filter, Plus, Pencil, Trash2, Eye, Download, RefreshCw, AlertTriangle, CheckCircle, Clock, TrendingUp, TrendingDown, MessageSquare } from 'lucide-react';
+import { Users, Package, ShoppingBag, BarChart3, Settings, Search, Filter, Plus, Pencil, Trash2, Eye, Download, RefreshCw, AlertTriangle, CheckCircle, Clock, TrendingUp, TrendingDown, MessageSquare, FileText } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useUserRole } from '../hooks/useUserRole';
 import { useOrders } from '../hooks/useOrders';
@@ -8,6 +8,7 @@ import AdminOrderManager from './AdminOrderManager';
 import AdminCustomerManager from './AdminCustomerManager';
 import AdminDashboard from './AdminDashboard';
 import AdminMessagesManager from './AdminMessagesManager';
+import AdminDocumentManager from './AdminDocumentManager';
 import LoadingSpinner from './LoadingSpinner';
 
 interface AdminPanelProps {
@@ -44,6 +45,7 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
     { id: 'products', label: 'Products', icon: Package },
     { id: 'orders', label: 'Orders', icon: ShoppingBag },
     { id: 'customers', label: 'Customers', icon: Users },
+    { id: 'documents', label: 'Documents', icon: FileText },
     { id: 'messages', label: 'Messages', icon: MessageSquare },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
@@ -101,6 +103,7 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
           {activeTab === 'products' && <AdminProductManager />}
           {activeTab === 'orders' && <AdminOrderManager />}
           {activeTab === 'customers' && <AdminCustomerManager />}
+          {activeTab === 'documents' && <AdminDocumentManager />}
           {activeTab === 'messages' && <AdminMessagesManager />}
           {activeTab === 'settings' && (
             <div className="bg-white rounded-lg shadow-sm p-6">
