@@ -3,6 +3,8 @@ import { ArrowLeft, Download, ShoppingCart, Heart, Share2, AlertTriangle, Thermo
 import { Product, ProductVariant } from '../types';
 import { useCart } from '../contexts/CartContext';
 import { useSavedProducts } from '../hooks/useSavedProducts';
+import { useNotification } from '../contexts/NotificationContext';
+import { useAuth } from '../contexts/AuthContext';
 import { useCOA } from '../hooks/useCOA';
 import StockIndicator from './StockIndicator';
 import COAViewer from './COAViewer';
@@ -20,26 +22,23 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
   );
   const [activeTab, setActiveTab] = useState('overview');
   const [quantity, setQuantity] = useState(1);
-<<<<<<< HEAD
-=======
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   const { addItem } = useCart();
   const { isProductSaved, saveProduct, unsaveProduct } = useSavedProducts();
+  const { showNotification } = useNotification();
+  const { user } = useAuth();
   const { getCOABySKU } = useCOA();
   const [showCOA, setShowCOA] = useState(false);
   const [selectedCOA, setSelectedCOA] = useState<any>(null);
   const [showDocumentation, setShowDocumentation] = useState(false);
   const [addingToCart, setAddingToCart] = useState(false);
   const [savingProduct, setSavingProduct] = useState(false);
+  const [showShareToast, setShowShareToast] = useState(false);
 
-<<<<<<< HEAD
-=======
   const productImages = Array.isArray(product.images) && product.images.length > 0
     ? product.images
     : [product.image];
 
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -73,10 +72,24 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
   };
 
   const handleToggleSave = async () => {
+    if (!user) {
+      showNotification({
+        type: 'warning',
+        message: 'Please log in to save products to your favorites',
+        duration: 3000
+      });
+      return;
+    }
+
     try {
       setSavingProduct(true);
       if (isSaved) {
         await unsaveProduct(product.id, selectedVariant?.id);
+        showNotification({
+          type: 'success',
+          message: 'Removed from favorites',
+          duration: 3000
+        });
       } else {
         await saveProduct({
           product_id: product.id,
@@ -84,9 +97,27 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
           variant_id: selectedVariant?.id,
           priority: 'medium'
         });
+        showNotification({
+          type: 'success',
+          message: 'Added to favorites',
+          duration: 3000
+        });
       }
     } catch (error) {
       console.error('Error toggling save:', error);
+      if (error instanceof Error && error.message.includes('duplicate')) {
+        showNotification({
+          type: 'info',
+          message: 'This product is already in your favorites',
+          duration: 3000
+        });
+      } else {
+        showNotification({
+          type: 'error',
+          message: 'Failed to update favorites',
+          duration: 3000
+        });
+      }
     } finally {
       setSavingProduct(false);
     }
@@ -101,6 +132,30 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
     setShowDocumentation(true);
   };
 
+  const handleShare = async () => {
+    const shareData = {
+      title: product.name,
+      text: `Check out ${product.name} - ${product.description}`,
+      url: window.location.href
+    };
+
+    try {
+      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        setShowShareToast(true);
+        setTimeout(() => setShowShareToast(false), 3000);
+      }
+    } catch (error) {
+      if ((error as Error).name !== 'AbortError') {
+        await navigator.clipboard.writeText(window.location.href);
+        setShowShareToast(true);
+        setTimeout(() => setShowShareToast(false), 3000);
+      }
+    }
+  };
+
   const tabs = [
     { id: 'overview', label: 'Overview', icon: FileText },
     { id: 'specifications', label: 'Specifications', icon: Beaker },
@@ -112,6 +167,14 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Share Toast Notification */}
+      {showShareToast && (
+        <div className="fixed top-4 right-4 z-50 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2 animate-fade-in">
+          <Share2 className="h-5 w-5" />
+          <span>Link copied to clipboard!</span>
+        </div>
+      )}
+
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -127,39 +190,17 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-<<<<<<< HEAD
-          {/* Product Image */}
-          <div className="space-y-4">
-            <div className="aspect-square bg-white rounded-lg shadow-md overflow-hidden">
-              <OptimizedImage
-                src={product.image}
-=======
           {/* Product Image Gallery */}
           <div className="space-y-4">
             <div className="aspect-square bg-white rounded-lg shadow-md overflow-hidden">
               <OptimizedImage
                 src={productImages[selectedImageIndex]}
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                 alt={product.name}
                 className="w-full h-full object-cover"
                 priority={true}
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
-<<<<<<< HEAD
-            <div className="grid grid-cols-4 gap-2">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="aspect-square bg-white rounded border-2 border-gray-200 overflow-hidden">
-                  <OptimizedImage
-                    src={product.image}
-                    alt={`${product.name} view ${i}`}
-                    className="w-full h-full object-cover opacity-60"
-                    loading="lazy"
-                  />
-                </div>
-              ))}
-            </div>
-=======
             {productImages.length > 1 && (
               <div className="grid grid-cols-4 gap-2">
                 {productImages.map((image, index) => (
@@ -184,7 +225,6 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
                 ))}
               </div>
             )}
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
           </div>
 
           {/* Product Info */}
@@ -193,18 +233,23 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm text-blue-600 font-medium">{product.category}</span>
                 <div className="flex space-x-2">
-                  <button 
+                  <button
                     onClick={handleToggleSave}
                     disabled={savingProduct}
-                    className={`p-2 hover:text-red-500 ${isSaved ? 'text-red-500' : 'text-gray-400'}`}
+                    className="p-2 transition-colors"
+                    style={{ color: isSaved ? '#FF0000' : '#9CA3AF' }}
                   >
                     {savingProduct ? (
-                      <div className="animate-spin h-5 w-5 border-2 border-gray-300 border-t-red-500 rounded-full" />
+                      <div className="animate-spin h-5 w-5 border-2 border-gray-300 rounded-full" style={{ borderTopColor: '#FF0000' }} />
                     ) : (
                       <Heart className={`h-5 w-5 ${isSaved ? 'fill-current' : ''}`} />
                     )}
                   </button>
-                  <button className="p-2 text-gray-400 hover:text-blue-500">
+                  <button
+                    onClick={handleShare}
+                    className="p-2 text-gray-400 hover:text-blue-500"
+                    title="Share product"
+                  >
                     <Share2 className="h-5 w-5" />
                   </button>
                 </div>
@@ -230,11 +275,7 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
                 </div>
                 <div>
                   <span className="text-sm text-gray-600">Stock Status</span>
-<<<<<<< HEAD
-                  <StockIndicator sku={currentSku} showDetails={true} />
-=======
                   <StockIndicator sku={currentSku} showDetails={true} inStock={currentInStock} />
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                 </div>
               </div>
             </div>
@@ -400,12 +441,24 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
                   <div className="bg-white p-6 rounded-lg shadow-sm">
                     <h4 className="font-semibold mb-4">Additional Specifications</h4>
                     <div className="space-y-3">
-                      {Object.entries(product.specifications).map(([key, value]) => (
-                        <div key={key} className="flex justify-between">
-                          <span className="text-gray-600">{key}:</span>
-                          <span className="font-medium">{value}</span>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Purity:</span>
+                        <span className="font-medium text-green-600">{product.purity}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Molecular Weight:</span>
+                        <span className="font-medium">{product.molecularWeight !== '0' && product.molecularWeight !== 'N/A' ? product.molecularWeight : 'Contact for details'}</span>
+                      </div>
+                      {product.sequence && product.sequence !== 'N/A' && (
+                        <div>
+                          <span className="text-gray-600">Sequence:</span>
+                          <p className="font-mono text-sm mt-1 p-2 bg-gray-50 rounded">{product.sequence}</p>
                         </div>
-                      ))}
+                      )}
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Storage:</span>
+                        <span className="font-medium">-20°C</span>
+                      </div>
                     </div>
                   </div>
                 </div>

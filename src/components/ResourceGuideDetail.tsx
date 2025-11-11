@@ -3,6 +3,7 @@ import { ArrowLeft, Download, Star, Eye, Clock, User, BookOpen, Share2, ThumbsUp
 import { ResourceGuide } from '../data/blogPosts';
 import { useBlog } from '../hooks/useBlog';
 import { useAuth } from '../contexts/AuthContext';
+import { useNotification } from '../contexts/NotificationContext';
 
 interface ResourceGuideDetailProps {
   resource: ResourceGuide;
@@ -12,6 +13,7 @@ interface ResourceGuideDetailProps {
 export default function ResourceGuideDetail({ resource, onBack }: ResourceGuideDetailProps) {
   const { rateResource, incrementDownloadCount } = useBlog();
   const { user } = useAuth();
+  const { showNotification } = useNotification();
   const [userRating, setUserRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
   const [submittingRating, setSubmittingRating] = useState(false);
@@ -19,7 +21,11 @@ export default function ResourceGuideDetail({ resource, onBack }: ResourceGuideD
 
   const handleRating = async (rating: number) => {
     if (!user) {
-      alert('Please sign in to rate this resource.');
+      showNotification({
+        type: 'warning',
+        message: 'Please sign in to rate this resource.',
+        duration: 3000
+      });
       return;
     }
 
@@ -27,9 +33,17 @@ export default function ResourceGuideDetail({ resource, onBack }: ResourceGuideD
       setSubmittingRating(true);
       await rateResource(resource.id, rating, reviewText);
       setUserRating(rating);
-      alert('Thank you for rating this resource!');
+      showNotification({
+        type: 'success',
+        message: 'Thank you for rating this resource!',
+        duration: 3000
+      });
     } catch (error) {
-      alert('Failed to submit rating. Please try again.');
+      showNotification({
+        type: 'error',
+        message: 'Failed to submit rating. Please try again.',
+        duration: 5000
+      });
     } finally {
       setSubmittingRating(false);
     }
@@ -50,7 +64,11 @@ export default function ResourceGuideDetail({ resource, onBack }: ResourceGuideD
       link.click();
       document.body.removeChild(link);
     } catch (error) {
-      alert('Download failed. Please try again.');
+      showNotification({
+        type: 'error',
+        message: 'Download failed. Please try again.',
+        duration: 5000
+      });
     } finally {
       setDownloading(false);
     }
@@ -65,7 +83,11 @@ export default function ResourceGuideDetail({ resource, onBack }: ResourceGuideD
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
+      showNotification({
+        type: 'success',
+        message: 'Link copied to clipboard!',
+        duration: 3000
+      });
     }
   };
 

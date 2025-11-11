@@ -3,6 +3,8 @@ import { Product, ProductVariant } from '../types';
 import { useState } from 'react';
 import { useCart } from '../contexts/CartContext';
 import { useSavedProducts } from '../hooks/useSavedProducts';
+import { useNotification } from '../contexts/NotificationContext';
+import { useAuth } from '../contexts/AuthContext';
 import StockIndicator from './StockIndicator';
 import OptimizedImage from './OptimizedImage';
 import LoadingSpinner from './LoadingSpinner';
@@ -19,6 +21,8 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
   const [isBlinking, setIsBlinking] = useState(false);
   const { addItem } = useCart();
   const { isProductSaved, saveProduct, unsaveProduct } = useSavedProducts();
+  const { showNotification } = useNotification();
+  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const formatPrice = (price: number) => {
@@ -32,10 +36,7 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
   const currentSku = selectedVariant ? selectedVariant.sku : product.sku;
   const currentInStock = selectedVariant ? selectedVariant.inStock : product.inStock;
   const isSaved = isProductSaved(product.id, selectedVariant?.id);
-<<<<<<< HEAD
-=======
   const productImage = (product.images && product.images.length > 0) ? product.images[0] : product.image;
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 
   const handleAddToCart = () => {
     // Trigger blink animation
@@ -46,11 +47,7 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
       id: `${product.id}-${selectedVariant?.id || 'default'}`,
       productId: product.id,
       productName: product.name,
-<<<<<<< HEAD
-      productImage: product.image,
-=======
       productImage: productImage,
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
       variantId: selectedVariant?.id,
       size: selectedVariant?.size || 'Standard',
       price: currentPrice,
@@ -62,10 +59,24 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
   };
 
   const handleToggleSave = async () => {
+    if (!user) {
+      showNotification({
+        type: 'warning',
+        message: 'Please log in to save products to your favorites',
+        duration: 3000
+      });
+      return;
+    }
+
     try {
       setIsLoading(true);
       if (isSaved) {
         await unsaveProduct(product.id, selectedVariant?.id);
+        showNotification({
+          type: 'success',
+          message: 'Removed from favorites',
+          duration: 3000
+        });
       } else {
         await saveProduct({
           product_id: product.id,
@@ -73,9 +84,27 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
           variant_id: selectedVariant?.id,
           priority: 'medium'
         });
+        showNotification({
+          type: 'success',
+          message: 'Added to favorites',
+          duration: 3000
+        });
       }
     } catch (error) {
       console.error('Error toggling save:', error);
+      if (error instanceof Error && error.message.includes('duplicate')) {
+        showNotification({
+          type: 'info',
+          message: 'This product is already in your favorites',
+          duration: 3000
+        });
+      } else {
+        showNotification({
+          type: 'error',
+          message: 'Failed to update favorites',
+          duration: 3000
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -83,15 +112,9 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group touch-manipulation">
-<<<<<<< HEAD
-      <div className="relative overflow-hidden">
-        <OptimizedImage
-          src={product.image} 
-=======
       <div className="relative overflow-hidden cursor-pointer" onClick={() => onViewDetails(product)}>
         <OptimizedImage
           src={productImage}
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
           alt={product.name}
           className="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-105 transition-transform duration-300"
           loading="lazy"
@@ -99,18 +122,14 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
         />
         <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
         <div className="absolute top-2 sm:top-4 right-2 sm:right-4 space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-<<<<<<< HEAD
-          <button 
-            onClick={handleToggleSave}
-=======
           <button
             onClick={(e) => {
               e.stopPropagation();
               handleToggleSave();
             }}
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
             disabled={isLoading}
-            className={`bg-white p-2 sm:p-3 rounded-full shadow-md hover:bg-gray-50 touch-manipulation ${isSaved ? 'text-red-500' : 'text-gray-600'}`}
+            className="bg-white p-2 sm:p-3 rounded-full shadow-md hover:bg-gray-50 touch-manipulation transition-colors"
+            style={{ color: isSaved ? '#FF0000' : '#4B5563' }}
           >
             {isLoading ? (
               <div className="animate-spin h-4 w-4 border-2 border-gray-300 border-t-blue-600 rounded-full" />
@@ -118,16 +137,11 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
               <Heart className={`h-4 w-4 ${isSaved ? 'fill-current' : ''}`} />
             )}
           </button>
-<<<<<<< HEAD
-          <button 
-            onClick={() => onViewDetails(product)}
-=======
           <button
             onClick={(e) => {
               e.stopPropagation();
               onViewDetails(product);
             }}
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
             className="bg-white p-2 sm:p-3 rounded-full shadow-md hover:bg-gray-50 touch-manipulation"
           >
             <Eye className="h-4 w-4 text-gray-600" />
@@ -189,11 +203,7 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
           
           {/* Stock Indicator */}
           <div className="mb-3">
-<<<<<<< HEAD
-            <StockIndicator sku={currentSku} showDetails={false} />
-=======
             <StockIndicator sku={currentSku} showDetails={false} inStock={currentInStock} />
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
           </div>
           
           {Object.entries(product.specifications).slice(0, 2).map(([key, value]) => (

@@ -137,8 +137,6 @@
   .blink-box {
     animation: blinkBox 2s ease-in-out infinite;
   }
-<<<<<<< HEAD
-=======
 
   /* Slide in animation for notifications */
   @keyframes slide-in {
@@ -155,5 +153,20 @@
   .animate-slide-in {
     animation: slide-in 0.3s ease-out;
   }
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
+
+  /* Slide in from right for toast notifications */
+  @keyframes slide-in-right {
+    from {
+      transform: translateX(calc(100% + 1rem));
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-slide-in-right {
+    animation: slide-in-right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 }

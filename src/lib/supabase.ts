@@ -1,17 +1,23 @@
 import { createClient } from '@supabase/supabase-js'
 
-<<<<<<< HEAD
-const supabaseUrl = 'https://adlgfohysjhnvezxgflh.supabase.co'
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkbGdmb2h5c2pobnZlenhnZmxoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkwNzIzMDMsImV4cCI6MjA3NDY0ODMwM30.oI5W-jU7UGlsdZl1ztXmK2vzhPkWNrPeWdl8uVf2GUs'
-=======
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
+console.log('🔍 Supabase Configuration Debug:', {
+  url: supabaseUrl,
+  keyPrefix: supabaseKey?.substring(0, 20) + '...',
+  envMode: import.meta.env.MODE,
+  allEnvKeys: Object.keys(import.meta.env)
+})
+
 if (!supabaseUrl || !supabaseKey) {
-  throw new Error('Missing Supabase environment variables')
+  console.error('❌ Supabase environment variables:', {
+    url: supabaseUrl ? 'present' : 'missing',
+    key: supabaseKey ? 'present' : 'missing'
+  })
+  throw new Error('Missing Supabase environment variables. Please check your .env file.')
 }
 
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 // Helper function for handling Supabase errors

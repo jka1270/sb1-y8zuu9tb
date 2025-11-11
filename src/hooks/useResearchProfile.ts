@@ -70,22 +70,34 @@ export const useResearchProfile = () => {
     try {
       if (!user) throw new Error('User not authenticated');
 
+      const cleanedData = {
+        ...profileData,
+        ethics_training_date: profileData.ethics_training_date || null,
+        safety_training_date: profileData.safety_training_date || null,
+      };
+
+      console.log('Creating profile with data:', { id: user.id, ...cleanedData });
+
       const { data, error } = await supabase
         .from('research_profiles')
         .insert({
           id: user.id,
-          ...profileData,
+          ...cleanedData,
           updated_at: new Date().toISOString()
         })
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw new Error(error.message || 'Failed to create research profile');
+      }
 
       setProfile(data);
       return data;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create research profile');
+      const errorMsg = err instanceof Error ? err.message : 'Failed to create research profile';
+      setError(errorMsg);
       throw err;
     }
   };
@@ -94,17 +106,24 @@ export const useResearchProfile = () => {
     try {
       if (!user) throw new Error('User not authenticated');
 
+      const cleanedUpdates = {
+        ...updates,
+        ethics_training_date: updates.ethics_training_date || null,
+        safety_training_date: updates.safety_training_date || null,
+      };
+
       const { data, error } = await supabase
         .from('research_profiles')
         .update({
-          ...updates,
+          ...cleanedUpdates,
           updated_at: new Date().toISOString()
         })
         .eq('id', user.id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
+      if (!data) throw new Error('Profile not found. Please complete your research profile first.');
 
       setProfile(data);
       return data;
@@ -127,13 +146,9 @@ export const useResearchProfile = () => {
 
       if (uploadError) throw uploadError;
 
-      const { data: { publicUrl } } = supabase.storage
-        .from('research_documents')
-        .getPublicUrl(fileName);
+      await updateProfile({ approval_document_url: fileName });
 
-      await updateProfile({ approval_document_url: publicUrl });
-
-      return publicUrl;
+      return fileName;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to upload document');
       throw err;

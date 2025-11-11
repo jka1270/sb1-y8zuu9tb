@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Save, Upload, CheckCircle, AlertTriangle, User, Building, GraduationCap, FileText, Shield } from 'lucide-react';
 import { useResearchProfile } from '../hooks/useResearchProfile';
 import { useAuth } from '../contexts/AuthContext';
+import { useNotification } from '../contexts/NotificationContext';
 import LoadingSpinner from './LoadingSpinner';
 
 interface ResearchProfilePageProps {
@@ -11,9 +12,11 @@ interface ResearchProfilePageProps {
 export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps) {
   const { profile, loading, error, createProfile, updateProfile, uploadApprovalDocument } = useResearchProfile();
   const { user } = useAuth();
+  const { showNotification } = useNotification();
   const [activeTab, setActiveTab] = useState('basic');
   const [saving, setSaving] = useState(false);
   const [uploadingDoc, setUploadingDoc] = useState(false);
+  const formInitialized = useRef(false);
   const [formData, setFormData] = useState({
     institution_type: '',
     research_areas: [] as string[],
@@ -37,7 +40,7 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
   });
 
   useEffect(() => {
-    if (profile) {
+    if (profile && !formInitialized.current) {
       setFormData({
         institution_type: profile.institution_type || '',
         research_areas: profile.research_areas || [],
@@ -59,6 +62,7 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
         safety_training_date: profile.safety_training_date || '',
         institutional_approval: profile.institutional_approval || false,
       });
+      formInitialized.current = true;
     }
   }, [profile]);
 
@@ -70,9 +74,19 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
       } else {
         await createProfile(formData);
       }
-      alert('Research profile saved successfully!');
+      showNotification({
+        type: 'success',
+        message: 'Research profile saved successfully!',
+        duration: 3000
+      });
     } catch (err) {
-      alert('Failed to save research profile. Please try again.');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to save research profile. Please try again.';
+      console.error('Save error:', err);
+      showNotification({
+        type: 'error',
+        message: errorMessage,
+        duration: 5000
+      });
     } finally {
       setSaving(false);
     }
@@ -85,9 +99,17 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
     try {
       setUploadingDoc(true);
       await uploadApprovalDocument(file);
-      alert('Approval document uploaded successfully!');
+      showNotification({
+        type: 'success',
+        message: 'Approval document uploaded successfully!',
+        duration: 3000
+      });
     } catch (err) {
-      alert('Failed to upload document. Please try again.');
+      showNotification({
+        type: 'error',
+        message: 'Failed to upload document. Please try again.',
+        duration: 5000
+      });
     } finally {
       setUploadingDoc(false);
     }
@@ -507,7 +529,7 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
                         <input
                           type="checkbox"
                           checked={formData.ethics_training_completed}
-                          onChange={(e) => setFormData({...formData, ethics_training_completed: e.target.checked})}
+                          onChange={(e) => setFormData({...formData, ethics_training_completed: e.target.checked, ethics_training_date: e.target.checked ? formData.ethics_training_date : ''})}
                           className="mr-3 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                         />
                         <span className="text-sm font-medium text-gray-700">
@@ -537,7 +559,7 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
                         <input
                           type="checkbox"
                           checked={formData.safety_training_completed}
-                          onChange={(e) => setFormData({...formData, safety_training_completed: e.target.checked})}
+                          onChange={(e) => setFormData({...formData, safety_training_completed: e.target.checked, safety_training_date: e.target.checked ? formData.safety_training_date : ''})}
                           className="mr-3 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                         />
                         <span className="text-sm font-medium text-gray-700">

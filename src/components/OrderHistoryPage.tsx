@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-<<<<<<< HEAD
-import { ArrowLeft, Package, Truck, CheckCircle, Clock, Eye, Download, RefreshCw } from 'lucide-react';
-=======
 import { Package, Truck, CheckCircle, Clock, Eye, Download, RefreshCw } from 'lucide-react';
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
+import jsPDF from 'jspdf';
 import { useOrders, Order } from '../hooks/useOrders';
 import { useAuth } from '../contexts/AuthContext';
+import { useNotification } from '../contexts/NotificationContext';
 import OrderDetailModal from './OrderDetailModal';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -16,8 +14,10 @@ interface OrderHistoryPageProps {
 export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
   const { orders, loading, error, refetch } = useOrders();
   const { user } = useAuth();
+  const { showNotification } = useNotification();
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -99,6 +99,184 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
     cancelled: orders.filter(o => o.status === 'cancelled').length,
   };
 
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    try {
+      await refetch();
+      showNotification({
+        type: 'success',
+        message: 'Orders refreshed successfully',
+        duration: 2000
+      });
+    } catch (error) {
+      showNotification({
+        type: 'error',
+        message: 'Failed to refresh orders',
+        duration: 3000
+      });
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  const handleDownloadInvoice = (order: Order) => {
+    try {
+      const pdf = new jsPDF();
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      let yPos = 20;
+
+      pdf.setFontSize(20);
+      pdf.setTextColor(37, 99, 235);
+      pdf.text('Research Peptides Direct', pageWidth / 2, yPos, { align: 'center' });
+
+      yPos += 10;
+      pdf.setFontSize(16);
+      pdf.text('INVOICE', pageWidth / 2, yPos, { align: 'center' });
+
+      yPos += 15;
+      pdf.setFontSize(10);
+      pdf.setTextColor(0, 0, 0);
+
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Invoice Number:', 20, yPos);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(order.order_number || 'N/A', 60, yPos);
+
+      yPos += 6;
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Order Date:', 20, yPos);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(formatDate(order.created_at), 60, yPos);
+
+      yPos += 6;
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Payment Status:', 20, yPos);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text((order.payment_status || 'pending').charAt(0).toUpperCase() + (order.payment_status || 'pending').slice(1), 60, yPos);
+
+      yPos += 6;
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Order Status:', 20, yPos);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text((order.status || 'processing').charAt(0).toUpperCase() + (order.status || 'processing').slice(1), 60, yPos);
+
+      yPos += 12;
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Bill To:', 20, yPos);
+      pdf.setFont('helvetica', 'normal');
+
+      const addr = order.shipping_address || {};
+
+      yPos += 6;
+      const fullName = [addr.firstName, addr.lastName].filter(Boolean).join(' ') || 'N/A';
+      pdf.text(fullName, 20, yPos);
+
+      if (addr.company) {
+        yPos += 5;
+        pdf.text(addr.company, 20, yPos);
+      }
+
+      if (addr.address1) {
+        yPos += 5;
+        pdf.text(addr.address1, 20, yPos);
+      }
+
+      if (addr.city || addr.state || addr.zipCode) {
+        yPos += 5;
+        const cityStateZip = [addr.city, `${addr.state || ''} ${addr.zipCode || ''}`.trim()].filter(Boolean).join(', ');
+        pdf.text(cityStateZip, 20, yPos);
+      }
+
+      if (addr.email) {
+        yPos += 5;
+        pdf.text(addr.email, 20, yPos);
+      }
+
+      if (addr.phone) {
+        yPos += 5;
+        pdf.text(addr.phone, 20, yPos);
+      }
+
+      yPos += 15;
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(12);
+      pdf.text('Order Items', 20, yPos);
+
+      yPos += 8;
+      pdf.setFontSize(9);
+      pdf.setFillColor(243, 244, 246);
+      pdf.rect(20, yPos - 5, pageWidth - 40, 7, 'F');
+
+      pdf.text('Product', 22, yPos);
+      pdf.text('Size', 100, yPos);
+      pdf.text('Qty', 125, yPos);
+      pdf.text('Price', pageWidth - 35, yPos, { align: 'right' });
+
+      yPos += 8;
+      pdf.setFont('helvetica', 'normal');
+
+      order.order_items?.forEach((item) => {
+        if (yPos > 260) {
+          pdf.addPage();
+          yPos = 20;
+        }
+
+        pdf.text(item.product_name.substring(0, 35), 22, yPos);
+        pdf.text(item.size, 100, yPos);
+        pdf.text(item.quantity.toString(), 125, yPos);
+        pdf.text(formatPrice(item.total_price), pageWidth - 35, yPos, { align: 'right' });
+
+        yPos += 6;
+      });
+
+      yPos += 10;
+      pdf.line(20, yPos, pageWidth - 20, yPos);
+
+      yPos += 8;
+      pdf.text('Subtotal:', pageWidth - 70, yPos);
+      pdf.text(formatPrice(order.subtotal), pageWidth - 35, yPos, { align: 'right' });
+
+      yPos += 6;
+      pdf.text(`Shipping (${order.shipping_method === 'express' ? 'Express' : 'Standard'} Cold Chain):`, pageWidth - 70, yPos);
+      pdf.text(formatPrice(order.shipping_cost), pageWidth - 35, yPos, { align: 'right' });
+
+      yPos += 6;
+      pdf.text('Tax:', pageWidth - 70, yPos);
+      pdf.text(formatPrice(order.tax_amount), pageWidth - 35, yPos, { align: 'right' });
+
+      yPos += 8;
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(11);
+      pdf.line(pageWidth - 70, yPos - 2, pageWidth - 20, yPos - 2);
+      pdf.text('Total:', pageWidth - 70, yPos);
+      pdf.text(formatPrice(order.total_amount), pageWidth - 35, yPos, { align: 'right' });
+
+      yPos += 15;
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(8);
+      pdf.setTextColor(100, 100, 100);
+      pdf.text('Note: This is a computer-generated invoice and does not require a signature.', 20, yPos);
+      yPos += 4;
+      pdf.text('For research use only. Not for human or veterinary use.', 20, yPos);
+
+      pdf.save(`invoice-${order.order_number}.pdf`);
+
+      showNotification({
+        type: 'success',
+        message: 'Invoice downloaded successfully',
+        duration: 3000
+      });
+    } catch (error) {
+      console.error('Error downloading invoice:', error);
+      console.error('Order data:', order);
+      showNotification({
+        type: 'error',
+        message: `Failed to download invoice: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        duration: 5000
+      });
+    }
+  };
+
   if (!user) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -116,23 +294,13 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-<<<<<<< HEAD
-          <div className="flex items-center justify-between">
-            <button
-              onClick={onBack}
-              className="flex items-center text-blue-600 hover:text-blue-700 font-medium"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Shop
-            </button>
-=======
           <div className="flex items-center justify-end">
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
             <button
-              onClick={refetch}
-              className="flex items-center text-gray-600 hover:text-gray-700"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
             >
-              <RefreshCw className="h-4 w-4 mr-2" />
+              <RefreshCw className={`h-5 w-5 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
               Refresh
             </button>
           </div>
@@ -190,10 +358,11 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
           <div className="bg-red-50 border border-red-200 p-4 rounded-lg mb-8">
             <p className="text-red-800">Error loading orders: {error}</p>
             <button
-              onClick={refetch}
-              className="mt-2 text-red-600 hover:text-red-700 font-medium"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className="mt-2 text-red-600 hover:text-red-700 font-medium disabled:opacity-50"
             >
-              Try again
+              {isRefreshing ? 'Refreshing...' : 'Try again'}
             </button>
           </div>
         )}
@@ -321,7 +490,10 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
                             <Eye className="h-4 w-4 mr-1" />
                             View Details
                           </button>
-                          <button className="flex items-center text-gray-600 hover:text-gray-700">
+                          <button
+                            onClick={() => handleDownloadInvoice(order)}
+                            className="flex items-center text-gray-600 hover:text-gray-700"
+                          >
                             <Download className="h-4 w-4 mr-1" />
                             Download Invoice
                           </button>

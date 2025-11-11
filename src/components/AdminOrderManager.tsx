@@ -1,22 +1,17 @@
 import { useState, useEffect } from 'react';
-<<<<<<< HEAD
-import { Search, Filter, Eye, CreditCard as Edit, Package, Truck, CheckCircle, Clock, AlertTriangle, Download, RefreshCw } from 'lucide-react';
-=======
-import { Search, Filter, Eye, Pencil, Package, Truck, CheckCircle, Clock, AlertTriangle, Download, RefreshCw } from 'lucide-react';
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
+import { Search, Filter, Eye, Package, Truck, CheckCircle, Clock, AlertTriangle, Download, RefreshCw } from 'lucide-react';
 import { useOrders, Order } from '../hooks/useOrders';
+import { useNotification } from '../contexts/NotificationContext';
 import LoadingSpinner from './LoadingSpinner';
 
 export default function AdminOrderManager() {
-<<<<<<< HEAD
-  const { orders, loading, error, updateOrderStatus, refetch } = useOrders();
-=======
   const { orders, loading, error, updateOrderStatus, syncToShipStation, getTracking, refetch } = useOrders();
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
+  const { showNotification } = useNotification();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [dateFilter, setDateFilter] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const statusOptions = [
     { value: '', label: 'All Statuses' },
@@ -91,22 +86,36 @@ export default function AdminOrderManager() {
   const handleStatusUpdate = async (orderId: string, newStatus: string) => {
     try {
       await updateOrderStatus(orderId, newStatus);
-      alert('Order status updated successfully');
+      showNotification({
+        type: 'success',
+        message: 'Order status updated successfully',
+        duration: 3000
+      });
     } catch (error) {
-      alert('Failed to update order status');
+      showNotification({
+        type: 'error',
+        message: 'Failed to update order status',
+        duration: 5000
+      });
     }
   };
 
-<<<<<<< HEAD
-=======
   const handleSyncToShipStation = async (orderId: string) => {
     try {
       const result = await syncToShipStation(orderId);
-      alert(`Order synced to ShipStation successfully! Order ID: ${result.shipstationOrderId}`);
+      showNotification({
+        type: 'success',
+        message: `Order synced to ShipStation successfully! Order ID: ${result.shipstationOrderId}`,
+        duration: 5000
+      });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.error('ShipStation sync error:', error);
-      alert(`Failed to sync to ShipStation: ${errorMessage}`);
+      showNotification({
+        type: 'error',
+        message: `Failed to sync to ShipStation: ${errorMessage}`,
+        duration: 5000
+      });
     }
   };
 
@@ -114,14 +123,209 @@ export default function AdminOrderManager() {
     try {
       const result = await getTracking(orderId);
       if (result.tracking) {
-        alert(`Tracking #: ${result.tracking.trackingNumber}\nCarrier: ${result.tracking.carrier}\nStatus: ${result.tracking.status}`);
+        showNotification({
+          type: 'info',
+          message: `Tracking #: ${result.tracking.trackingNumber} | Carrier: ${result.tracking.carrier} | Status: ${result.tracking.status}`,
+          duration: 7000
+        });
       }
     } catch (error) {
-      alert('Failed to get tracking info.');
+      showNotification({
+        type: 'error',
+        message: 'Failed to get tracking info',
+        duration: 5000
+      });
     }
   };
 
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 1000);
+  };
+
+  const handleDownloadPDF = (order: Order) => {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      showNotification({
+        type: 'error',
+        message: 'Please allow pop-ups to download the invoice',
+        duration: 3000
+      });
+      return;
+    }
+
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Invoice - ${order.order_number}</title>
+        <style>
+          * { margin: 0; padding: 0; box-sizing: border-box; }
+          body { font-family: Arial, sans-serif; padding: 40px; color: #333; }
+          .invoice-header { border-bottom: 3px solid #2563eb; padding-bottom: 20px; margin-bottom: 30px; }
+          .invoice-header h1 { color: #2563eb; font-size: 32px; margin-bottom: 10px; }
+          .invoice-info { display: flex; justify-content: space-between; margin-bottom: 30px; }
+          .info-section h3 { color: #2563eb; margin-bottom: 10px; font-size: 14px; text-transform: uppercase; }
+          .info-section p { margin: 5px 0; line-height: 1.6; }
+          table { width: 100%; border-collapse: collapse; margin: 30px 0; }
+          th { background-color: #2563eb; color: white; padding: 12px; text-align: left; font-weight: 600; }
+          td { padding: 12px; border-bottom: 1px solid #e5e7eb; }
+          tr:hover { background-color: #f9fafb; }
+          .total-section { margin-top: 30px; text-align: right; }
+          .total-row { display: flex; justify-content: flex-end; margin: 10px 0; font-size: 16px; }
+          .total-row span:first-child { margin-right: 20px; font-weight: 600; }
+          .grand-total { font-size: 20px; color: #2563eb; font-weight: bold; border-top: 2px solid #2563eb; padding-top: 15px; margin-top: 15px; }
+          .footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 12px; }
+          @media print {
+            body { padding: 20px; }
+            button { display: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="invoice-header">
+          <h1>INVOICE</h1>
+          <p style="color: #6b7280;">Order #${order.order_number}</p>
+        </div>
+
+        <div class="invoice-info">
+          <div class="info-section">
+            <h3>Bill To:</h3>
+            <p><strong>${order.billing_address.firstName} ${order.billing_address.lastName}</strong></p>
+            ${order.billing_address.company ? `<p>${order.billing_address.company}</p>` : ''}
+            <p>${order.billing_address.street}</p>
+            ${order.billing_address.apartment ? `<p>${order.billing_address.apartment}</p>` : ''}
+            <p>${order.billing_address.city}, ${order.billing_address.state} ${order.billing_address.zipCode}</p>
+            <p>${order.billing_address.country}</p>
+            <p>Email: ${order.billing_address.email}</p>
+            <p>Phone: ${order.billing_address.phone}</p>
+          </div>
+
+          <div class="info-section">
+            <h3>Ship To:</h3>
+            <p><strong>${order.shipping_address.firstName} ${order.shipping_address.lastName}</strong></p>
+            ${order.shipping_address.company ? `<p>${order.shipping_address.company}</p>` : ''}
+            <p>${order.shipping_address.street}</p>
+            ${order.shipping_address.apartment ? `<p>${order.shipping_address.apartment}</p>` : ''}
+            <p>${order.shipping_address.city}, ${order.shipping_address.state} ${order.shipping_address.zipCode}</p>
+            <p>${order.shipping_address.country}</p>
+          </div>
+
+          <div class="info-section">
+            <h3>Invoice Details:</h3>
+            <p><strong>Date:</strong> ${formatDate(order.created_at)}</p>
+            <p><strong>Status:</strong> ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</p>
+            <p><strong>Payment:</strong> ${order.payment_status}</p>
+            ${order.tracking_number ? `<p><strong>Tracking:</strong> ${order.tracking_number}</p>` : ''}
+            ${order.carrier ? `<p><strong>Carrier:</strong> ${order.carrier}</p>` : ''}
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${order.order_items?.map(item => `
+              <tr>
+                <td>${item.product_name}</td>
+                <td>${item.quantity}</td>
+                <td>${formatPrice(item.price)}</td>
+                <td>${formatPrice(item.quantity * item.price)}</td>
+              </tr>
+            `).join('') || '<tr><td colspan="4">No items</td></tr>'}
+          </tbody>
+        </table>
+
+        <div class="total-section">
+          <div class="total-row">
+            <span>Subtotal:</span>
+            <span>${formatPrice(order.total_amount)}</span>
+          </div>
+          <div class="total-row grand-total">
+            <span>Total:</span>
+            <span>${formatPrice(order.total_amount)}</span>
+          </div>
+        </div>
+
+        <div class="footer">
+          <p>Thank you for your business!</p>
+          <p style="margin-top: 10px;">This is a computer-generated invoice.</p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+          <button onclick="window.print()" style="background-color: #2563eb; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px;">Print / Save as PDF</button>
+        </div>
+      </body>
+      </html>
+    `;
+
+    printWindow.document.write(html);
+    printWindow.document.close();
+  };
+
+  const handleExportOrders = () => {
+    try {
+      const csvHeaders = [
+        'Order Number',
+        'Customer Name',
+        'Email',
+        'Status',
+        'Total',
+        'Payment Method',
+        'Date',
+        'Shipping Address',
+        'Phone'
+      ];
+
+      const csvRows = filteredOrders.map(order => [
+        order.order_number,
+        `${order.shipping_address.firstName} ${order.shipping_address.lastName}`,
+        order.user_email || 'Guest',
+        order.status,
+        formatPrice(order.total_amount),
+        order.payment_method,
+        formatDate(order.created_at),
+        `${order.shipping_address.address1}, ${order.shipping_address.city}, ${order.shipping_address.state} ${order.shipping_address.zipCode}`,
+        order.shipping_address.phone || ''
+      ]);
+
+      const csvContent = [
+        csvHeaders.join(','),
+        ...csvRows.map(row => row.map(cell => `"${cell}"`).join(','))
+      ].join('\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+
+      link.setAttribute('href', url);
+      link.setAttribute('download', `orders_export_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      showNotification({
+        type: 'success',
+        message: `Exported ${filteredOrders.length} orders successfully`,
+        duration: 3000
+      });
+    } catch (error) {
+      showNotification({
+        type: 'error',
+        message: 'Failed to export orders',
+        duration: 5000
+      });
+    }
+  };
+
   const orderStats = {
     total: orders.length,
     pending: orders.filter(o => o.status === 'pending').length,
@@ -141,14 +345,18 @@ export default function AdminOrderManager() {
             <p className="text-gray-600">Monitor and manage customer orders</p>
           </div>
           <div className="flex space-x-3">
-            <button 
-              onClick={refetch}
+            <button
+              onClick={handleRefresh}
+              disabled={refreshing}
+              className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+              {refreshing ? 'Refreshing...' : 'Refresh'}
+            </button>
+            <button
+              onClick={handleExportOrders}
               className="flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
             >
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Refresh
-            </button>
-            <button className="flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
               <Download className="h-4 w-4 mr-2" />
               Export
             </button>
@@ -314,21 +522,6 @@ export default function AdminOrderManager() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-<<<<<<< HEAD
-                      <div className="flex space-x-2">
-                        <button 
-                          onClick={() => setSelectedOrder(order)}
-                          className="text-blue-600 hover:text-blue-900"
-                        >
-                          <Eye className="h-4 w-4" />
-                        </button>
-                        <button className="text-indigo-600 hover:text-indigo-900">
-                          <Edit className="h-4 w-4" />
-                        </button>
-                        <button className="text-green-600 hover:text-green-900">
-                          <Download className="h-4 w-4" />
-                        </button>
-=======
                       <div className="flex flex-col gap-2">
                         <div className="flex space-x-2">
                           <button
@@ -338,10 +531,11 @@ export default function AdminOrderManager() {
                           >
                             <Eye className="h-4 w-4" />
                           </button>
-                          <button className="text-indigo-600 hover:text-indigo-900" title="Edit">
-                            <Pencil className="h-4 w-4" />
-                          </button>
-                          <button className="text-green-600 hover:text-green-900" title="Download">
+                          <button
+                            onClick={() => handleDownloadPDF(order)}
+                            className="text-green-600 hover:text-green-900"
+                            title="Download PDF"
+                          >
                             <Download className="h-4 w-4" />
                           </button>
                         </div>
@@ -374,7 +568,6 @@ export default function AdminOrderManager() {
                             </>
                           )}
                         </div>
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                       </div>
                     </td>
                   </tr>

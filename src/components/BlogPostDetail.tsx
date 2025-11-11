@@ -3,6 +3,7 @@ import { ArrowLeft, Calendar, User, Eye, Heart, Share2, MessageCircle, Clock, Ta
 import { BlogPost } from '../data/blogPosts';
 import { useBlog } from '../hooks/useBlog';
 import { useAuth } from '../contexts/AuthContext';
+import { useNotification } from '../contexts/NotificationContext';
 import OptimizedImage from './OptimizedImage';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -14,6 +15,7 @@ interface BlogPostDetailProps {
 export default function BlogPostDetail({ post, onBack }: BlogPostDetailProps) {
   const { fetchComments, addComment } = useBlog();
   const { user } = useAuth();
+  const { showNotification } = useNotification();
   const [comments, setComments] = useState<any[]>([]);
   const [newComment, setNewComment] = useState('');
   const [submittingComment, setSubmittingComment] = useState(false);
@@ -44,10 +46,18 @@ export default function BlogPostDetail({ post, onBack }: BlogPostDetailProps) {
       setSubmittingComment(true);
       await addComment(post.id, newComment);
       setNewComment('');
-      alert('Comment submitted for review. It will appear after moderation.');
+      showNotification({
+        type: 'success',
+        message: 'Comment submitted for review. It will appear after moderation.',
+        duration: 5000
+      });
       await loadComments();
     } catch (error) {
-      alert('Failed to submit comment. Please try again.');
+      showNotification({
+        type: 'error',
+        message: 'Failed to submit comment. Please try again.',
+        duration: 5000
+      });
     } finally {
       setSubmittingComment(false);
     }
@@ -70,7 +80,11 @@ export default function BlogPostDetail({ post, onBack }: BlogPostDetailProps) {
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
+      showNotification({
+        type: 'success',
+        message: 'Link copied to clipboard!',
+        duration: 3000
+      });
     }
   };
 

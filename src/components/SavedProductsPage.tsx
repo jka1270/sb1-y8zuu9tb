@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
-<<<<<<< HEAD
-import { ArrowLeft, Heart, Plus, Trash2, CreditCard as Edit, Search, Filter, Tag, Star, List, Grid2x2 as Grid } from 'lucide-react';
-=======
 import { ArrowLeft, Heart, Plus, Trash2, Pencil, Search, Filter, Tag, Star, List, Grid2x2 as Grid } from 'lucide-react';
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
 import { useSavedProducts } from '../hooks/useSavedProducts';
+import { useNotification } from '../contexts/NotificationContext';
 import { products } from '../data/products';
 import { Product } from '../types';
 import LoadingSpinner from './LoadingSpinner';
@@ -15,12 +12,13 @@ interface SavedProductsPageProps {
 }
 
 export default function SavedProductsPage({ onBack }: SavedProductsPageProps) {
-  const { 
-    savedProducts, 
-    productLists, 
-    loading, 
-    error, 
-    unsaveProduct, 
+  const { showNotification } = useNotification();
+  const {
+    savedProducts,
+    productLists,
+    loading,
+    error,
+    unsaveProduct,
     updateSavedProduct,
     createProductList,
     addToProductList,
@@ -75,7 +73,11 @@ export default function SavedProductsPage({ onBack }: SavedProductsPageProps) {
       setNewListName('');
       setNewListDescription('');
     } catch (err) {
-      alert('Failed to create list');
+      showNotification({
+        type: 'error',
+        message: 'Failed to create list',
+        duration: 5000
+      });
     }
   };
 
@@ -84,7 +86,11 @@ export default function SavedProductsPage({ onBack }: SavedProductsPageProps) {
       await updateSavedProduct(productId, updates);
       setEditingProduct(null);
     } catch (err) {
-      alert('Failed to update product');
+      showNotification({
+        type: 'error',
+        message: 'Failed to update product',
+        duration: 5000
+      });
     }
   };
 
@@ -185,64 +191,6 @@ export default function SavedProductsPage({ onBack }: SavedProductsPageProps) {
               </button>
             </nav>
           </div>
-
-          {/* Filters */}
-          {activeTab === 'saved' && (
-            <div className="p-6 border-b border-gray-200">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div>
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                    <input
-                      type="text"
-                      placeholder="Search saved products..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <select
-                    value={selectedPriority}
-                    onChange={(e) => setSelectedPriority(e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="">All Priorities</option>
-                    {priorities.map(priority => (
-                      <option key={priority} value={priority}>
-                        {priority.charAt(0).toUpperCase() + priority.slice(1)}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <select
-                    multiple
-                    value={selectedTags}
-                    onChange={(e) => setSelectedTags(Array.from(e.target.selectedOptions, option => option.value))}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    {allTags.map(tag => (
-                      <option key={tag} value={tag}>{tag}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <button
-                    onClick={() => {
-                      setSearchTerm('');
-                      setSelectedPriority('');
-                      setSelectedTags([]);
-                    }}
-                    className="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
-                  >
-                    Clear Filters
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Content */}
@@ -310,11 +258,7 @@ export default function SavedProductsPage({ onBack }: SavedProductsPageProps) {
                                 onClick={() => setEditingProduct(saved.id)}
                                 className="text-blue-600 hover:text-blue-700"
                               >
-<<<<<<< HEAD
-                                <Edit className="h-4 w-4" />
-=======
                                 <Pencil className="h-4 w-4" />
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                               </button>
                             </div>
                           </div>
@@ -344,11 +288,7 @@ export default function SavedProductsPage({ onBack }: SavedProductsPageProps) {
                               onClick={() => setEditingProduct(saved.id)}
                               className="p-1 text-gray-400 hover:text-blue-600"
                             >
-<<<<<<< HEAD
-                              <Edit className="h-4 w-4" />
-=======
                               <Pencil className="h-4 w-4" />
->>>>>>> c7bfe8dc5fa8f702766366e53572fdd68007ce3d
                             </button>
                             <button
                               onClick={() => unsaveProduct(saved.product_id, saved.variant_id)}
