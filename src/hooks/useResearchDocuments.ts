@@ -123,7 +123,7 @@ export const useResearchDocuments = () => {
       const [tdsResponse, sdsResponse, protocolsResponse] = await Promise.all([
         supabase.from('technical_data_sheets').select('*').order('created_at', { ascending: false }),
         supabase.from('safety_data_sheets').select('*').order('created_at', { ascending: false }),
-        supabase.from('research_protocols').select('*').eq('approval_status', 'approved').order('rating_average', { ascending: false })
+        supabase.from('research_protocols').select('*').order('created_at', { ascending: false })
       ]);
 
       if (tdsResponse.error) throw tdsResponse.error;
