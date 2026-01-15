@@ -23,7 +23,7 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
   const [activeTab, setActiveTab] = useState('overview');
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const { addItem } = useCart();
+  const { addItem, openCart } = useCart();
   const { isProductSaved, saveProduct, unsaveProduct } = useSavedProducts();
   const { showNotification } = useNotification();
   const { user } = useAuth();
@@ -68,6 +68,7 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
       purity: product.purity,
     };
     addItem(cartItem);
+    openCart();
     setTimeout(() => setAddingToCart(false), 500); // Brief loading state
   };
 

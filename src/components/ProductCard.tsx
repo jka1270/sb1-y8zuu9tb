@@ -19,7 +19,7 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
     product.variants ? product.variants[0] : null
   );
   const [isBlinking, setIsBlinking] = useState(false);
-  const { addItem } = useCart();
+  const { addItem, openCart } = useCart();
   const { isProductSaved, saveProduct, unsaveProduct } = useSavedProducts();
   const { showNotification } = useNotification();
   const { user } = useAuth();
@@ -42,7 +42,7 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
     // Trigger blink animation
     setIsBlinking(true);
     setTimeout(() => setIsBlinking(false), 600); // Match animation duration
-    
+
     const cartItem = {
       id: `${product.id}-${selectedVariant?.id || 'default'}`,
       productId: product.id,
@@ -56,6 +56,7 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
       purity: product.purity,
     };
     addItem(cartItem);
+    openCart();
   };
 
   const handleToggleSave = async () => {
