@@ -68,8 +68,10 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
       purity: product.purity,
     };
     addItem(cartItem);
-    openCart();
-    setTimeout(() => setAddingToCart(false), 500); // Brief loading state
+    setTimeout(() => {
+      openCart();
+      setAddingToCart(false);
+    }, 0);
   };
 
   const handleToggleSave = async () => {

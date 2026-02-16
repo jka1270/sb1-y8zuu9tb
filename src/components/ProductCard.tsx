@@ -56,7 +56,7 @@ export default function ProductCard({ product, onViewDetails }: ProductCardProps
       purity: product.purity,
     };
     addItem(cartItem);
-    openCart();
+    setTimeout(() => openCart(), 0);
   };
 
   const handleToggleSave = async () => {
