@@ -547,8 +547,8 @@ export default function ContactPage({ onBack }: ContactPageProps) {
               <div>
                 <h4 className="font-semibold text-gray-900 mb-2">What quality standards do you follow?</h4>
                 <p className="text-gray-600 text-sm">
-                  We maintain ISO 9001:2015 certification and follow GMP guidelines. All amino acid chains undergo 
-                  comprehensive analytical testing before release.
+                  We maintain ISO certification and follow GMP guidelines. All amino acid chains undergo
+                  rigorous quality testing before release.
                 </p>
               </div>
             </div>
