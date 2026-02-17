@@ -266,59 +266,55 @@ export default function DocumentUploadForm({
           </p>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Document Title {category !== 'report' && '*'}
-          </label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required={category !== 'report'}
-            placeholder={category === 'report'
-              ? "Optional - will use filename if left empty"
-              : "e.g., BPC-157 Technical Data Sheet"
-            }
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            disabled={uploading}
-          />
-          {category === 'report' && (
-            <p className="mt-1 text-xs text-gray-500">
-              Leave empty to automatically use the filename as the title
-            </p>
-          )}
-        </div>
+        {category !== 'report' && (
+          <>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Document Title *
+              </label>
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+                placeholder="e.g., BPC-157 Technical Data Sheet"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                disabled={uploading}
+              />
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Description (Optional)
-          </label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows={4}
-            placeholder="Add any additional notes or description about this document..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            disabled={uploading}
-          />
-        </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Description (Optional)
+              </label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                rows={4}
+                placeholder="Add any additional notes or description about this document..."
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                disabled={uploading}
+              />
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Associated Product ID (Optional)
-          </label>
-          <input
-            type="text"
-            value={associatedProductId}
-            onChange={(e) => setAssociatedProductId(e.target.value)}
-            placeholder="e.g., bpc-157 (leave empty for general documents)"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            disabled={uploading}
-          />
-          <p className="mt-1 text-xs text-gray-500">
-            Link this document to a specific product, or leave empty for general documentation
-          </p>
-        </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Associated Product ID (Optional)
+              </label>
+              <input
+                type="text"
+                value={associatedProductId}
+                onChange={(e) => setAssociatedProductId(e.target.value)}
+                placeholder="e.g., bpc-157 (leave empty for general documents)"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                disabled={uploading}
+              />
+              <p className="mt-1 text-xs text-gray-500">
+                Link this document to a specific product, or leave empty for general documentation
+              </p>
+            </div>
+          </>
+        )}
 
         <div className="flex justify-end space-x-3 pt-4 border-t">
           <button
