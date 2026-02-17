@@ -85,7 +85,7 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
   const tabs = [
     { id: 'tds', label: 'Technical Data Sheets', icon: FileText, count: productTDS.length },
     { id: 'sds', label: 'Safety Data Sheets', icon: Shield, count: productSDS.length },
-    { id: 'reports', label: 'Testing Reports', icon: BookOpen, count: productReports.length },
+    { id: 'reports', label: 'Test Reports', icon: BookOpen, count: productReports.length },
   ];
 
   if (loading) {
@@ -178,7 +178,7 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
                 </div>
               </div>
               <div>
-                <h3 className="font-medium text-gray-900 mb-2">Testing Reports ({searchResults.reports.length})</h3>
+                <h3 className="font-medium text-gray-900 mb-2">Test Reports ({searchResults.reports.length})</h3>
                 <div className="space-y-2">
                   {searchResults.reports.slice(0, 3).map(doc => (
                     <div key={doc.id} className="text-sm">
