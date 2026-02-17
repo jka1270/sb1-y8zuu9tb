@@ -122,7 +122,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
     {
       icon: Phone,
       title: 'Phone Support',
-      primary: '1-800-PEPTIDE (1-800-738-8433)',
+      primary: '1-800-738-8433',
       secondary: 'International: +1-858-555-0123',
       hours: 'Mon-Fri: 8:00 AM - 6:00 PM PST',
       color: 'text-blue-600'
