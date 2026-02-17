@@ -5,7 +5,7 @@ import { useNotification } from '../contexts/NotificationContext';
 import LoadingSpinner from './LoadingSpinner';
 
 export default function AdminOrderManager() {
-  const { orders, loading, error, updateOrderStatus, syncToShipStation, getTracking, updateTracking, refetch } = useOrders();
+  const { orders, loading, error, updateOrderStatus, updateTracking, refetch } = useOrders();
   const { showNotification } = useNotification();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
@@ -98,44 +98,6 @@ export default function AdminOrderManager() {
       showNotification({
         type: 'error',
         message: 'Failed to update order status',
-        duration: 5000
-      });
-    }
-  };
-
-  const handleSyncToShipStation = async (orderId: string) => {
-    try {
-      const result = await syncToShipStation(orderId);
-      showNotification({
-        type: 'success',
-        message: `Order synced to ShipStation successfully! Order ID: ${result.shipstationOrderId}`,
-        duration: 5000
-      });
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error('ShipStation sync error:', error);
-      showNotification({
-        type: 'error',
-        message: `Failed to sync to ShipStation: ${errorMessage}`,
-        duration: 5000
-      });
-    }
-  };
-
-  const handleGetTracking = async (orderId: string) => {
-    try {
-      const result = await getTracking(orderId);
-      if (result.tracking) {
-        showNotification({
-          type: 'info',
-          message: `Tracking #: ${result.tracking.trackingNumber} | Carrier: ${result.tracking.carrier} | Status: ${result.tracking.status}`,
-          duration: 7000
-        });
-      }
-    } catch (error) {
-      showNotification({
-        type: 'error',
-        message: 'Failed to get tracking info',
         duration: 5000
       });
     }
@@ -581,7 +543,6 @@ export default function AdminOrderManager() {
                             <Download className="h-4 w-4" />
                           </button>
                         </div>
-                        {/* Manual Tracking Entry */}
                         <div className="flex space-x-2">
                           <button
                             onClick={() => handleOpenTrackingModal(order)}
@@ -597,31 +558,6 @@ export default function AdminOrderManager() {
                             </span>
                           )}
                         </div>
-                        {/* ShipStation Actions */}
-                        {order.shipstation_order_id && (
-                          <div className="flex space-x-2">
-                            <button
-                              onClick={() => handleGetTracking(order.id)}
-                              className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200 flex items-center gap-1"
-                              title="Get Tracking from ShipStation"
-                            >
-                              <Package className="h-3 w-3" />
-                              Sync ShipStation
-                            </button>
-                          </div>
-                        )}
-                        {!order.shipstation_order_id && (
-                          <div className="flex space-x-2">
-                            <button
-                              onClick={() => handleSyncToShipStation(order.id)}
-                              className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200 flex items-center gap-1"
-                              title="Sync to ShipStation"
-                            >
-                              <Truck className="h-3 w-3" />
-                              Sync to ShipStation
-                            </button>
-                          </div>
-                        )}
                       </div>
                     </td>
                   </tr>
