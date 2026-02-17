@@ -21,7 +21,6 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
     getSDSByProduct,
     getReportsByProduct,
     downloadDocument,
-    rateReport,
     searchDocuments
   } = useResearchDocuments();
 
@@ -65,23 +64,6 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
   const handleViewDocument = (doc: any, type: string) => {
     setSelectedDocument(doc);
     setDocumentType(type);
-  };
-
-  const handleRateReport = async (reportId: string, rating: number) => {
-    try {
-      await rateReport(reportId, rating);
-      showNotification({
-        type: 'success',
-        message: 'Thank you for rating this testing report!',
-        duration: 3000
-      });
-    } catch (error) {
-      showNotification({
-        type: 'error',
-        message: 'Failed to submit rating. Please try again.',
-        duration: 5000
-      });
-    }
   };
 
   const searchResults = searchTerm ? searchDocuments(searchTerm) : null;
@@ -502,24 +484,6 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
                       {downloading === report.id ? 'Downloading...' : 'Download'}
                     </button>
                   </div>
-
-                  {/* Rating */}
-                  <div className="mt-4 pt-4 border-t">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Rate this testing report:</span>
-                      <div className="flex space-x-1">
-                        {[1, 2, 3, 4, 5].map((rating) => (
-                          <button
-                            key={rating}
-                            onClick={() => handleRateReport(report.id, rating)}
-                            className="text-gray-300 hover:text-yellow-500"
-                          >
-                            <Star className="h-4 w-4" />
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
                 </div>
               ))}
             </div>
@@ -559,7 +523,6 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
           documentType={documentType}
           onClose={() => setSelectedDocument(null)}
           onDownload={(format) => handleDownload(documentType as any, selectedDocument.id, format)}
-          onRate={documentType === 'report' ? handleRateReport : undefined}
         />
       )}
     </div>

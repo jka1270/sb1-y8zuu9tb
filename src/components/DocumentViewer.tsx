@@ -7,12 +7,10 @@ interface DocumentViewerProps {
   documentType: string;
   onClose: () => void;
   onDownload: (format: 'PDF' | 'DOC' | 'JSON') => void;
-  onRate?: (documentId: string, rating: number) => void;
 }
 
-export default function DocumentViewer({ document, documentType, onClose, onDownload, onRate }: DocumentViewerProps) {
+export default function DocumentViewer({ document, documentType, onClose, onDownload }: DocumentViewerProps) {
   const [downloadFormat, setDownloadFormat] = useState<'PDF' | 'DOC' | 'JSON'>('PDF');
-  const [userRating, setUserRating] = useState(0);
   const [downloading, setDownloading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
@@ -34,13 +32,6 @@ export default function DocumentViewer({ document, documentType, onClose, onDown
       console.error('Download failed:', error);
     } finally {
       setDownloading(false);
-    }
-  };
-
-  const handleRate = (rating: number) => {
-    if (onRate) {
-      setUserRating(rating);
-      onRate(document.id, rating);
     }
   };
 
@@ -367,7 +358,7 @@ export default function DocumentViewer({ document, documentType, onClose, onDown
             {/* Research Protocol Content */}
             {documentType === 'report' && (
               <div className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <div className="flex items-center mb-2">
                       <User className="h-4 w-4 text-gray-600 mr-2" />
@@ -392,25 +383,6 @@ export default function DocumentViewer({ document, documentType, onClose, onDown
                     }`}>
                       {document.difficulty_level}
                     </div>
-                  </div>
-
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <div className="flex items-center mb-2">
-                      <Star className="h-4 w-4 text-gray-600 mr-2" />
-                      <span className="font-medium text-gray-900">Rating</span>
-                    </div>
-                    {document.rating_average ? (
-                      <div>
-                        <div className="text-sm text-gray-700">
-                          {document.rating_average.toFixed(1)}/5.0
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          {document.rating_count} review{document.rating_count !== 1 ? 's' : ''}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="text-sm text-gray-500">Not rated yet</div>
-                    )}
                   </div>
                 </div>
 
@@ -494,29 +466,6 @@ export default function DocumentViewer({ document, documentType, onClose, onDown
                   </div>
                 )}
 
-                {/* Protocol Rating */}
-                {onRate && (
-                  <div className="bg-gray-50 p-6 rounded-lg">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Rate This Protocol</h3>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm text-gray-600">Your rating:</span>
-                      {[1, 2, 3, 4, 5].map((rating) => (
-                        <button
-                          key={rating}
-                          onClick={() => handleRate(rating)}
-                          className={`${
-                            rating <= userRating ? 'text-yellow-500' : 'text-gray-300'
-                          } hover:text-yellow-500`}
-                        >
-                          <Star className="h-5 w-5" />
-                        </button>
-                      ))}
-                      <span className="text-sm text-gray-600 ml-4">
-                        {userRating > 0 ? `You rated: ${userRating}/5` : 'Click to rate'}
-                      </span>
-                    </div>
-                  </div>
-                )}
               </div>
             )}
 
