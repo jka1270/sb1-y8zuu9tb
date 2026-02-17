@@ -458,7 +458,6 @@ export default function ContactPage({ onBack }: ContactPageProps) {
                       <p>Monday - Friday: 8:00 AM - 6:00 PM PST</p>
                       <p>Saturday: 9:00 AM - 2:00 PM PST</p>
                       <p>Sunday: Closed</p>
-                      <p className="text-sm text-blue-600 mt-2">Emergency support available 24/7</p>
                     </div>
                   </div>
                 </div>
@@ -503,26 +502,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
                     <div className="mt-3 space-y-1">
                       <p className="text-sm"><strong>Email:</strong> quality@researchraws.com</p>
                       <p className="text-sm"><strong>Phone:</strong> 1-800-738-8433 ext. 2</p>
-                      <p className="text-sm"><strong>Emergency QC Line:</strong> 1-858-555-0199</p>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Emergency Contact */}
-            <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-              <div className="flex items-start">
-                <AlertTriangle className="h-6 w-6 text-red-600 mr-3 mt-0.5" />
-                <div>
-                  <h4 className="font-semibold text-red-900">Emergency Contact</h4>
-                  <p className="text-red-800 text-sm mt-1">
-                    For chemical emergencies, spills, or safety incidents involving our products:
-                  </p>
-                  <div className="mt-3 space-y-1">
-                    <p className="text-sm font-medium text-red-900">CHEMTREC: 1-800-424-9300</p>
-                    <p className="text-sm text-red-800">24/7 Emergency Response</p>
-                    <p className="text-sm text-red-800">International: +1-703-527-3887</p>
                   </div>
                 </div>
               </div>
