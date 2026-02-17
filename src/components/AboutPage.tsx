@@ -17,33 +17,6 @@ export default function AboutPage({ onBack }: AboutPageProps) {
     { year: '2025', title: 'Sustainability Initiative', description: 'Launched green chemistry and sustainable manufacturing practices' },
   ];
 
-  const certifications = [
-    {
-      name: 'ISO 9001:2015',
-      description: 'Quality Management Systems',
-      icon: Award,
-      color: 'text-blue-600'
-    },
-    {
-      name: 'GMP Certified',
-      description: 'Good Manufacturing Practice',
-      icon: Shield,
-      color: 'text-green-600'
-    },
-    {
-      name: 'ISO 13485',
-      description: 'Medical Devices Quality Management',
-      icon: Microscope,
-      color: 'text-purple-600'
-    },
-    {
-      name: 'FDA Registered',
-      description: 'Food and Drug Administration',
-      icon: CheckCircle,
-      color: 'text-red-600'
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -144,23 +117,6 @@ export default function AboutPage({ onBack }: AboutPageProps) {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-
-        {/* Certifications */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Certifications & Compliance</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {certifications.map((cert) => {
-              const Icon = cert.icon;
-              return (
-                <div key={cert.name} className="bg-white p-6 rounded-lg shadow-sm text-center">
-                  <Icon className={`h-12 w-12 mx-auto mb-4 ${cert.color}`} />
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{cert.name}</h3>
-                  <p className="text-gray-600 text-sm">{cert.description}</p>
-                </div>
-              );
-            })}
           </div>
         </div>
 
