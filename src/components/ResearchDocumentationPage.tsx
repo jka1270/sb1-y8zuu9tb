@@ -450,23 +450,6 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
 
                   <p className="text-sm text-gray-600 mb-4">{report.objective}</p>
 
-                  <div className="space-y-2 mb-4">
-                    <div className="text-sm">
-                      <span className="font-medium text-gray-700">Author:</span>
-                      <span className="ml-2 text-gray-600">{report.author}</span>
-                    </div>
-                    {report.estimated_time && (
-                      <div className="text-sm">
-                        <span className="font-medium text-gray-700">Duration:</span>
-                        <span className="ml-2 text-gray-600">{report.estimated_time}</span>
-                      </div>
-                    )}
-                    <div className="text-sm">
-                      <span className="font-medium text-gray-700">Downloads:</span>
-                      <span className="ml-2 text-gray-600">{report.download_count}</span>
-                    </div>
-                  </div>
-
                   <div className="flex space-x-2">
                     <button
                       onClick={() => handleViewDocument(report, 'report')}
