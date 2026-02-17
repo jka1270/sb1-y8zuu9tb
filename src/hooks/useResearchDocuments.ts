@@ -57,6 +57,7 @@ export interface SafetyDataSheet {
   storage_requirements: string;
   personal_protective_equipment: Record<string, string>;
   disposal_methods: string;
+  document_url?: string;
   created_at: string;
   updated_at: string;
 }
@@ -85,6 +86,7 @@ export interface TestingReport {
   download_count: number;
   rating_average?: number;
   rating_count: number;
+  document_url?: string;
   created_at: string;
   updated_at: string;
 }
