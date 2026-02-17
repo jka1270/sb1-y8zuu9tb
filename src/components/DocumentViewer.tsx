@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Download, Star, FileText, Shield, BookOpen, Clock, User, Building, AlertTriangle, CheckCircle } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 interface DocumentViewerProps {
   document: any;
@@ -13,6 +14,17 @@ export default function DocumentViewer({ document, documentType, onClose, onDown
   const [downloadFormat, setDownloadFormat] = useState<'PDF' | 'DOC' | 'JSON'>('PDF');
   const [userRating, setUserRating] = useState(0);
   const [downloading, setDownloading] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (documentType === 'report' && document.document_url) {
+      const { data } = supabase.storage
+        .from('research_documents')
+        .getPublicUrl(document.document_url);
+
+      setPdfUrl(data.publicUrl);
+    }
+  }, [document, documentType]);
 
   const handleDownload = async () => {
     try {
@@ -58,11 +70,55 @@ export default function DocumentViewer({ document, documentType, onClose, onDown
     }
   };
 
+  if (documentType === 'report' && pdfUrl) {
+    return (
+      <>
+        {/* Overlay */}
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50" onClick={onClose} />
+
+        {/* Full-screen PDF Viewer */}
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-xl w-full h-full max-w-7xl max-h-[95vh] flex flex-col">
+            {/* Minimal Header */}
+            <div className="flex items-center justify-between p-4 border-b">
+              <h2 className="text-lg font-semibold text-gray-900">{document.title}</h2>
+              <div className="flex items-center space-x-3">
+                <a
+                  href={pdfUrl}
+                  download
+                  className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Download
+                </a>
+                <button
+                  onClick={onClose}
+                  className="p-2 hover:bg-gray-100 rounded-full"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* PDF Viewer */}
+            <div className="flex-1 bg-gray-100">
+              <iframe
+                src={pdfUrl}
+                className="w-full h-full"
+                title={document.title}
+              />
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       {/* Overlay */}
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50" onClick={onClose} />
-      
+
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
