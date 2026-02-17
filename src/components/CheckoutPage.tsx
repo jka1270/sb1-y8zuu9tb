@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CreditCard, Truck, Shield, AlertTriangle, Banknote } from 'lucide-react';
+import { CreditCard, Truck, Shield, AlertTriangle } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useOrders } from '../hooks/useOrders';
@@ -38,7 +38,7 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
   });
   const [sameAsShipping, setSameAsShipping] = useState(true);
   const [shippingMethod, setShippingMethod] = useState('standard');
-  const [paymentMethod, setPaymentMethod] = useState('cod');
+  const [paymentMethod, setPaymentMethod] = useState('stratospay');
   const [placingOrder, setPlacingOrder] = useState(false);
 
   // Pre-fill form with user data if logged in
@@ -401,18 +401,6 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
                           <CreditCard className="h-5 w-5 mr-2" />
                           <span className="text-sm sm:text-base">Credit Card (StratosPay)</span>
                         </label>
-                        <label className="flex items-center p-3 sm:p-4 border rounded-lg cursor-pointer hover:bg-gray-50 touch-manipulation">
-                          <input
-                            type="radio"
-                            name="payment"
-                            value="cod"
-                            checked={paymentMethod === 'cod'}
-                            onChange={(e) => setPaymentMethod(e.target.value)}
-                            className="mr-3"
-                          />
-                          <Banknote className="h-5 w-5 mr-2" />
-                          <span className="text-sm sm:text-base">Cash on Delivery</span>
-                        </label>
                       </div>
                     </div>
 
@@ -485,25 +473,6 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
                       />
                     )}
 
-                    {paymentMethod === 'cod' && (
-                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <div className="flex items-start">
-                          <Banknote className="h-5 w-5 text-blue-600 mr-3 mt-0.5" />
-                          <div className="flex-1">
-                            <h4 className="font-medium text-blue-900 mb-2">Cash on Delivery</h4>
-                            <p className="text-sm text-blue-800">
-                              Pay with cash when your order is delivered to your doorstep. Our delivery partner will collect the payment at the time of delivery.
-                            </p>
-                            <ul className="mt-3 space-y-1 text-sm text-blue-800">
-                              <li>• Please keep exact change ready</li>
-                              <li>• Payment must be made in cash only</li>
-                              <li>• You can inspect the package before payment</li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
                     {!billingAddress.email && (
                       <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
                         <p className="text-sm text-yellow-800">
@@ -532,70 +501,6 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
                     >
                       Back
                     </button>
-                    {paymentMethod === 'cod' && billingAddress.email && (
-                      <button
-                        onClick={async () => {
-                          try {
-                            setPlacingOrder(true);
-
-                            const orderData = {
-                              subtotal,
-                              shipping_cost: shippingCost,
-                              tax_amount: tax,
-                              total_amount: total,
-                              shipping_address: shippingAddress,
-                              billing_address: billingAddress,
-                              shipping_method: shippingMethod,
-                              payment_method: 'cod',
-                              payment_status: 'pending',
-                              items: state.items.map(item => ({
-                                product_id: item.productId,
-                                product_name: item.productName,
-                                product_sku: item.sku,
-                                variant_id: item.variantId,
-                                size: item.size,
-                                quantity: item.quantity,
-                                unit_price: item.price,
-                                total_price: item.price * item.quantity,
-                                purity: item.purity,
-                                molecular_weight: '1000 Da',
-                              }))
-                            };
-
-                            await createOrder(orderData);
-
-                            showNotification({
-                              type: 'success',
-                              message: 'Order placed successfully! You will pay cash when your order is delivered. Check your order history to track progress.',
-                              duration: 7000
-                            });
-                            clearCart();
-                            onBack();
-                          } catch (error) {
-                            console.error('Error creating order:', error);
-                            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-                            showNotification({
-                              type: 'error',
-                              message: `Failed to place order: ${errorMessage}. Please try again or contact support.`,
-                              duration: 7000
-                            });
-                          } finally {
-                            setPlacingOrder(false);
-                          }
-                        }}
-                        disabled={placingOrder}
-                        className="bg-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base touch-manipulation flex items-center justify-center"
-                      >
-                        {placingOrder ? (
-                          <>
-                            <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full mr-2" />
-                            Placing Order...
-                          </>
-                        ) : (
-                          'Place Order'
-                        )}
-                      </button>
-                    )}
                   </div>
                 </div>
               )}
