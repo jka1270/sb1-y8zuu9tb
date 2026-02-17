@@ -292,34 +292,6 @@ export default function AboutPage({ onBack }: AboutPageProps) {
             </div>
           </div>
         </div>
-
-        {/* Awards and Recognition */}
-        <div className="bg-white rounded-lg shadow-sm p-8">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Awards & Recognition</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <Award className="h-12 w-12 text-yellow-600 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Excellence in Quality</h3>
-              <p className="text-gray-600 text-sm">
-                Biotechnology Industry Organization (BIO) Quality Excellence Award 2023
-              </p>
-            </div>
-            <div className="text-center">
-              <Users className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Customer Choice</h3>
-              <p className="text-gray-600 text-sm">
-                Research Chemical Supplier of the Year 2024 - Scientific Equipment & Supplies
-              </p>
-            </div>
-            <div className="text-center">
-              <Globe className="h-12 w-12 text-green-600 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Innovation Leader</h3>
-              <p className="text-gray-600 text-sm">
-                San Diego Biotech Innovation Award 2024 for Advanced Amino Acid Chain Technologies
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
