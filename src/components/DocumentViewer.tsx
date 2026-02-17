@@ -15,14 +15,14 @@ export default function DocumentViewer({ document, documentType, onClose, onDown
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    if (documentType === 'report' && document.document_url) {
+    if (document.document_url) {
       const { data } = supabase.storage
         .from('research_documents')
         .getPublicUrl(document.document_url);
 
       setPdfUrl(data.publicUrl);
     }
-  }, [document, documentType]);
+  }, [document]);
 
   const handleDownload = async () => {
     try {
@@ -61,7 +61,7 @@ export default function DocumentViewer({ document, documentType, onClose, onDown
     }
   };
 
-  if (documentType === 'report' && pdfUrl) {
+  if (pdfUrl) {
     return (
       <>
         {/* Overlay */}
@@ -72,7 +72,9 @@ export default function DocumentViewer({ document, documentType, onClose, onDown
           <div className="bg-white rounded-lg shadow-xl w-full h-full max-w-7xl max-h-[95vh] flex flex-col">
             {/* Minimal Header */}
             <div className="flex items-center justify-between p-4 border-b">
-              <h2 className="text-lg font-semibold text-gray-900">{document.title}</h2>
+              <h2 className="text-lg font-semibold text-gray-900">
+                {document.title || document.product_name || 'Document'}
+              </h2>
               <div className="flex items-center space-x-3">
                 <a
                   href={pdfUrl}
@@ -96,7 +98,7 @@ export default function DocumentViewer({ document, documentType, onClose, onDown
               <iframe
                 src={pdfUrl}
                 className="w-full h-full"
-                title={document.title}
+                title={document.title || document.product_name || 'Document'}
               />
             </div>
           </div>
