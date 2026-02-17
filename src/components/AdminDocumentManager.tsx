@@ -3,6 +3,7 @@ import { FileText, Upload, Shield, BookOpen, Plus, Edit2, Trash2, Eye, Download,
 import { supabase } from '../lib/supabase';
 import LoadingSpinner from './LoadingSpinner';
 import DocumentUploadForm from './DocumentUploadForm';
+import { useNotification } from '../contexts/NotificationContext';
 
 type DocumentType = 'technical' | 'safety' | 'report';
 
@@ -41,6 +42,7 @@ interface TestingReport {
 }
 
 export default function AdminDocumentManager() {
+  const { showNotification } = useNotification();
   const [activeTab, setActiveTab] = useState<DocumentType>('technical');
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -84,13 +86,18 @@ export default function AdminDocumentManager() {
       }
     } catch (error) {
       console.error('Error fetching documents:', error);
+      showNotification({
+        type: 'error',
+        message: 'Failed to load documents. Please refresh the page.',
+        duration: 5000
+      });
     } finally {
       setLoading(false);
     }
   };
 
   const handleDeleteDocument = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this document?')) return;
+    if (!confirm('Are you sure you want to delete this document? This action cannot be undone.')) return;
 
     try {
       let tableName = '';
@@ -105,11 +112,20 @@ export default function AdminDocumentManager() {
 
       if (error) throw error;
 
+      showNotification({
+        type: 'success',
+        message: 'Document deleted successfully',
+        duration: 3000
+      });
+
       await fetchDocuments();
-      alert('Document deleted successfully');
     } catch (error) {
       console.error('Error deleting document:', error);
-      alert('Failed to delete document');
+      showNotification({
+        type: 'error',
+        message: error instanceof Error ? error.message : 'Failed to delete document. Please try again.',
+        duration: 5000
+      });
     }
   };
 
