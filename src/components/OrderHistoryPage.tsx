@@ -441,6 +441,13 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
                               Temperature controlled shipping
                             </div>
                           </div>
+                          {order.tracking_number && (
+                            <div className="mt-2 pt-2 border-t border-gray-200">
+                              <div className="text-xs font-medium text-gray-700 mb-1">Tracking Information</div>
+                              <div className="text-sm text-blue-600 font-medium">{order.tracking_number}</div>
+                              <div className="text-xs text-gray-500">Carrier: {order.carrier}</div>
+                            </div>
+                          )}
                         </div>
                         <div>
                           <h4 className="text-sm font-medium text-gray-700 mb-1">Order Summary</h4>
@@ -498,10 +505,12 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
                             Download Invoice
                           </button>
                         </div>
-                        {order.status === 'shipped' && (
-                          <button className="text-blue-600 hover:text-blue-700 font-medium">
-                            Track Package
-                          </button>
+                        {(order.status === 'shipped' || order.status === 'delivered') && order.tracking_number && (
+                          <div className="flex items-center space-x-2 text-sm">
+                            <Truck className="h-4 w-4 text-blue-600" />
+                            <span className="text-gray-600">Tracking:</span>
+                            <span className="font-medium text-blue-600">{order.tracking_number}</span>
+                          </div>
                         )}
                       </div>
                     </div>

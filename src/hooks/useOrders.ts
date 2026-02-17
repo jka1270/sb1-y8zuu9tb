@@ -257,6 +257,28 @@ export const useOrders = () => {
     }
   };
 
+  const updateTracking = async (orderId: string, trackingNumber: string, carrier: string) => {
+    try {
+      const { error } = await supabase
+        .from('orders')
+        .update({
+          tracking_number: trackingNumber,
+          carrier: carrier,
+          status: 'shipped',
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', orderId);
+
+      if (error) throw error;
+
+      cache.delete(`${CACHE_KEYS.ORDERS}_${user?.id}`);
+      await fetchOrders();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update tracking');
+      throw err;
+    }
+  };
+
   return {
     orders,
     loading,
@@ -265,6 +287,7 @@ export const useOrders = () => {
     updateOrderStatus,
     syncToShipStation,
     getTracking,
+    updateTracking,
     refetch: () => fetchOrders(true)
   };
 };

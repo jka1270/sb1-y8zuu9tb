@@ -5,13 +5,16 @@ import { useNotification } from '../contexts/NotificationContext';
 import LoadingSpinner from './LoadingSpinner';
 
 export default function AdminOrderManager() {
-  const { orders, loading, error, updateOrderStatus, syncToShipStation, getTracking, refetch } = useOrders();
+  const { orders, loading, error, updateOrderStatus, syncToShipStation, getTracking, updateTracking, refetch } = useOrders();
   const { showNotification } = useNotification();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [dateFilter, setDateFilter] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [trackingModalOrder, setTrackingModalOrder] = useState<Order | null>(null);
+  const [trackingNumber, setTrackingNumber] = useState('');
+  const [carrier, setCarrier] = useState('');
 
   const statusOptions = [
     { value: '', label: 'All Statuses' },
@@ -141,6 +144,45 @@ export default function AdminOrderManager() {
   const handleRefresh = async () => {
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 1000);
+  };
+
+  const handleOpenTrackingModal = (order: Order) => {
+    setTrackingModalOrder(order);
+    setTrackingNumber(order.tracking_number || '');
+    setCarrier(order.carrier || '');
+  };
+
+  const handleCloseTrackingModal = () => {
+    setTrackingModalOrder(null);
+    setTrackingNumber('');
+    setCarrier('');
+  };
+
+  const handleUpdateTracking = async () => {
+    if (!trackingModalOrder || !trackingNumber.trim() || !carrier.trim()) {
+      showNotification({
+        type: 'error',
+        message: 'Please enter both tracking number and carrier',
+        duration: 3000
+      });
+      return;
+    }
+
+    try {
+      await updateTracking(trackingModalOrder.id, trackingNumber.trim(), carrier.trim());
+      showNotification({
+        type: 'success',
+        message: 'Tracking information updated successfully',
+        duration: 3000
+      });
+      handleCloseTrackingModal();
+    } catch (error) {
+      showNotification({
+        type: 'error',
+        message: 'Failed to update tracking information',
+        duration: 5000
+      });
+    }
   };
 
   const handleDownloadPDF = (order: Order) => {
@@ -539,35 +581,47 @@ export default function AdminOrderManager() {
                             <Download className="h-4 w-4" />
                           </button>
                         </div>
-                        {/* ShipStation Actions */}
+                        {/* Manual Tracking Entry */}
                         <div className="flex space-x-2">
-                          {!order.shipstation_order_id ? (
+                          <button
+                            onClick={() => handleOpenTrackingModal(order)}
+                            className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded hover:bg-orange-200 flex items-center gap-1"
+                            title="Add/Edit Tracking"
+                          >
+                            <Truck className="h-3 w-3" />
+                            {order.tracking_number ? 'Edit' : 'Add'} Tracking
+                          </button>
+                          {order.tracking_number && (
+                            <span className="text-xs text-gray-600" title={`Carrier: ${order.carrier}`}>
+                              {order.tracking_number}
+                            </span>
+                          )}
+                        </div>
+                        {/* ShipStation Actions */}
+                        {order.shipstation_order_id && (
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() => handleGetTracking(order.id)}
+                              className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200 flex items-center gap-1"
+                              title="Get Tracking from ShipStation"
+                            >
+                              <Package className="h-3 w-3" />
+                              Sync ShipStation
+                            </button>
+                          </div>
+                        )}
+                        {!order.shipstation_order_id && (
+                          <div className="flex space-x-2">
                             <button
                               onClick={() => handleSyncToShipStation(order.id)}
                               className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200 flex items-center gap-1"
                               title="Sync to ShipStation"
                             >
                               <Truck className="h-3 w-3" />
-                              Sync
+                              Sync to ShipStation
                             </button>
-                          ) : (
-                            <>
-                              <button
-                                onClick={() => handleGetTracking(order.id)}
-                                className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200 flex items-center gap-1"
-                                title="Get Tracking"
-                              >
-                                <Package className="h-3 w-3" />
-                                Track
-                              </button>
-                              {order.tracking_number && (
-                                <span className="text-xs text-gray-600" title={`Carrier: ${order.carrier}`}>
-                                  {order.tracking_number}
-                                </span>
-                              )}
-                            </>
-                          )}
-                        </div>
+                          </div>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -653,6 +707,88 @@ export default function AdminOrderManager() {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Tracking Information Modal */}
+      {trackingModalOrder && (
+        <>
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50" onClick={handleCloseTrackingModal} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {trackingModalOrder.tracking_number ? 'Edit' : 'Add'} Tracking Information
+                  </h3>
+                  <button
+                    onClick={handleCloseTrackingModal}
+                    className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <div className="mb-4">
+                  <p className="text-sm text-gray-600 mb-4">
+                    Order: <span className="font-medium">#{trackingModalOrder.order_number}</span>
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Tracking Number
+                    </label>
+                    <input
+                      type="text"
+                      value={trackingNumber}
+                      onChange={(e) => setTrackingNumber(e.target.value)}
+                      placeholder="Enter tracking number"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Carrier
+                    </label>
+                    <select
+                      value={carrier}
+                      onChange={(e) => setCarrier(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      <option value="">Select carrier</option>
+                      <option value="USPS">USPS</option>
+                      <option value="FedEx">FedEx</option>
+                      <option value="UPS">UPS</option>
+                      <option value="DHL">DHL</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="mt-6 flex justify-end space-x-3">
+                  <button
+                    onClick={handleCloseTrackingModal}
+                    className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleUpdateTracking}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  >
+                    Save Tracking Info
+                  </button>
+                </div>
+
+                <p className="mt-4 text-xs text-gray-500">
+                  Note: Saving tracking information will automatically update the order status to "shipped".
+                </p>
               </div>
             </div>
           </div>
