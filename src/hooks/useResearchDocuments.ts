@@ -214,7 +214,7 @@ export const useResearchDocuments = () => {
         return generateSDSDocument(document, format);
       } else if (documentType === 'report') {
         document = testingReports.find(d => d.id === documentId);
-        if (!document) throw new Error('Test Report not found');
+        if (!document) throw new Error('Testing Report not found');
         return generateReportDocument(document, format);
       }
 
@@ -461,7 +461,7 @@ export const useResearchDocuments = () => {
       <!DOCTYPE html>
       <html>
       <head>
-        <title>Test Report - ${report.title}</title>
+        <title>Testing Report - ${report.title}</title>
         <style>
           body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
           .header { text-align: center; border-bottom: 2px solid #10B981; padding-bottom: 20px; margin-bottom: 30px; }
@@ -481,7 +481,7 @@ export const useResearchDocuments = () => {
       <body>
         <div class="header">
           <div class="company-name">Amino Acid Chain Tech Research</div>
-          <div>Test Reports Library</div>
+          <div>Testing Reports Library</div>
           <div class="document-title">${report.title}</div>
           <div style="margin-top: 10px; font-size: 14px;">
             Version: ${report.version} | Difficulty: ${report.difficulty_level} | Time: ${report.estimated_time}
@@ -552,7 +552,7 @@ export const useResearchDocuments = () => {
         </div>
 
         <div class="footer">
-          <p><strong>Amino Acid Chain Tech Research Test Reports Library</strong></p>
+          <p><strong>Amino Acid Chain Tech Research Testing Reports Library</strong></p>
           <p>Testing Support: testing@aminoacidchaintech.com | Research Division</p>
           <p>Document generated: ${new Date().toLocaleDateString()} | Rating: ${report.rating_average ? `${report.rating_average}/5 (${report.rating_count} reviews)` : 'Not rated'}</p>
         </div>

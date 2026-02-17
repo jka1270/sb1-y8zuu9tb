@@ -33,7 +33,7 @@ export default function DocumentUploadForm({
       case 'safety':
         return 'Safety Data Sheet';
       case 'report':
-        return 'Test Report';
+        return 'Testing Report';
       default:
         return 'Document';
     }
@@ -152,7 +152,7 @@ export default function DocumentUploadForm({
         };
       } else if (category === 'report') {
         tableName = 'testing_reports';
-        const finalTitle = title.trim() || file.name.replace(/\.[^/.]+$/, '') || `Test Report ${new Date().toLocaleDateString()}`;
+        const finalTitle = title.trim() || file.name.replace(/\.[^/.]+$/, '') || `Testing Report ${new Date().toLocaleDateString()}`;
         documentData = {
           product_id: associatedProductId || 'general',
           report_type: 'General',
@@ -185,7 +185,7 @@ export default function DocumentUploadForm({
       }
 
       const uploadedTitle = category === 'report' && !title.trim()
-        ? (file.name.replace(/\.[^/.]+$/, '') || `Test Report ${new Date().toLocaleDateString()}`)
+        ? (file.name.replace(/\.[^/.]+$/, '') || `Testing Report ${new Date().toLocaleDateString()}`)
         : title;
 
       toast.success('Document uploaded successfully!', `${uploadedTitle} has been added to the system`);

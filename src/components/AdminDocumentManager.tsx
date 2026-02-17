@@ -132,7 +132,7 @@ export default function AdminDocumentManager() {
   const tabs = [
     { id: 'technical' as DocumentType, label: 'Technical Data Sheets', icon: FileText, count: technicalDocs.length },
     { id: 'safety' as DocumentType, label: 'Safety Data Sheets', icon: Shield, count: safetyDocs.length },
-    { id: 'report' as DocumentType, label: 'Test Reports', icon: BookOpen, count: reports.length },
+    { id: 'report' as DocumentType, label: 'Testing Reports', icon: BookOpen, count: reports.length },
   ];
 
   const filteredTechnicalDocs = technicalDocs.filter(doc =>

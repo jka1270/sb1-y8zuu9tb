@@ -55,7 +55,7 @@ export default function DocumentViewer({ document, documentType, onClose, onDown
       case 'sds':
         return 'Safety Data Sheet';
       case 'report':
-        return 'Test Report';
+        return 'Testing Report';
       default:
         return 'Document';
     }

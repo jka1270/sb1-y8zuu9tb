@@ -729,7 +729,7 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
                   
                   <div className="bg-white p-6 rounded-lg shadow-sm text-center">
                     <BookOpen className="h-12 w-12 text-green-600 mx-auto mb-4" />
-                    <h4 className="font-semibold mb-2">Test Reports</h4>
+                    <h4 className="font-semibold mb-2">Testing Reports</h4>
                     <p className="text-gray-600 text-sm mb-4">
                       Step-by-step research procedures, methods, and experimental guidelines
                     </p>
@@ -781,7 +781,7 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
                       <div className="flex items-center">
                         <BookOpen className="h-5 w-5 text-green-600 mr-3" />
                         <div>
-                          <div className="font-medium text-green-900">Test Reports</div>
+                          <div className="font-medium text-green-900">Testing Reports</div>
                           <div className="text-sm text-green-700">Experimental procedures, methods, troubleshooting</div>
                         </div>
                       </div>
@@ -854,7 +854,7 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
               </div>
               <div className="bg-white p-6 rounded-lg shadow-sm border text-center">
                 <BookOpen className="h-12 w-12 text-green-600 mx-auto mb-4" />
-                <h3 className="font-semibold mb-2">Test Reports</h3>
+                <h3 className="font-semibold mb-2">Testing Reports</h3>
                 <p className="text-gray-600 text-sm mb-4">Experimental procedures</p>
                 <button className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
                   View Protocols
