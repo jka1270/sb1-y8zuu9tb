@@ -130,36 +130,36 @@ export default function AboutPage({ onBack }: AboutPageProps) {
                 <div className="flex items-start">
                   <CheckCircle className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-gray-900">98%+ Purity</h4>
-                    <p className="text-gray-600 text-sm">Every product is tested and verified for quality</p>
+                    <h4 className="font-semibold text-gray-900">≥98% Purity Guarantee</h4>
+                    <p className="text-gray-600 text-sm">Every amino acid chain undergoes rigorous HPLC and mass spectrometry analysis</p>
                   </div>
                 </div>
                 <div className="flex items-start">
                   <CheckCircle className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-gray-900">Independent Testing</h4>
-                    <p className="text-gray-600 text-sm">Third-party labs verify all products</p>
+                    <h4 className="font-semibold text-gray-900">Third-Party Verification</h4>
+                    <p className="text-gray-600 text-sm">Independent laboratory testing confirms identity and purity</p>
                   </div>
                 </div>
                 <div className="flex items-start">
                   <CheckCircle className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-gray-900">Full Documentation</h4>
-                    <p className="text-gray-600 text-sm">Certificate of Analysis with every order</p>
+                    <h4 className="font-semibold text-gray-900">Complete Documentation</h4>
+                    <p className="text-gray-600 text-sm">Certificate of Analysis provided with every batch</p>
                   </div>
                 </div>
                 <div className="flex items-start">
                   <CheckCircle className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-gray-900">Proper Storage</h4>
-                    <p className="text-gray-600 text-sm">Temperature-controlled from start to finish</p>
+                    <h4 className="font-semibold text-gray-900">Cold Chain Integrity</h4>
+                    <p className="text-gray-600 text-sm">Temperature-controlled storage and shipping throughout</p>
                   </div>
                 </div>
                 <div className="flex items-start">
                   <CheckCircle className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-gray-900">Full Tracking</h4>
-                    <p className="text-gray-600 text-sm">Track your product from production to delivery</p>
+                    <h4 className="font-semibold text-gray-900">Batch Traceability</h4>
+                    <p className="text-gray-600 text-sm">Complete tracking from synthesis to delivery</p>
                   </div>
                 </div>
               </div>
@@ -184,9 +184,9 @@ export default function AboutPage({ onBack }: AboutPageProps) {
               <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-blue-600">1</span>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Production</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Synthesis</h3>
               <p className="text-gray-600 text-sm">
-                Advanced automated systems create amino acid chains
+                Solid-phase amino acid chain synthesis using state-of-the-art automated synthesizers
               </p>
             </div>
 
@@ -196,27 +196,27 @@ export default function AboutPage({ onBack }: AboutPageProps) {
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Purification</h3>
               <p className="text-gray-600 text-sm">
-                Products are refined to achieve 98%+ purity
+                High-performance liquid chromatography (HPLC) purification to achieve ≥98% purity
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-purple-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-purple-600">3</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Analysis</h3>
+              <p className="text-gray-600 text-sm">
+                Comprehensive analytical testing including HPLC, MS, and microbiological analysis
               </p>
             </div>
 
             <div className="text-center">
               <div className="bg-orange-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-orange-600">3</span>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Testing</h3>
-              <p className="text-gray-600 text-sm">
-                Complete quality testing verifies every batch
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="bg-indigo-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-indigo-600">4</span>
+                <span className="text-2xl font-bold text-orange-600">4</span>
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Packaging</h3>
               <p className="text-gray-600 text-sm">
-                Sealed and packaged in controlled clean environments
+                Lyophilization and sterile packaging in controlled environment facilities
               </p>
             </div>
           </div>
@@ -256,27 +256,27 @@ export default function AboutPage({ onBack }: AboutPageProps) {
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">State-of-the-Art Facilities</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">ResearchRaws Headquarters</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Researchraws.com Headquarters</h3>
               <div className="space-y-4">
                 <div className="flex items-start">
                   <Microscope className="h-6 w-6 text-blue-600 mr-3 mt-0.5" />
                   <div>
                     <h4 className="font-semibold text-gray-900">Research & Development</h4>
-                    <p className="text-gray-600 text-sm">15,000 sq ft facility with advanced production systems</p>
+                    <p className="text-gray-600 text-sm">15,000 sq ft facility with automated amino acid chain synthesizers</p>
                   </div>
                 </div>
                 <div className="flex items-start">
                   <Shield className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-gray-900">Quality Control Lab</h4>
-                    <p className="text-gray-600 text-sm">Certified testing with professional equipment</p>
+                    <h4 className="font-semibold text-gray-900">Quality Control Laboratory</h4>
+                    <p className="text-gray-600 text-sm">ISO-certified analytical testing with advanced instrumentation</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <Building className="h-6 w-6 text-orange-600 mr-3 mt-0.5" />
+                  <Building className="h-6 w-6 text-purple-600 mr-3 mt-0.5" />
                   <div>
                     <h4 className="font-semibold text-gray-900">Manufacturing</h4>
-                    <p className="text-gray-600 text-sm">Clean, controlled production environments</p>
+                    <p className="text-gray-600 text-sm">GMP-compliant production with cleanroom environments</p>
                   </div>
                 </div>
               </div>
