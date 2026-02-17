@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FileText, Upload, Shield, BookOpen, Plus, Edit2, Trash2, Eye, Download, Search, Filter } from 'lucide-react';
+import { FileText, Upload, Shield, BookOpen, Plus, Trash2, Search, Filter } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import LoadingSpinner from './LoadingSpinner';
 import DocumentUploadForm from './DocumentUploadForm';
@@ -281,20 +281,12 @@ export default function AdminDocumentManager() {
                                 {formatDate(doc.created_at)}
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div className="flex justify-end space-x-2">
-                                  <button className="text-blue-600 hover:text-blue-900">
-                                    <Eye className="h-4 w-4" />
-                                  </button>
-                                  <button className="text-green-600 hover:text-green-900">
-                                    <Edit2 className="h-4 w-4" />
-                                  </button>
-                                  <button
-                                    onClick={() => handleDeleteDocument(doc.id)}
-                                    className="text-red-600 hover:text-red-900"
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                  </button>
-                                </div>
+                                <button
+                                  onClick={() => handleDeleteDocument(doc.id)}
+                                  className="text-red-600 hover:text-red-900"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </button>
                               </td>
                             </tr>
                           ))}
@@ -366,20 +358,12 @@ export default function AdminDocumentManager() {
                                 {formatDate(doc.created_at)}
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div className="flex justify-end space-x-2">
-                                  <button className="text-blue-600 hover:text-blue-900">
-                                    <Eye className="h-4 w-4" />
-                                  </button>
-                                  <button className="text-green-600 hover:text-green-900">
-                                    <Edit2 className="h-4 w-4" />
-                                  </button>
-                                  <button
-                                    onClick={() => handleDeleteDocument(doc.id)}
-                                    className="text-red-600 hover:text-red-900"
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                  </button>
-                                </div>
+                                <button
+                                  onClick={() => handleDeleteDocument(doc.id)}
+                                  className="text-red-600 hover:text-red-900"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </button>
                               </td>
                             </tr>
                           ))}
@@ -453,20 +437,12 @@ export default function AdminDocumentManager() {
                                 {doc.download_count}
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div className="flex justify-end space-x-2">
-                                  <button className="text-blue-600 hover:text-blue-900">
-                                    <Eye className="h-4 w-4" />
-                                  </button>
-                                  <button className="text-green-600 hover:text-green-900">
-                                    <Edit2 className="h-4 w-4" />
-                                  </button>
-                                  <button
-                                    onClick={() => handleDeleteDocument(doc.id)}
-                                    className="text-red-600 hover:text-red-900"
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                  </button>
-                                </div>
+                                <button
+                                  onClick={() => handleDeleteDocument(doc.id)}
+                                  className="text-red-600 hover:text-red-900"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </button>
                               </td>
                             </tr>
                           ))}
