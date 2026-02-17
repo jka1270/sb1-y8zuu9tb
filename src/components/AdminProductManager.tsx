@@ -65,7 +65,9 @@ export default function AdminProductManager() {
         sku: p.sku,
         purity: '99%',
         molecularWeight: '0',
-        sequence: p.sequence || ''
+        sequence: p.sequence || '',
+        quantity: p.quantity ?? 0,
+        lowStockThreshold: p.low_stock_threshold ?? 10
       }));
 
       setProductList(formattedProducts);
@@ -177,7 +179,9 @@ export default function AdminProductManager() {
       price: parseFloat(formData.get('price') as string),
       sequence: formData.get('sequence') as string || null,
       images: productImages,
-      in_stock: formData.get('inStock') === 'on'
+      in_stock: formData.get('inStock') === 'on',
+      quantity: parseInt(formData.get('quantity') as string) || 0,
+      low_stock_threshold: parseInt(formData.get('low_stock_threshold') as string) || 10
     };
 
     try {
@@ -351,6 +355,9 @@ export default function AdminProductManager() {
                   Price
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Quantity
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Stock Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -417,13 +424,26 @@ export default function AdminProductManager() {
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      product.inStock 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-red-100 text-red-800'
-                    }`}>
-                      {product.inStock ? 'In Stock' : 'Out of Stock'}
-                    </span>
+                    <div className="text-sm font-medium text-gray-900">{product.quantity ?? 0} units</div>
+                    <div className="text-xs text-gray-500">Threshold: {product.lowStockThreshold ?? 10}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {(product.quantity ?? 0) === 0 ? (
+                      <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                        <AlertTriangle className="h-3 w-3 mr-1" />
+                        Out of Stock
+                      </span>
+                    ) : (product.quantity ?? 0) <= (product.lowStockThreshold ?? 10) ? (
+                      <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                        <AlertTriangle className="h-3 w-3 mr-1" />
+                        Low Stock
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                        <CheckCircle className="h-3 w-3 mr-1" />
+                        In Stock
+                      </span>
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
@@ -564,6 +584,37 @@ export default function AdminProductManager() {
                         placeholder="1000.00 Da"
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Quantity in Stock *
+                      </label>
+                      <input
+                        type="number"
+                        name="quantity"
+                        min="0"
+                        defaultValue={editingProduct?.quantity ?? 100}
+                        required
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Current stock level</p>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Low Stock Threshold *
+                      </label>
+                      <input
+                        type="number"
+                        name="low_stock_threshold"
+                        min="0"
+                        defaultValue={editingProduct?.lowStockThreshold ?? 10}
+                        required
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Alert when stock falls below this level</p>
                     </div>
                   </div>
 

@@ -1,16 +1,47 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   ShoppingBag,
   DollarSign,
   TrendingUp,
-  RefreshCw
+  RefreshCw,
+  Package,
+  AlertTriangle
 } from 'lucide-react';
 import { useOrders } from '../hooks/useOrders';
+import { supabase } from '../lib/supabase';
 import LoadingSpinner from './LoadingSpinner';
 
 export default function AdminDashboard() {
   const { orders, loading: ordersLoading } = useOrders();
   const [refreshing, setRefreshing] = useState(false);
+  const [lowStockProducts, setLowStockProducts] = useState<any[]>([]);
+  const [productsLoading, setProductsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchLowStockProducts();
+  }, []);
+
+  const fetchLowStockProducts = async () => {
+    try {
+      setProductsLoading(true);
+      const { data, error } = await supabase
+        .from('products')
+        .select('id, name, sku, quantity, low_stock_threshold')
+        .order('quantity', { ascending: true });
+
+      if (error) throw error;
+
+      const lowStock = (data || []).filter((p: any) =>
+        (p.quantity ?? 0) <= (p.low_stock_threshold ?? 10) && (p.quantity ?? 0) >= 0
+      );
+
+      setLowStockProducts(lowStock);
+    } catch (error) {
+      console.error('Error fetching low stock products:', error);
+    } finally {
+      setProductsLoading(false);
+    }
+  };
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -26,6 +57,7 @@ export default function AdminDashboard() {
 
   const handleRefresh = async () => {
     setRefreshing(true);
+    await fetchLowStockProducts();
     setTimeout(() => setRefreshing(false), 1000);
   };
 
@@ -67,7 +99,7 @@ export default function AdminDashboard() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-6 rounded-lg shadow-sm">
           <div className="flex items-center">
             <DollarSign className="h-8 w-8 text-green-600" />
@@ -94,7 +126,84 @@ export default function AdminDashboard() {
             </div>
           </div>
         </div>
+
+        <div className="bg-white p-6 rounded-lg shadow-sm">
+          <div className="flex items-center">
+            <Package className={`h-8 w-8 ${lowStockProducts.length > 0 ? 'text-orange-600' : 'text-gray-600'}`} />
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">Low Stock Items</p>
+              <p className="text-2xl font-bold text-gray-900">{lowStockProducts.length}</p>
+              {lowStockProducts.length > 0 ? (
+                <p className="text-sm text-orange-600 flex items-center">
+                  <AlertTriangle className="h-3 w-3 mr-1" />
+                  Requires attention
+                </p>
+              ) : (
+                <p className="text-sm text-gray-600">All products in stock</p>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
+
+      {lowStockProducts.length > 0 && (
+        <div className="bg-orange-50 border-l-4 border-orange-500 p-6 rounded-lg">
+          <div className="flex items-start">
+            <AlertTriangle className="h-6 w-6 text-orange-600 mr-3 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-orange-900 mb-2">Low Stock Alert</h3>
+              <p className="text-sm text-orange-800 mb-4">
+                The following products are running low on stock and require restocking:
+              </p>
+              <div className="bg-white rounded-lg overflow-hidden">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">SKU</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Current Stock</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Threshold</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {lowStockProducts.slice(0, 10).map((product) => (
+                      <tr key={product.id} className="hover:bg-gray-50">
+                        <td className="px-4 py-3 text-sm font-medium text-gray-900">{product.name}</td>
+                        <td className="px-4 py-3 text-sm text-gray-600">{product.sku}</td>
+                        <td className="px-4 py-3 text-sm">
+                          <span className={`font-semibold ${
+                            product.quantity === 0 ? 'text-red-600' : 'text-orange-600'
+                          }`}>
+                            {product.quantity ?? 0} units
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-gray-600">{product.low_stock_threshold ?? 10} units</td>
+                        <td className="px-4 py-3">
+                          {product.quantity === 0 ? (
+                            <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                              Out of Stock
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">
+                              Low Stock
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {lowStockProducts.length > 10 && (
+                  <div className="bg-gray-50 px-4 py-3 text-sm text-gray-600 text-center">
+                    And {lowStockProducts.length - 10} more products with low stock
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="bg-white rounded-lg shadow-sm p-6">
         <div className="flex items-center justify-between mb-6">

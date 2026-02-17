@@ -13,6 +13,8 @@ export interface Product {
   molecularWeight: string;
   sequence?: string;
   variants?: ProductVariant[];
+  quantity?: number;
+  lowStockThreshold?: number;
 }
 
 export interface ProductVariant {
