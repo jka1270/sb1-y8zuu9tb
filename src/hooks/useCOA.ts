@@ -179,7 +179,7 @@ export const useCOA = () => {
       </head>
       <body>
         <div class="header">
-          <div class="company-name">PeptideTech Research</div>
+          <div class="company-name">Amino Acid Chain Tech Research</div>
           <div>Quality Control Laboratory</div>
           <div class="document-title">Certificate of Analysis</div>
         </div>
@@ -261,7 +261,7 @@ export const useCOA = () => {
         <div class="footer">
           <p><strong>For Research Use Only - Not for Human Consumption</strong></p>
           <p>This certificate applies only to the batch tested. Results may not be used for other batches.</p>
-          <p>PeptideTech Research | Quality Control Laboratory | San Diego, CA 92121</p>
+          <p>Amino Acid Chain Tech Research | Quality Control Laboratory | San Diego, CA 92121</p>
         </div>
       </body>
       </html>

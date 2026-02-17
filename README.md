@@ -1,4 +1,4 @@
-# PeptideTech Research - Amino acid chain E-commerce Platform
+# Amino Acid Chain Tech Research - Amino acid chain E-commerce Platform
 
 A professional e-commerce platform for research amino acid chains built with React, TypeScript, and Supabase.
 

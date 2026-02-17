@@ -253,7 +253,7 @@ export const useResearchDocuments = () => {
       </head>
       <body>
         <div class="header">
-          <div class="company-name">PeptideTech Research</div>
+          <div class="company-name">Amino Acid Chain Tech Research</div>
           <div>Quality Control Laboratory</div>
           <div class="document-title">Technical Data Sheet</div>
           <div style="margin-top: 10px; font-size: 14px;">Document Version: ${tds.document_version}</div>
@@ -332,8 +332,8 @@ export const useResearchDocuments = () => {
         </div>
 
         <div class="footer">
-          <p><strong>PeptideTech Research</strong></p>
-          <p>Technical Support: tech-support@peptidetechresearch.com | Quality Control Laboratory</p>
+          <p><strong>Amino Acid Chain Tech Research</strong></p>
+          <p>Technical Support: tech-support@aminoacidchaintech.com | Quality Control Laboratory</p>
           <p>This document was generated on ${new Date().toLocaleDateString()} and is valid for the specified product batch only.</p>
         </div>
       </body>
@@ -371,7 +371,7 @@ export const useResearchDocuments = () => {
       </head>
       <body>
         <div class="header">
-          <div class="company-name">PeptideTech Research</div>
+          <div class="company-name">Amino Acid Chain Tech Research</div>
           <div>Safety Data Sheet</div>
           <div class="document-title">${sds.product_name}</div>
           <div style="margin-top: 10px; font-size: 14px;">SDS Number: ${sds.sds_number} | Version: ${sds.document_version}</div>
@@ -439,8 +439,8 @@ export const useResearchDocuments = () => {
         </div>
 
         <div class="footer">
-          <p><strong>PeptideTech Research Safety Department</strong></p>
-          <p>Emergency: 1-800-424-9300 | Safety Questions: safety@peptidetechresearch.com</p>
+          <p><strong>Amino Acid Chain Tech Research Safety Department</strong></p>
+          <p>Emergency: 1-800-424-9300 | Safety Questions: safety@aminoacidchaintech.com</p>
           <p>Document prepared: ${new Date().toLocaleDateString()} | This SDS complies with OSHA HCS 2012 requirements.</p>
         </div>
       </body>
@@ -478,7 +478,7 @@ export const useResearchDocuments = () => {
       </head>
       <body>
         <div class="header">
-          <div class="company-name">PeptideTech Research</div>
+          <div class="company-name">Amino Acid Chain Tech Research</div>
           <div>Research Protocol Library</div>
           <div class="document-title">${protocol.title}</div>
           <div style="margin-top: 10px; font-size: 14px;">
@@ -550,8 +550,8 @@ export const useResearchDocuments = () => {
         </div>
 
         <div class="footer">
-          <p><strong>PeptideTech Research Protocol Library</strong></p>
-          <p>Protocol Support: protocols@peptidetechresearch.com | Research Division</p>
+          <p><strong>Amino Acid Chain Tech Research Protocol Library</strong></p>
+          <p>Protocol Support: protocols@aminoacidchaintech.com | Research Division</p>
           <p>Document generated: ${new Date().toLocaleDateString()} | Rating: ${protocol.rating_average ? `${protocol.rating_average}/5 (${protocol.rating_count} reviews)` : 'Not rated'}</p>
         </div>
       </body>
