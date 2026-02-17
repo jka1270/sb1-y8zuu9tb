@@ -74,7 +74,7 @@ export default function DocumentUploadForm({
       return;
     }
 
-    if (!title.trim()) {
+    if (!title.trim() && category !== 'report') {
       toast.warning('Title required', 'Please provide a title for the document');
       return;
     }
@@ -151,10 +151,11 @@ export default function DocumentUploadForm({
         };
       } else if (category === 'report') {
         tableName = 'testing_reports';
+        const finalTitle = title.trim() || file.name.replace(/\.[^/.]+$/, '') || `Testing Report ${new Date().toLocaleDateString()}`;
         documentData = {
           product_id: associatedProductId || 'general',
           report_type: 'General',
-          title: title.trim(),
+          title: finalTitle,
           description: description.trim() || null,
           research_area: 'General',
           difficulty_level: 'intermediate',
@@ -181,7 +182,11 @@ export default function DocumentUploadForm({
         throw dbError;
       }
 
-      toast.success('Document uploaded successfully!', `${title} has been added to the system`);
+      const uploadedTitle = category === 'report' && !title.trim()
+        ? (file.name.replace(/\.[^/.]+$/, '') || `Testing Report ${new Date().toLocaleDateString()}`)
+        : title;
+
+      toast.success('Document uploaded successfully!', `${uploadedTitle} has been added to the system`);
       onSuccess();
     } catch (error: any) {
       console.error('Error uploading document:', error);
@@ -263,17 +268,25 @@ export default function DocumentUploadForm({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Document Title *
+            Document Title {category !== 'report' && '*'}
           </label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            required
-            placeholder="e.g., BPC-157 Technical Data Sheet"
+            required={category !== 'report'}
+            placeholder={category === 'report'
+              ? "Optional - will use filename if left empty"
+              : "e.g., BPC-157 Technical Data Sheet"
+            }
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             disabled={uploading}
           />
+          {category === 'report' && (
+            <p className="mt-1 text-xs text-gray-500">
+              Leave empty to automatically use the filename as the title
+            </p>
+          )}
         </div>
 
         <div>
