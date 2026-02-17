@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle, AlertTriangle, Building, User, MessageSquare, HelpCircle, Shield } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle, AlertTriangle, Building, User, HelpCircle, Shield } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface ContactPageProps {
@@ -134,14 +134,6 @@ export default function ContactPage({ onBack }: ContactPageProps) {
       secondary: 'Technical: tech@researchraws.com',
       hours: 'Response within 24 hours',
       color: 'text-green-600'
-    },
-    {
-      icon: MessageSquare,
-      title: 'Live Chat',
-      primary: 'Available on website',
-      secondary: 'Instant technical assistance',
-      hours: 'Mon-Fri: 9:00 AM - 5:00 PM PST',
-      color: 'text-purple-600'
     }
   ];
 
@@ -190,7 +182,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
         </div>
 
         {/* Contact Methods */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
           {contactMethods.map((method) => {
             const Icon = method.icon;
             return (
