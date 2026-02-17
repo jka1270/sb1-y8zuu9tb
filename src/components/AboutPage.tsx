@@ -17,37 +17,6 @@ export default function AboutPage({ onBack }: AboutPageProps) {
     { year: '2025', title: 'Sustainability Initiative', description: 'Launched green chemistry and sustainable manufacturing practices' },
   ];
 
-  const teamMembers = [
-    {
-      name: 'Dr. Sarah Chen',
-      role: 'Chief Scientific Officer',
-      education: 'PhD in Biochemistry, Stanford University',
-      experience: '15+ years in amino acid chain research and development',
-      image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=400'
-    },
-    {
-      name: 'Dr. Michael Rodriguez',
-      role: 'Director of Quality Assurance',
-      education: 'PhD in Analytical Chemistry, MIT',
-      experience: '12+ years in pharmaceutical quality control',
-      image: 'https://images.pexels.com/photos/3786126/pexels-photo-3786126.jpeg?auto=compress&cs=tinysrgb&w=400'
-    },
-    {
-      name: 'Dr. Emily Watson',
-      role: 'Head of Research Partnerships',
-      education: 'PhD in Molecular Biology, Harvard University',
-      experience: '10+ years in academic-industry collaboration',
-      image: 'https://images.pexels.com/photos/3735780/pexels-photo-3735780.jpeg?auto=compress&cs=tinysrgb&w=400'
-    },
-    {
-      name: 'Dr. James Liu',
-      role: 'Director of Custom Synthesis',
-      education: 'PhD in Organic Chemistry, Caltech',
-      experience: '14+ years in amino acid chain synthesis and purification',
-      image: 'https://images.pexels.com/photos/3786164/pexels-photo-3786164.jpeg?auto=compress&cs=tinysrgb&w=400'
-    },
-  ];
-
   const certifications = [
     {
       name: 'ISO 9001:2015',
@@ -175,30 +144,6 @@ export default function AboutPage({ onBack }: AboutPageProps) {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-
-        {/* Leadership Team */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Leadership Team</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member) => (
-              <div key={member.name} className="bg-white rounded-lg shadow-sm overflow-hidden">
-               <OptimizedImage
-                  src={member.image} 
-                  alt={member.name}
-                  className="w-full h-64 object-cover"
-                 loading="lazy"
-                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                />
-                <div className="p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">{member.name}</h3>
-                  <p className="text-blue-600 font-medium mb-3">{member.role}</p>
-                  <p className="text-sm text-gray-600 mb-2">{member.education}</p>
-                  <p className="text-sm text-gray-500">{member.experience}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
 
