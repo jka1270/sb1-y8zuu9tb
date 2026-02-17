@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase';
 import LoadingSpinner from './LoadingSpinner';
 import { useToast } from './ToastContainer';
 
-type DocumentCategory = 'technical' | 'safety' | 'protocol';
+type DocumentCategory = 'technical' | 'safety' | 'report';
 
 interface DocumentUploadFormProps {
   category: DocumentCategory;
@@ -32,8 +32,8 @@ export default function DocumentUploadForm({
         return 'Technical Data Sheet';
       case 'safety':
         return 'Safety Data Sheet';
-      case 'protocol':
-        return 'Research Protocol';
+      case 'report':
+        return 'Testing Report';
       default:
         return 'Document';
     }
@@ -149,11 +149,11 @@ export default function DocumentUploadForm({
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         };
-      } else if (category === 'protocol') {
-        tableName = 'research_protocols';
+      } else if (category === 'report') {
+        tableName = 'testing_reports';
         documentData = {
           product_id: associatedProductId || 'general',
-          protocol_type: 'General',
+          report_type: 'General',
           title: title.trim(),
           description: description.trim() || null,
           research_area: 'General',

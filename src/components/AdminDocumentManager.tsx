@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase';
 import LoadingSpinner from './LoadingSpinner';
 import DocumentUploadForm from './DocumentUploadForm';
 
-type DocumentType = 'technical' | 'safety' | 'protocol';
+type DocumentType = 'technical' | 'safety' | 'report';
 
 interface TechnicalDataSheet {
   id: string;
@@ -28,11 +28,11 @@ interface SafetyDataSheet {
   created_at: string;
 }
 
-interface ResearchProtocol {
+interface TestingReport {
   id: string;
   product_id: string;
   title: string;
-  protocol_type: string;
+  report_type: string;
   research_area: string;
   approval_status: string;
   download_count: number;
@@ -48,7 +48,7 @@ export default function AdminDocumentManager() {
 
   const [technicalDocs, setTechnicalDocs] = useState<TechnicalDataSheet[]>([]);
   const [safetyDocs, setSafetyDocs] = useState<SafetyDataSheet[]>([]);
-  const [protocols, setProtocols] = useState<ResearchProtocol[]>([]);
+  const [reports, setReports] = useState<TestingReport[]>([]);
 
   useEffect(() => {
     fetchDocuments();
@@ -73,14 +73,14 @@ export default function AdminDocumentManager() {
 
         if (error) throw error;
         setSafetyDocs(data || []);
-      } else if (activeTab === 'protocol') {
+      } else if (activeTab === 'report') {
         const { data, error } = await supabase
-          .from('research_protocols')
+          .from('testing_reports')
           .select('*')
           .order('created_at', { ascending: false });
 
         if (error) throw error;
-        setProtocols(data || []);
+        setReports(data || []);
       }
     } catch (error) {
       console.error('Error fetching documents:', error);
@@ -96,7 +96,7 @@ export default function AdminDocumentManager() {
       let tableName = '';
       if (activeTab === 'technical') tableName = 'technical_data_sheets';
       else if (activeTab === 'safety') tableName = 'safety_data_sheets';
-      else if (activeTab === 'protocol') tableName = 'research_protocols';
+      else if (activeTab === 'report') tableName = 'testing_reports';
 
       const { error } = await supabase
         .from(tableName)
@@ -116,7 +116,7 @@ export default function AdminDocumentManager() {
   const tabs = [
     { id: 'technical' as DocumentType, label: 'Technical Data Sheets', icon: FileText, count: technicalDocs.length },
     { id: 'safety' as DocumentType, label: 'Safety Data Sheets', icon: Shield, count: safetyDocs.length },
-    { id: 'protocol' as DocumentType, label: 'Research Protocols', icon: BookOpen, count: protocols.length },
+    { id: 'report' as DocumentType, label: 'Testing Reports', icon: BookOpen, count: reports.length },
   ];
 
   const filteredTechnicalDocs = technicalDocs.filter(doc =>
@@ -129,7 +129,7 @@ export default function AdminDocumentManager() {
     doc.sds_number.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const filteredProtocols = protocols.filter(doc =>
+  const filteredReports = reports.filter(doc =>
     doc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     doc.research_area.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -147,7 +147,7 @@ export default function AdminDocumentManager() {
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Research Documentation</h2>
-          <p className="text-gray-600">Manage technical data sheets, safety information, and research protocols</p>
+          <p className="text-gray-600">Manage technical data sheets, safety information, and testing reports</p>
         </div>
         <button
           onClick={() => setShowUploadModal(true)}
@@ -374,17 +374,17 @@ export default function AdminDocumentManager() {
                 </div>
               )}
 
-              {activeTab === 'protocol' && (
+              {activeTab === 'report' && (
                 <div className="space-y-4">
-                  {filteredProtocols.length === 0 ? (
+                  {filteredReports.length === 0 ? (
                     <div className="text-center py-12">
                       <BookOpen className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                      <p className="text-gray-500">No research protocols found</p>
+                      <p className="text-gray-500">No testing reports found</p>
                       <button
                         onClick={() => setShowUploadModal(true)}
                         className="mt-4 text-blue-600 hover:text-blue-800"
                       >
-                        Add your first protocol
+                        Add your first testing report
                       </button>
                     </div>
                   ) : (
@@ -413,13 +413,13 @@ export default function AdminDocumentManager() {
                           </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                          {filteredProtocols.map((doc) => (
+                          {filteredReports.map((doc) => (
                             <tr key={doc.id} className="hover:bg-gray-50">
                               <td className="px-6 py-4 text-sm font-medium text-gray-900">
                                 {doc.title}
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {doc.protocol_type}
+                                {doc.report_type}
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {doc.research_area}

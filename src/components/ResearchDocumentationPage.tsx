@@ -14,14 +14,14 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
   const {
     technicalDataSheets,
     safetyDataSheets,
-    researchProtocols,
+    testingReports,
     loading,
     error,
     getTDSByProduct,
     getSDSByProduct,
-    getProtocolsByProduct,
+    getReportsByProduct,
     downloadDocument,
-    rateProtocol,
+    rateReport,
     searchDocuments
   } = useResearchDocuments();
 
@@ -33,7 +33,7 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
   const [filterDifficulty, setFilterDifficulty] = useState('');
   const [downloading, setDownloading] = useState<string | null>(null);
 
-  const handleDownload = async (docType: 'tds' | 'sds' | 'protocol', docId: string, format: 'PDF' | 'DOC' | 'JSON' = 'PDF') => {
+  const handleDownload = async (docType: 'tds' | 'sds' | 'report', docId: string, format: 'PDF' | 'DOC' | 'JSON' = 'PDF') => {
     try {
       setDownloading(docId);
       const content = await downloadDocument(docType, docId, format, productId);
@@ -67,12 +67,12 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
     setDocumentType(type);
   };
 
-  const handleRateProtocol = async (protocolId: string, rating: number) => {
+  const handleRateReport = async (reportId: string, rating: number) => {
     try {
-      await rateProtocol(protocolId, rating);
+      await rateReport(reportId, rating);
       showNotification({
         type: 'success',
-        message: 'Thank you for rating this protocol!',
+        message: 'Thank you for rating this testing report!',
         duration: 3000
       });
     } catch (error) {
@@ -86,24 +86,24 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
 
   const searchResults = searchTerm ? searchDocuments(searchTerm) : null;
 
-  const filteredProtocols = researchProtocols.filter(protocol => {
-    const matchesArea = !filterArea || protocol.research_area.toLowerCase().includes(filterArea.toLowerCase());
-    const matchesDifficulty = !filterDifficulty || protocol.difficulty_level === filterDifficulty;
-    const matchesProduct = !productId || protocol.product_id === productId;
+  const filteredReports = testingReports.filter(report => {
+    const matchesArea = !filterArea || report.research_area.toLowerCase().includes(filterArea.toLowerCase());
+    const matchesDifficulty = !filterDifficulty || report.difficulty_level === filterDifficulty;
+    const matchesProduct = !productId || report.product_id === productId;
     return matchesArea && matchesDifficulty && matchesProduct;
   });
 
   const productTDS = productId ? getTDSByProduct(productId) : technicalDataSheets;
   const productSDS = productId ? getSDSByProduct(productId) : safetyDataSheets;
-  const productProtocols = productId ? getProtocolsByProduct(productId) : filteredProtocols;
+  const productReports = productId ? getReportsByProduct(productId) : filteredReports;
 
-  const researchAreas = [...new Set(researchProtocols.map(p => p.research_area))];
+  const researchAreas = [...new Set(testingReports.map(p => p.research_area))];
   const difficultyLevels = ['beginner', 'intermediate', 'advanced'];
 
   const tabs = [
     { id: 'tds', label: 'Technical Data Sheets', icon: FileText, count: productTDS.length },
     { id: 'sds', label: 'Safety Data Sheets', icon: Shield, count: productSDS.length },
-    { id: 'protocols', label: 'Research Protocols', icon: BookOpen, count: productProtocols.length },
+    { id: 'reports', label: 'Testing Reports', icon: BookOpen, count: productReports.length },
   ];
 
   if (loading) {
@@ -144,8 +144,8 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Research Documentation</h1>
           <p className="text-gray-600">
             {productId
-              ? 'Technical specifications, safety information, and research protocols for this product'
-              : 'Comprehensive technical documentation and research protocols for all amino acid chain products'
+              ? 'Technical specifications, safety information, and testing reports for this product'
+              : 'Comprehensive technical documentation and testing reports for all amino acid chain products'
             }
           </p>
         </div>
@@ -196,12 +196,12 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
                 </div>
               </div>
               <div>
-                <h3 className="font-medium text-gray-900 mb-2">Research Protocols ({searchResults.protocols.length})</h3>
+                <h3 className="font-medium text-gray-900 mb-2">Testing Reports ({searchResults.reports.length})</h3>
                 <div className="space-y-2">
-                  {searchResults.protocols.slice(0, 3).map(doc => (
+                  {searchResults.reports.slice(0, 3).map(doc => (
                     <div key={doc.id} className="text-sm">
                       <button
-                        onClick={() => handleViewDocument(doc, 'protocol')}
+                        onClick={() => handleViewDocument(doc, 'report')}
                         className="text-blue-600 hover:text-blue-700 font-medium"
                       >
                         {doc.title}
@@ -243,7 +243,7 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
           </div>
 
           {/* Filters for Protocols */}
-          {activeTab === 'protocols' && (
+          {activeTab === 'reports' && (
             <div className="p-6 border-b border-gray-200">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
@@ -435,83 +435,83 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
           )}
 
           {/* Research Protocols */}
-          {activeTab === 'protocols' && (
+          {activeTab === 'reports' && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {productProtocols.map((protocol) => (
-                <div key={protocol.id} className="bg-white rounded-lg shadow-sm border p-6">
+              {productReports.map((report) => (
+                <div key={report.id} className="bg-white rounded-lg shadow-sm border p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center">
                       <BookOpen className="h-6 w-6 text-green-600 mr-3" />
                       <div>
-                        <h3 className="font-semibold text-gray-900">{protocol.title}</h3>
-                        <p className="text-sm text-gray-500">{protocol.research_area}</p>
+                        <h3 className="font-semibold text-gray-900">{report.title}</h3>
+                        <p className="text-sm text-gray-500">{report.research_area}</p>
                       </div>
                     </div>
                     <div className="text-right">
                       <span className={`text-xs px-2 py-1 rounded ${
-                        protocol.difficulty_level === 'beginner' ? 'bg-green-100 text-green-800' :
-                        protocol.difficulty_level === 'intermediate' ? 'bg-yellow-100 text-yellow-800' :
+                        report.difficulty_level === 'beginner' ? 'bg-green-100 text-green-800' :
+                        report.difficulty_level === 'intermediate' ? 'bg-yellow-100 text-yellow-800' :
                         'bg-red-100 text-red-800'
                       }`}>
-                        {protocol.difficulty_level}
+                        {report.difficulty_level}
                       </span>
-                      {protocol.rating_average && (
+                      {report.rating_average && (
                         <div className="flex items-center mt-1">
                           <Star className="h-3 w-3 text-yellow-500 mr-1" />
                           <span className="text-xs text-gray-600">
-                            {protocol.rating_average.toFixed(1)} ({protocol.rating_count})
+                            {report.rating_average.toFixed(1)} ({report.rating_count})
                           </span>
                         </div>
                       )}
                     </div>
                   </div>
 
-                  <p className="text-sm text-gray-600 mb-4">{protocol.objective}</p>
+                  <p className="text-sm text-gray-600 mb-4">{report.objective}</p>
 
                   <div className="space-y-2 mb-4">
                     <div className="text-sm">
                       <span className="font-medium text-gray-700">Author:</span>
-                      <span className="ml-2 text-gray-600">{protocol.author}</span>
+                      <span className="ml-2 text-gray-600">{report.author}</span>
                     </div>
-                    {protocol.estimated_time && (
+                    {report.estimated_time && (
                       <div className="text-sm">
                         <span className="font-medium text-gray-700">Duration:</span>
-                        <span className="ml-2 text-gray-600">{protocol.estimated_time}</span>
+                        <span className="ml-2 text-gray-600">{report.estimated_time}</span>
                       </div>
                     )}
                     <div className="text-sm">
                       <span className="font-medium text-gray-700">Downloads:</span>
-                      <span className="ml-2 text-gray-600">{protocol.download_count}</span>
+                      <span className="ml-2 text-gray-600">{report.download_count}</span>
                     </div>
                   </div>
 
                   <div className="flex space-x-2">
                     <button
-                      onClick={() => handleViewDocument(protocol, 'protocol')}
+                      onClick={() => handleViewDocument(report, 'report')}
                       className="flex-1 flex items-center justify-center px-3 py-2 border border-green-600 text-green-600 rounded-lg hover:bg-green-50"
                     >
                       <Eye className="h-4 w-4 mr-1" />
                       View
                     </button>
                     <button
-                      onClick={() => handleDownload('protocol', protocol.id)}
-                      disabled={downloading === protocol.id}
+                      onClick={() => handleDownload('report', report.id)}
+                      disabled={downloading === report.id}
                       className="flex-1 flex items-center justify-center px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
                     >
                       <Download className="h-4 w-4 mr-1" />
-                      {downloading === protocol.id ? 'Downloading...' : 'Download'}
+                      {downloading === report.id ? 'Downloading...' : 'Download'}
                     </button>
                   </div>
 
                   {/* Rating */}
                   <div className="mt-4 pt-4 border-t">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Rate this protocol:</span>
+                      <span className="text-sm text-gray-600">Rate this testing report:</span>
                       <div className="flex space-x-1">
                         {[1, 2, 3, 4, 5].map((rating) => (
                           <button
                             key={rating}
-                            onClick={() => handleRateProtocol(protocol.id, rating)}
+                            onClick={() => handleRateReport(report.id, rating)}
                             className="text-gray-300 hover:text-yellow-500"
                           >
                             <Star className="h-4 w-4" />
@@ -559,7 +559,7 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
           documentType={documentType}
           onClose={() => setSelectedDocument(null)}
           onDownload={(format) => handleDownload(documentType as any, selectedDocument.id, format)}
-          onRate={documentType === 'protocol' ? handleRateProtocol : undefined}
+          onRate={documentType === 'report' ? handleRateReport : undefined}
         />
       )}
     </div>

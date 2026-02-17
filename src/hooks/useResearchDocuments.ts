@@ -61,11 +61,11 @@ export interface SafetyDataSheet {
   updated_at: string;
 }
 
-export interface ResearchProtocol {
+export interface TestingReport {
   id: string;
   product_id: string;
   variant_id?: string;
-  protocol_type: string;
+  report_type: string;
   title: string;
   description?: string;
   research_area: string;
@@ -103,7 +103,7 @@ export interface DocumentDownload {
 export const useResearchDocuments = () => {
   const [technicalDataSheets, setTechnicalDataSheets] = useState<TechnicalDataSheet[]>([]);
   const [safetyDataSheets, setSafetyDataSheets] = useState<SafetyDataSheet[]>([]);
-  const [researchProtocols, setResearchProtocols] = useState<ResearchProtocol[]>([]);
+  const [testingReports, setTestingReports] = useState<TestingReport[]>([]);
   const [downloads, setDownloads] = useState<DocumentDownload[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -120,19 +120,19 @@ export const useResearchDocuments = () => {
     try {
       setLoading(true);
       
-      const [tdsResponse, sdsResponse, protocolsResponse] = await Promise.all([
+      const [tdsResponse, sdsResponse, reportsResponse] = await Promise.all([
         supabase.from('technical_data_sheets').select('*').order('created_at', { ascending: false }),
         supabase.from('safety_data_sheets').select('*').order('created_at', { ascending: false }),
-        supabase.from('research_protocols').select('*').order('created_at', { ascending: false })
+        supabase.from('testing_reports').select('*').order('created_at', { ascending: false })
       ]);
 
       if (tdsResponse.error) throw tdsResponse.error;
       if (sdsResponse.error) throw sdsResponse.error;
-      if (protocolsResponse.error) throw protocolsResponse.error;
+      if (reportsResponse.error) throw reportsResponse.error;
 
       setTechnicalDataSheets(tdsResponse.data || []);
       setSafetyDataSheets(sdsResponse.data || []);
-      setResearchProtocols(protocolsResponse.data || []);
+      setTestingReports(reportsResponse.data || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch documents');
     } finally {
@@ -169,18 +169,18 @@ export const useResearchDocuments = () => {
     );
   };
 
-  const getProtocolsByProduct = (productId: string): ResearchProtocol[] => {
-    return researchProtocols.filter(protocol => protocol.product_id === productId);
+  const getReportsByProduct = (productId: string): TestingReport[] => {
+    return testingReports.filter(report => report.product_id === productId);
   };
 
-  const getProtocolsByArea = (researchArea: string): ResearchProtocol[] => {
-    return researchProtocols.filter(protocol => 
-      protocol.research_area.toLowerCase().includes(researchArea.toLowerCase())
+  const getReportsByArea = (researchArea: string): TestingReport[] => {
+    return testingReports.filter(report =>
+      report.research_area.toLowerCase().includes(researchArea.toLowerCase())
     );
   };
 
   const downloadDocument = async (
-    documentType: 'tds' | 'sds' | 'protocol',
+    documentType: 'tds' | 'sds' | 'report',
     documentId: string,
     format: 'PDF' | 'DOC' | 'JSON' | 'HTML' = 'PDF',
     productId?: string
@@ -201,7 +201,7 @@ export const useResearchDocuments = () => {
 
       // Generate document content based on type and format
       let document: any;
-      
+
       if (documentType === 'tds') {
         document = technicalDataSheets.find(d => d.id === documentId);
         if (!document) throw new Error('Technical Data Sheet not found');
@@ -210,10 +210,10 @@ export const useResearchDocuments = () => {
         document = safetyDataSheets.find(d => d.id === documentId);
         if (!document) throw new Error('Safety Data Sheet not found');
         return generateSDSDocument(document, format);
-      } else if (documentType === 'protocol') {
-        document = researchProtocols.find(d => d.id === documentId);
-        if (!document) throw new Error('Research Protocol not found');
-        return generateProtocolDocument(document, format);
+      } else if (documentType === 'report') {
+        document = testingReports.find(d => d.id === documentId);
+        if (!document) throw new Error('Testing Report not found');
+        return generateReportDocument(document, format);
       }
 
       throw new Error('Invalid document type');
@@ -450,16 +450,16 @@ export const useResearchDocuments = () => {
     return `data:text/html;charset=utf-8,${encodeURIComponent(htmlContent)}`;
   };
 
-  const generateProtocolDocument = (protocol: ResearchProtocol, format: string): string => {
+  const generateReportDocument = (report: TestingReport, format: string): string => {
     if (format === 'JSON') {
-      return JSON.stringify(protocol, null, 2);
+      return JSON.stringify(report, null, 2);
     }
 
     const htmlContent = `
       <!DOCTYPE html>
       <html>
       <head>
-        <title>Research Protocol - ${protocol.title}</title>
+        <title>Testing Report - ${report.title}</title>
         <style>
           body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
           .header { text-align: center; border-bottom: 2px solid #10B981; padding-bottom: 20px; margin-bottom: 30px; }
@@ -479,19 +479,19 @@ export const useResearchDocuments = () => {
       <body>
         <div class="header">
           <div class="company-name">Amino Acid Chain Tech Research</div>
-          <div>Research Protocol Library</div>
-          <div class="document-title">${protocol.title}</div>
+          <div>Testing Reports Library</div>
+          <div class="document-title">${report.title}</div>
           <div style="margin-top: 10px; font-size: 14px;">
-            Version: ${protocol.version} | Difficulty: ${protocol.difficulty_level} | Time: ${protocol.estimated_time}
+            Version: ${report.version} | Difficulty: ${report.difficulty_level} | Time: ${report.estimated_time}
           </div>
         </div>
 
         <div class="section">
-          <div class="section-title">Protocol Overview</div>
-          <div><strong>Objective:</strong> ${protocol.objective}</div>
-          ${protocol.background ? `<div style="margin-top: 10px;"><strong>Background:</strong> ${protocol.background}</div>` : ''}
-          <div style="margin-top: 10px;"><strong>Research Area:</strong> ${protocol.research_area}</div>
-          <div><strong>Author:</strong> ${protocol.author}${protocol.institution ? ` (${protocol.institution})` : ''}</div>
+          <div class="section-title">Report Overview</div>
+          <div><strong>Objective:</strong> ${report.objective}</div>
+          ${report.background ? `<div style="margin-top: 10px;"><strong>Background:</strong> ${report.background}</div>` : ''}
+          <div style="margin-top: 10px;"><strong>Research Area:</strong> ${report.research_area}</div>
+          <div><strong>Author:</strong> ${report.author}${report.institution ? ` (${report.institution})` : ''}</div>
         </div>
 
         <div class="section">
@@ -500,7 +500,7 @@ export const useResearchDocuments = () => {
             <div>
               <h4>Equipment</h4>
               <ul>
-                ${Object.entries(protocol.required_equipment).map(([item, description]) => 
+                ${Object.entries(report.required_equipment).map(([item, description]) =>
                   `<li><strong>${item}:</strong> ${description}</li>`
                 ).join('')}
               </ul>
@@ -508,7 +508,7 @@ export const useResearchDocuments = () => {
             <div>
               <h4>Reagents</h4>
               <ul>
-                ${Object.entries(protocol.required_reagents).map(([reagent, description]) => 
+                ${Object.entries(report.required_reagents).map(([reagent, description]) =>
                   `<li><strong>${reagent}:</strong> ${description}</li>`
                 ).join('')}
               </ul>
@@ -517,27 +517,27 @@ export const useResearchDocuments = () => {
         </div>
 
         <div class="section">
-          <div class="section-title">Experimental Procedure</div>
+          <div class="section-title">Testing Procedure</div>
           <div class="step-list">
-            ${Object.entries(protocol.procedure_steps).map(([step, description]) => 
+            ${Object.entries(report.procedure_steps).map(([step, description]) =>
               `<div class="step-item"><strong>${step}:</strong> ${description}</div>`
             ).join('')}
           </div>
         </div>
 
-        ${protocol.expected_outcomes ? `
+        ${report.expected_outcomes ? `
         <div class="section">
           <div class="section-title">Expected Results</div>
           <div class="info-box">
-            ${protocol.expected_outcomes}
+            ${report.expected_outcomes}
           </div>
         </div>
         ` : ''}
 
-        ${protocol.troubleshooting_guide ? `
+        ${report.troubleshooting_guide ? `
         <div class="section">
           <div class="section-title">Troubleshooting</div>
-          ${Object.entries(protocol.troubleshooting_guide).map(([problem, solution]) => 
+          ${Object.entries(report.troubleshooting_guide).map(([problem, solution]) =>
             `<div style="margin-bottom: 10px;"><strong>Problem:</strong> ${problem}<br><strong>Solution:</strong> ${solution}</div>`
           ).join('')}
         </div>
@@ -545,14 +545,14 @@ export const useResearchDocuments = () => {
 
         <div class="warning-box">
           <strong>⚠️ Research Use Only</strong><br>
-          This protocol is for research purposes only. Ensure proper safety protocols are followed. 
+          This testing report is for research purposes only. Ensure proper safety protocols are followed.
           Not for human or veterinary use.
         </div>
 
         <div class="footer">
-          <p><strong>Amino Acid Chain Tech Research Protocol Library</strong></p>
-          <p>Protocol Support: protocols@aminoacidchaintech.com | Research Division</p>
-          <p>Document generated: ${new Date().toLocaleDateString()} | Rating: ${protocol.rating_average ? `${protocol.rating_average}/5 (${protocol.rating_count} reviews)` : 'Not rated'}</p>
+          <p><strong>Amino Acid Chain Tech Research Testing Reports Library</strong></p>
+          <p>Testing Support: testing@aminoacidchaintech.com | Research Division</p>
+          <p>Document generated: ${new Date().toLocaleDateString()} | Rating: ${report.rating_average ? `${report.rating_average}/5 (${report.rating_count} reviews)` : 'Not rated'}</p>
         </div>
       </body>
       </html>
@@ -561,14 +561,14 @@ export const useResearchDocuments = () => {
     return `data:text/html;charset=utf-8,${encodeURIComponent(htmlContent)}`;
   };
 
-  const rateProtocol = async (protocolId: string, rating: number, reviewText?: string) => {
+  const rateReport = async (reportId: string, rating: number, reviewText?: string) => {
     try {
       if (!user) throw new Error('User not authenticated');
 
       const { data, error } = await supabase
-        .from('protocol_ratings')
+        .from('report_ratings')
         .upsert({
-          protocol_id: protocolId,
+          report_id: reportId,
           user_id: user.id,
           rating,
           review_text: reviewText,
@@ -579,10 +579,10 @@ export const useResearchDocuments = () => {
 
       if (error) throw error;
 
-      await fetchDocuments(); // Refresh to get updated ratings
+      await fetchDocuments();
       return data;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to rate protocol');
+      setError(err instanceof Error ? err.message : 'Failed to rate report');
       throw err;
     }
   };
@@ -600,7 +600,7 @@ export const useResearchDocuments = () => {
         doc.product_name.toLowerCase().includes(searchTerm) ||
         doc.sku.toLowerCase().includes(searchTerm)
       ),
-      protocols: researchProtocols.filter(doc =>
+      reports: testingReports.filter(doc =>
         doc.title.toLowerCase().includes(searchTerm) ||
         doc.research_area.toLowerCase().includes(searchTerm) ||
         doc.objective.toLowerCase().includes(searchTerm)
@@ -617,16 +617,16 @@ export const useResearchDocuments = () => {
   return {
     technicalDataSheets,
     safetyDataSheets,
-    researchProtocols,
+    testingReports,
     downloads,
     loading,
     error,
     getTDSByProduct,
     getSDSByProduct,
-    getProtocolsByProduct,
-    getProtocolsByArea,
+    getReportsByProduct,
+    getReportsByArea,
     downloadDocument,
-    rateProtocol,
+    rateReport,
     searchDocuments,
     refetch: fetchDocuments
   };

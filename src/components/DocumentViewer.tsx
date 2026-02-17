@@ -38,7 +38,7 @@ export default function DocumentViewer({ document, documentType, onClose, onDown
         return <FileText className="h-6 w-6 text-blue-600" />;
       case 'sds':
         return <Shield className="h-6 w-6 text-red-600" />;
-      case 'protocol':
+      case 'report':
         return <BookOpen className="h-6 w-6 text-green-600" />;
       default:
         return <FileText className="h-6 w-6 text-gray-600" />;
@@ -51,8 +51,8 @@ export default function DocumentViewer({ document, documentType, onClose, onDown
         return 'Technical Data Sheet';
       case 'sds':
         return 'Safety Data Sheet';
-      case 'protocol':
-        return 'Research Protocol';
+      case 'report':
+        return 'Testing Report';
       default:
         return 'Document';
     }
@@ -75,7 +75,7 @@ export default function DocumentViewer({ document, documentType, onClose, onDown
                 <p className="text-gray-600">
                   {documentType === 'tds' && document.title}
                   {documentType === 'sds' && document.product_name}
-                  {documentType === 'protocol' && document.title}
+                  {documentType === 'report' && document.title}
                 </p>
               </div>
             </div>
@@ -309,7 +309,7 @@ export default function DocumentViewer({ document, documentType, onClose, onDown
             )}
 
             {/* Research Protocol Content */}
-            {documentType === 'protocol' && (
+            {documentType === 'report' && (
               <div className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="bg-gray-50 p-4 rounded-lg">
