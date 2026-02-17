@@ -146,6 +146,7 @@ export default function DocumentUploadForm({
           handling_precautions: 'See document',
           storage_requirements: 'See document',
           personal_protective_equipment: {},
+          document_url: filePath,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         };
@@ -166,6 +167,7 @@ export default function DocumentUploadForm({
           approval_status: 'pending',
           required_equipment: {},
           required_reagents: {},
+          document_url: filePath,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         };
