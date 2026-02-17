@@ -395,7 +395,7 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
                   <div className="bg-white p-6 rounded-lg shadow-sm">
                     <h4 className="font-semibold mb-3">Key Features</h4>
                     <ul className="space-y-2 text-sm text-gray-600">
-                      <li>• High purity research grade peptide</li>
+                      <li>• High purity research grade amino acid chain</li>
                       <li>• Lyophilized powder for stability</li>
                       <li>• Third-party tested and verified</li>
                       <li>• Certificate of Analysis included</li>
@@ -562,7 +562,7 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
                   <div className="bg-white p-6 rounded-lg shadow-sm">
                     <h4 className="font-semibold mb-4">Typical Research Applications</h4>
                     <div className="text-gray-600">
-                      <p className="mb-3">This peptide is commonly used in:</p>
+                      <p className="mb-3">This amino acid chain is commonly used in:</p>
                       <ul className="space-y-1 ml-4">
                         <li>• Cell culture experiments</li>
                         <li>• Biochemical assays</li>

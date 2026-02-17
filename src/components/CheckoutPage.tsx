@@ -158,7 +158,7 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
                     <div className="flex items-start">
                       <AlertTriangle className="h-5 w-5 text-yellow-600 mr-2 mt-0.5" />
                       <div className="text-xs sm:text-sm text-yellow-800">
-                        <strong>Research Use Only:</strong> By proceeding with this order, you confirm that these peptides are for research purposes only and not for human consumption.
+                        <strong>Research Use Only:</strong> By proceeding with this order, you confirm that these amino acid chains are for research purposes only and not for human consumption.
                       </div>
                     </div>
                   </div>
@@ -637,7 +637,7 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
 
               <div className="mt-4 sm:mt-6 p-3 bg-blue-50 rounded-lg">
                 <div className="text-xs sm:text-sm text-blue-800">
-                  <strong>Cold Chain Shipping:</strong> All peptides are shipped with temperature monitoring to ensure product integrity.
+                  <strong>Cold Chain Shipping:</strong> All amino acid chains are shipped with temperature monitoring to ensure product integrity.
                 </div>
               </div>
             </div>

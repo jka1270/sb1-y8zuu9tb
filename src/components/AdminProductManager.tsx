@@ -24,7 +24,7 @@ export default function AdminProductManager() {
     onConfirm?: () => void;
   }>({ isOpen: false, title: '', message: '', type: 'info' });
 
-  const categories = ['Therapeutic Peptides', 'Cosmetic Peptides', 'Research Peptides', 'Custom Synthesis'];
+  const categories = ['Therapeutic Amino acid chains', 'Cosmetic Amino acid chains', 'Research Amino acid chains', 'Custom Synthesis'];
 
   useEffect(() => {
     fetchProducts();
@@ -226,7 +226,7 @@ export default function AdminProductManager() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">Product Management</h2>
-            <p className="text-gray-600">Manage your peptide catalog and inventory</p>
+            <p className="text-gray-600">Manage your amino acid chain catalog and inventory</p>
           </div>
           <div className="flex space-x-3">
             <button className="flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">

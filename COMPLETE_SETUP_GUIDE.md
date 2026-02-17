@@ -1,6 +1,6 @@
 # Complete Integration Setup Guide
 
-This guide will walk you through setting up StratosPay payment processing and ShipStation order fulfillment for your peptide e-commerce platform.
+This guide will walk you through setting up StratosPay payment processing and ShipStation order fulfillment for your amino acid chain e-commerce platform.
 
 ---
 

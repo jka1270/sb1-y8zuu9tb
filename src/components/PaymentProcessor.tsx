@@ -168,7 +168,7 @@ export default function PaymentProcessor({
       <div className="mt-4 text-center">
         <p className="text-xs text-gray-500">
           By completing this payment, you agree to our terms of service and confirm
-          that these peptides are for research use only.
+          that these amino acid chains are for research use only.
         </p>
       </div>
     </div>

@@ -147,7 +147,7 @@ export default function AccountDashboard({ onNavigate }: AccountDashboardProps) 
                   <Heart className="h-5 w-5 text-gray-400 mr-3" />
                   <div>
                     <div className="font-medium text-gray-900">Saved Products</div>
-                    <div className="text-sm text-gray-500">Manage your saved peptides</div>
+                    <div className="text-sm text-gray-500">Manage your saved amino acid chains</div>
                   </div>
                 </button>
 
@@ -183,7 +183,7 @@ export default function AccountDashboard({ onNavigate }: AccountDashboardProps) 
                   <div>
                     <h3 className="font-medium text-yellow-900">Complete Your Research Profile</h3>
                     <p className="text-sm text-yellow-700 mt-1">
-                      Complete your research profile to access specialized peptides and features.
+                      Complete your research profile to access specialized amino acid chains and features.
                     </p>
                     <button
                       onClick={() => onNavigate('research-profile')}
@@ -260,7 +260,7 @@ export default function AccountDashboard({ onNavigate }: AccountDashboardProps) 
                 <div className="text-center py-8">
                   <Heart className="h-12 w-12 text-gray-300 mx-auto mb-3" />
                   <p className="text-gray-500">No saved products yet</p>
-                  <p className="text-sm text-gray-400">Save peptides while browsing to see them here</p>
+                  <p className="text-sm text-gray-400">Save amino acid chains while browsing to see them here</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

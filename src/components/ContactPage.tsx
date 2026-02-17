@@ -130,8 +130,8 @@ export default function ContactPage({ onBack }: ContactPageProps) {
     {
       icon: Mail,
       title: 'Email Support',
-      primary: 'support@peptidetechresearch.com',
-      secondary: 'Technical: tech@peptidetechresearch.com',
+      primary: 'support@researchraws.com',
+      secondary: 'Technical: tech@researchraws.com',
       hours: 'Response within 24 hours',
       color: 'text-green-600'
     },
@@ -163,7 +163,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
     {
       name: 'Custom Synthesis',
       email: 'custom@researchraws.com',
-      description: 'Custom peptide projects, quotes, synthesis timelines',
+      description: 'Custom amino acid chain projects, quotes, synthesis timelines',
       icon: Building,
       color: 'bg-purple-50 text-purple-600'
     },
@@ -387,7 +387,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
                   value={formData.message}
                   onChange={(e) => handleInputChange('message', e.target.value)}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Please provide detailed information about your inquiry, including specific peptides, research objectives, or technical questions..."
+                  placeholder="Please provide detailed information about your inquiry, including specific amino acid chains, research objectives, or technical questions..."
                 />
               </div>
 
@@ -410,7 +410,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
                 <div className="flex items-start">
                   <AlertTriangle className="h-5 w-5 text-yellow-600 mr-2 mt-0.5" />
                   <div className="text-sm text-yellow-800">
-                    <strong>Research Use Only:</strong> By submitting this form, you confirm that any peptides 
+                    <strong>Research Use Only:</strong> By submitting this form, you confirm that any amino acid chains 
                     discussed are for research purposes only and not for human consumption.
                   </div>
                 </div>
@@ -440,7 +440,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
                 <div className="flex items-start">
                   <MapPin className="h-6 w-6 text-blue-600 mr-3 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-gray-900">PeptideTech Research Headquarters</h4>
+                    <h4 className="font-semibold text-gray-900">Amino Acid ChainTech Research Headquarters</h4>
                     <div className="text-gray-600 mt-1">
                       <p>10520 Science Center Drive</p>
                       <p>Suite 300</p>
@@ -501,7 +501,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
                       batch inquiries, and quality concerns.
                     </p>
                     <div className="mt-3 space-y-1">
-                      <p className="text-sm"><strong>Email:</strong> quality@peptidetechresearch.com</p>
+                      <p className="text-sm"><strong>Email:</strong> quality@researchraws.com</p>
                       <p className="text-sm"><strong>Phone:</strong> 1-800-738-8433 ext. 2</p>
                       <p className="text-sm"><strong>Emergency QC Line:</strong> 1-858-555-0199</p>
                     </div>
@@ -536,32 +536,32 @@ export default function ContactPage({ onBack }: ContactPageProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-6">
               <div>
-                <h4 className="font-semibold text-gray-900 mb-2">What is your typical lead time for standard peptides?</h4>
+                <h4 className="font-semibold text-gray-900 mb-2">What is your typical lead time for standard amino acid chains?</h4>
                 <p className="text-gray-600 text-sm">
-                  Most standard peptides ship within 1-3 business days. Custom synthesis typically takes 2-4 weeks 
+                  Most standard amino acid chains ship within 1-3 business days. Custom synthesis typically takes 2-4 weeks 
                   depending on complexity and sequence length.
                 </p>
               </div>
               <div>
                 <h4 className="font-semibold text-gray-900 mb-2">Do you provide Certificates of Analysis?</h4>
                 <p className="text-gray-600 text-sm">
-                  Yes, every peptide shipment includes a comprehensive Certificate of Analysis with purity data, 
+                  Yes, every amino acid chain shipment includes a comprehensive Certificate of Analysis with purity data, 
                   analytical methods, and quality control information.
                 </p>
               </div>
               <div>
                 <h4 className="font-semibold text-gray-900 mb-2">What are your shipping options?</h4>
                 <p className="text-gray-600 text-sm">
-                  We offer standard and express cold chain shipping worldwide. All peptides are shipped with 
+                  We offer standard and express cold chain shipping worldwide. All amino acid chains are shipped with 
                   temperature monitoring to ensure product integrity.
                 </p>
               </div>
             </div>
             <div className="space-y-6">
               <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Can you synthesize custom peptides?</h4>
+                <h4 className="font-semibold text-gray-900 mb-2">Can you synthesize custom amino acid chains?</h4>
                 <p className="text-gray-600 text-sm">
-                  Yes, we offer custom peptide synthesis services from mg to gram scale. Contact our custom 
+                  Yes, we offer custom amino acid chain synthesis services from mg to gram scale. Contact our custom 
                   synthesis team for quotes and timelines.
                 </p>
               </div>
@@ -575,7 +575,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
               <div>
                 <h4 className="font-semibold text-gray-900 mb-2">What quality standards do you follow?</h4>
                 <p className="text-gray-600 text-sm">
-                  We maintain ISO 9001:2015 certification and follow GMP guidelines. All peptides undergo 
+                  We maintain ISO 9001:2015 certification and follow GMP guidelines. All amino acid chains undergo 
                   comprehensive analytical testing before release.
                 </p>
               </div>

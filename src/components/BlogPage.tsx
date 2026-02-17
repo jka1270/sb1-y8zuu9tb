@@ -120,8 +120,8 @@ export default function BlogPage({ onBack }: BlogPageProps) {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Research Hub</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Stay informed with the latest research insights, industry news, and comprehensive guides 
-            for peptide research and applications.
+            Stay informed with the latest research insights, industry news, and comprehensive guides
+            for amino acid chain research and applications.
           </p>
         </div>
 

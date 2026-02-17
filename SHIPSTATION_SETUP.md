@@ -1,7 +1,7 @@
 # ShipStation Integration Setup Guide
 
 ## Overview
-Research Raws integrates with ShipStation using the REST API, **NOT** through a Store Connection. This allows for more flexibility and proper cold chain handling for peptide shipments.
+Research Raws integrates with ShipStation using the REST API, **NOT** through a Store Connection. This allows for more flexibility and proper cold chain handling for amino acid chain shipments.
 
 ## Setup Steps
 
@@ -44,7 +44,7 @@ Add your ShipStation credentials to Supabase:
 4. Click the **Sync** button
 5. Order should appear in ShipStation with:
    - Cold chain markers (Custom Field 1: COLD_CHAIN_REQUIRED)
-   - Peptide designation (Custom Field 2: PEPTIDE_SHIPMENT)
+   - Amino acid chain designation (Custom Field 2: AMINO ACID CHAIN_SHIPMENT)
 
 ## How It Works
 
@@ -126,7 +126,7 @@ Body: ShipStation webhook payload
 
 All orders synced to ShipStation include:
 - **Custom Field 1:** COLD_CHAIN_REQUIRED (flags for temperature control)
-- **Custom Field 2:** PEPTIDE_SHIPMENT (identifies product type)
+- **Custom Field 2:** AMINO ACID CHAIN_SHIPMENT (identifies product type)
 
 These fields help warehouse staff identify orders requiring special handling.
 

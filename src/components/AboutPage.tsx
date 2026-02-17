@@ -7,12 +7,12 @@ interface AboutPageProps {
 
 export default function AboutPage({ onBack }: AboutPageProps) {
   const milestones = [
-    { year: '2018', title: 'Company Founded', description: 'Established PeptideTech Research with focus on high-purity peptides' },
+    { year: '2018', title: 'Company Founded', description: 'Established ResearchRaws with focus on high-purity amino acid chains' },
     { year: '2019', title: 'GMP Certification', description: 'Achieved Good Manufacturing Practice certification' },
     { year: '2020', title: 'Research Partnerships', description: 'Formed partnerships with leading universities and research institutions' },
     { year: '2021', title: 'Quality Expansion', description: 'Expanded quality control laboratory and analytical capabilities' },
     { year: '2022', title: 'Global Reach', description: 'Extended shipping to over 50 countries worldwide' },
-    { year: '2023', title: 'Innovation Center', description: 'Opened dedicated R&D facility for custom peptide synthesis' },
+    { year: '2023', title: 'Innovation Center', description: 'Opened dedicated R&D facility for custom amino acid chain synthesis' },
     { year: '2024', title: 'AI Integration', description: 'Implemented AI-driven quality control and inventory management' },
     { year: '2025', title: 'Sustainability Initiative', description: 'Launched green chemistry and sustainable manufacturing practices' },
   ];
@@ -22,7 +22,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
       name: 'Dr. Sarah Chen',
       role: 'Chief Scientific Officer',
       education: 'PhD in Biochemistry, Stanford University',
-      experience: '15+ years in peptide research and development',
+      experience: '15+ years in amino acid chain research and development',
       image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=400'
     },
     {
@@ -43,7 +43,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
       name: 'Dr. James Liu',
       role: 'Director of Custom Synthesis',
       education: 'PhD in Organic Chemistry, Caltech',
-      experience: '14+ years in peptide synthesis and purification',
+      experience: '14+ years in amino acid chain synthesis and purification',
       image: 'https://images.pexels.com/photos/3786164/pexels-photo-3786164.jpeg?auto=compress&cs=tinysrgb&w=400'
     },
   ];
@@ -83,7 +83,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-6">About ResearchRaws</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Leading the future of peptide research with uncompromising quality, innovative solutions, 
+            Leading the future of amino acid chain research with uncompromising quality, innovative solutions,
             and unwavering commitment to advancing scientific discovery worldwide.
           </p>
         </div>
@@ -94,8 +94,8 @@ export default function AboutPage({ onBack }: AboutPageProps) {
             <Target className="h-12 w-12 text-blue-600 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-4">Our Mission</h3>
             <p className="text-gray-600">
-              To accelerate scientific discovery by providing researchers worldwide with the highest quality 
-              peptides, comprehensive documentation, and exceptional support services.
+              To accelerate scientific discovery by providing researchers worldwide with the highest quality
+              amino acid chains, comprehensive documentation, and exceptional support services.
             </p>
           </div>
 
@@ -103,7 +103,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
             <Globe className="h-12 w-12 text-green-600 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-4">Our Vision</h3>
             <p className="text-gray-600">
-              To be the global leader in peptide research solutions, enabling breakthrough discoveries 
+              To be the global leader in amino acid chain research solutions, enabling breakthrough discoveries
               in therapeutics, diagnostics, and biotechnology applications.
             </p>
           </div>
@@ -125,14 +125,14 @@ export default function AboutPage({ onBack }: AboutPageProps) {
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
               <div className="space-y-4 text-gray-600">
                 <p>
-                  Founded in 2018 by a team of passionate biochemists and entrepreneurs, ResearchRaws 
-                  emerged from a shared vision to bridge the gap between cutting-edge peptide science and 
+                  Founded in 2018 by a team of passionate biochemists and entrepreneurs, ResearchRaws
+                  emerged from a shared vision to bridge the gap between cutting-edge amino acid chain science and
                   practical research applications.
                 </p>
                 <p>
-                  Our founders, having experienced firsthand the challenges researchers face in obtaining 
-                  high-quality peptides with reliable documentation, set out to create a company that would 
-                  set new standards for quality, transparency, and customer service in the peptide industry.
+                  Our founders, having experienced firsthand the challenges researchers face in obtaining
+                  high-quality amino acid chains with reliable documentation, set out to create a company that would
+                  set new standards for quality, transparency, and customer service in the amino acid chain industry.
                 </p>
                 <p>
                   Today, we serve over 2,000 research institutions worldwide, from leading universities to 
@@ -143,8 +143,8 @@ export default function AboutPage({ onBack }: AboutPageProps) {
             </div>
             <div>
               <OptimizedImage
-                src="https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=800" 
-                alt="PeptideTech Research laboratory" 
+                src="https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=800"
+                alt="ResearchRaws laboratory" 
                 className="rounded-lg shadow-md"
                 loading="lazy"
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -230,7 +230,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
                   <CheckCircle className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
                   <div>
                     <h4 className="font-semibold text-gray-900">≥98% Purity Guarantee</h4>
-                    <p className="text-gray-600 text-sm">Every peptide undergoes rigorous HPLC and mass spectrometry analysis</p>
+                    <p className="text-gray-600 text-sm">Every amino acid chain undergoes rigorous HPLC and mass spectrometry analysis</p>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -285,7 +285,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Synthesis</h3>
               <p className="text-gray-600 text-sm">
-                Solid-phase peptide synthesis using state-of-the-art automated synthesizers
+                Solid-phase amino acid chain synthesis using state-of-the-art automated synthesizers
               </p>
             </div>
 
@@ -326,7 +326,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Research Partnerships</h2>
           <div className="text-center mb-8">
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We collaborate with leading research institutions worldwide to advance peptide science 
+              We collaborate with leading research institutions worldwide to advance amino acid chain science
               and support groundbreaking discoveries in medicine and biotechnology.
             </p>
           </div>
@@ -361,7 +361,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
                   <Microscope className="h-6 w-6 text-blue-600 mr-3 mt-0.5" />
                   <div>
                     <h4 className="font-semibold text-gray-900">Research & Development</h4>
-                    <p className="text-gray-600 text-sm">15,000 sq ft facility with automated peptide synthesizers</p>
+                    <p className="text-gray-600 text-sm">15,000 sq ft facility with automated amino acid chain synthesizers</p>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -414,7 +414,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
               <Globe className="h-12 w-12 text-green-600 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Innovation Leader</h3>
               <p className="text-gray-600 text-sm">
-                San Diego Biotech Innovation Award 2024 for Advanced Peptide Technologies
+                San Diego Biotech Innovation Award 2024 for Advanced Amino Acid Chain Technologies
               </p>
             </div>
           </div>

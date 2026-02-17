@@ -29,7 +29,7 @@ export default function OrderTrackingWidget({
     {
       key: 'processing',
       label: 'Processing',
-      description: 'Peptides are being prepared and packaged with cold chain materials',
+      description: 'Amino acid chains are being prepared and packaged with cold chain materials',
       icon: Package,
       completed: false
     },
@@ -181,7 +181,7 @@ export default function OrderTrackingWidget({
         <div className="flex items-start">
           <AlertCircle className="h-4 w-4 text-blue-600 mr-2 mt-0.5" />
           <div className="text-sm text-blue-800">
-            <strong>Cold Chain Handling:</strong> Your peptides are being shipped with specialized 
+            <strong>Cold Chain Handling:</strong> Your amino acid chains are being shipped with specialized
             temperature-controlled packaging to ensure product integrity throughout transit.
           </div>
         </div>

@@ -117,7 +117,7 @@ export default function InventoryDashboard() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Inventory Management</h1>
-            <p className="text-gray-600 mt-1">Real-time stock levels and alerts for peptide research products</p>
+            <p className="text-gray-600 mt-1">Real-time stock levels and alerts for amino acid chain research products</p>
           </div>
           <button
             onClick={refetch}

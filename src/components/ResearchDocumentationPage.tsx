@@ -143,9 +143,9 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Research Documentation</h1>
           <p className="text-gray-600">
-            {productId 
+            {productId
               ? 'Technical specifications, safety information, and research protocols for this product'
-              : 'Comprehensive technical documentation and research protocols for all peptide products'
+              : 'Comprehensive technical documentation and research protocols for all amino acid chain products'
             }
           </p>
         </div>

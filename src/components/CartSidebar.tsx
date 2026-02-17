@@ -62,7 +62,7 @@ export default function CartSidebar({ onCheckout }: CartSidebarProps) {
             <div className="text-center py-8 sm:py-12">
               <ShoppingBag className="h-16 w-16 text-gray-300 mx-auto mb-4" />
               <p className="text-gray-500 text-base sm:text-lg">Your cart is empty</p>
-              <p className="text-gray-400 text-sm mt-2 px-4">Add some peptides to get started</p>
+              <p className="text-gray-400 text-sm mt-2 px-4">Add some amino acid chains to get started</p>
             </div>
           ) : (
             <div className="space-y-3 sm:space-y-4">

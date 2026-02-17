@@ -289,21 +289,21 @@ export default function COAViewer({ coa, onClose, orderId }: COAViewerProps) {
                     </tr>
                     <tr>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        Peptide Content
+                        Amino acid chain Content
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {coa.peptide_content}%
+                        {coa.amino_acid_chain_content}%
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         ≥ 80%
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          coa.peptide_content >= 80 
-                            ? 'bg-green-100 text-green-800' 
+                          coa.amino_acid_chain_content >= 80
+                            ? 'bg-green-100 text-green-800'
                             : 'bg-red-100 text-red-800'
                         }`}>
-                          {coa.peptide_content >= 80 ? 'Pass' : 'Fail'}
+                          {coa.amino_acid_chain_content >= 80 ? 'Pass' : 'Fail'}
                         </span>
                       </td>
                     </tr>

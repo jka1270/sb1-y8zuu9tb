@@ -283,7 +283,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: Au
                       className="mt-1 mr-2 sm:mr-3 flex-shrink-0"
                     />
                     <span className="text-xs sm:text-sm text-yellow-800 leading-relaxed">
-                      I confirm that I am purchasing peptides for research purposes only and not for human consumption. I understand the terms and conditions.
+                      I confirm that I am purchasing amino acid chains for research purposes only and not for human consumption. I understand the terms and conditions.
                     </span>
                   </label>
                 </div>

@@ -68,7 +68,7 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
 
       pdf.setFontSize(20);
       pdf.setTextColor(37, 99, 235);
-      pdf.text('Research Peptides Direct', pageWidth / 2, yPos, { align: 'center' });
+      pdf.text('Research Amino acid chains Direct', pageWidth / 2, yPos, { align: 'center' });
 
       yPos += 10;
       pdf.setFontSize(16);
@@ -448,7 +448,7 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
               <div className="flex items-start">
                 <FileText className="h-5 w-5 text-yellow-600 mr-2 mt-0.5" />
                 <div className="text-sm text-yellow-800">
-                  <strong>Research Use Only:</strong> This order contains peptides intended solely for research purposes. 
+                  <strong>Research Use Only:</strong> This order contains amino acid chains intended solely for research purposes.
                   Not for human consumption. Please ensure proper storage and handling according to safety protocols.
                 </div>
               </div>

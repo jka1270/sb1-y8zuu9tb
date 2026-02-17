@@ -3,11 +3,11 @@ import { Search } from 'lucide-react';
 import SearchBar from './SearchBar';
 
 interface HeroProps {
-  onBrowsePeptides?: () => void;
+  onBrowseAminoAcidChains?: () => void;
   onResearchGuide?: () => void;
 }
 
-export default function Hero({ onBrowsePeptides, onResearchGuide }: HeroProps) {
+export default function Hero({ onBrowseAminoAcidChains, onResearchGuide }: HeroProps) {
   const handleSearch = (query: string) => {
     console.log('Search query:', query);
   };
@@ -20,8 +20,8 @@ export default function Hero({ onBrowsePeptides, onResearchGuide }: HeroProps) {
   };
 
   const handleBrowseClick = () => {
-    if (onBrowsePeptides) {
-      onBrowsePeptides();
+    if (onBrowseAminoAcidChains) {
+      onBrowseAminoAcidChains();
     } else {
       scrollToCatalog();
     }
@@ -43,7 +43,7 @@ export default function Hero({ onBrowsePeptides, onResearchGuide }: HeroProps) {
         <div className="max-w-sm sm:max-w-md mx-auto mb-6 sm:mb-8">
           <SearchBar
             onSearch={handleSearch}
-            placeholder="Search peptides..."
+            placeholder="Search amino acid chains..."
             className="w-full"
           />
         </div>
@@ -51,11 +51,11 @@ export default function Hero({ onBrowsePeptides, onResearchGuide }: HeroProps) {
         <div className="max-w-4xl mx-auto text-center">
           <div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4 px-4">
-              Premium Research Peptides for
+              Premium Research Amino Acid Chains for
               <span className="text-blue-200"> Scientific Excellence</span>
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-6 leading-relaxed px-4">
-              Discover our comprehensive collection of high-purity peptides, from therapeutic compounds to
+              Discover our comprehensive collection of high-purity amino acid chains, from therapeutic compounds to
               cosmetic applications, designed to advance your research goals.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 px-4 justify-center">
@@ -63,7 +63,7 @@ export default function Hero({ onBrowsePeptides, onResearchGuide }: HeroProps) {
                 onClick={handleBrowseClick}
                 className="bg-white text-blue-600 px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors flex items-center justify-center text-sm sm:text-base"
               >
-                Browse Peptides
+                Browse Amino Acid Chains
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
               <button

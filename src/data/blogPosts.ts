@@ -44,9 +44,9 @@ export interface ResourceGuide {
 
 export const blogCategories = [
   { id: 'research', name: 'Research Insights', description: 'Latest research findings and scientific discoveries' },
-  { id: 'industry', name: 'Industry News', description: 'Peptide industry trends and market updates' },
-  { id: 'technology', name: 'Technology', description: 'Advances in peptide synthesis and analysis' },
-  { id: 'applications', name: 'Applications', description: 'Real-world peptide applications and case studies' },
+  { id: 'industry', name: 'Industry News', description: 'Amino acid chain industry trends and market updates' },
+  { id: 'technology', name: 'Technology', description: 'Advances in amino acid chain synthesis and analysis' },
+  { id: 'applications', name: 'Applications', description: 'Real-world amino acid chain applications and case studies' },
   { id: 'quality', name: 'Quality Assurance', description: 'Quality control and regulatory updates' },
   { id: 'education', name: 'Education', description: 'Educational content and learning resources' }
 ];

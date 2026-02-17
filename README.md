@@ -1,10 +1,10 @@
-# PeptideTech Research - Peptide E-commerce Platform
+# PeptideTech Research - Amino acid chain E-commerce Platform
 
-A professional e-commerce platform for research peptides built with React, TypeScript, and Supabase.
+A professional e-commerce platform for research amino acid chains built with React, TypeScript, and Supabase.
 
 ## Features
 
-- **Product Catalog**: Comprehensive peptide database with detailed specifications
+- **Product Catalog**: Comprehensive amino acid chain database with detailed specifications
 - **Advanced Search & Filtering**: Filter by purity, molecular weight, price, applications
 - **User Authentication**: Secure registration and login for researchers
 - **Shopping Cart**: Full cart management with checkout process
@@ -33,7 +33,7 @@ A professional e-commerce platform for research peptides built with React, TypeS
 1. Clone the repository
 ```bash
 git clone <repository-url>
-cd peptidetech-research
+cd aminoacidchain-research
 ```
 
 2. Install dependencies

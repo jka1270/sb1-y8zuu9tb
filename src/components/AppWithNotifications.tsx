@@ -19,7 +19,7 @@ import AboutPage from './AboutPage';
 import ContactPage from './ContactPage';
 import BlogPage from './BlogPage';
 import AdminPanel from './AdminPanel';
-import PeptideCategoryPage from './PeptideCategoryPage';
+import AminoAcidChainCategoryPage from './PeptideCategoryPage';
 import NotificationContainer from './NotificationContainer';
 import { ArrowLeft } from 'lucide-react';
 import { preloadCriticalResources } from '../lib/performance';
@@ -34,7 +34,7 @@ export default function AppWithNotifications() {
   const [showContact, setShowContact] = useState(false);
   const [showBlog, setShowBlog] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
-  const [showPeptideCategory, setShowPeptideCategory] = useState<'therapeutic' | 'cosmetic' | 'research' | 'custom' | 'libraries' | null>(null);
+  const [showAminoAcidChainCategory, setShowAminoAcidChainCategory] = useState<'therapeutic' | 'cosmetic' | 'research' | 'custom' | 'libraries' | null>(null);
   const [accountPage, setAccountPage] = useState('dashboard');
   const { showNotification } = useNotification();
 
@@ -72,11 +72,11 @@ export default function AppWithNotifications() {
     setShowContact(false);
     setShowBlog(false);
     setShowAdmin(false);
-    setShowPeptideCategory(null);
+    setShowAminoAcidChainCategory(null);
     setAccountPage('dashboard');
   };
 
-  const handlePeptideCategory = (category: 'therapeutic' | 'cosmetic' | 'research' | 'custom' | 'libraries') => {
+  const handleAminoAcidChainCategory = (category: 'therapeutic' | 'cosmetic' | 'research' | 'custom' | 'libraries') => {
     setShowCheckout(false);
     setShowOrderHistory(false);
     setShowAccount(false);
@@ -86,11 +86,11 @@ export default function AppWithNotifications() {
     setShowBlog(false);
     setShowAdmin(false);
     setAccountPage('dashboard');
-    setShowPeptideCategory(category);
+    setShowAminoAcidChainCategory(category);
   };
 
-  const handleBackFromPeptideCategory = () => {
-    setShowPeptideCategory(null);
+  const handleBackFromAminoAcidChainCategory = () => {
+    setShowAminoAcidChainCategory(null);
   };
 
   const handleCheckout = () => {
@@ -140,7 +140,7 @@ export default function AppWithNotifications() {
     setShowAbout(false);
     setShowContact(false);
     setShowBlog(false);
-    setShowPeptideCategory(null);
+    setShowAminoAcidChainCategory(null);
     setAccountPage('dashboard');
     setShowAdmin(true);
   };
@@ -160,7 +160,7 @@ export default function AppWithNotifications() {
       <div className="min-h-screen bg-gray-50">
         <Header
           onHome={handleHome}
-          onPeptideCategory={handlePeptideCategory}
+          onAminoAcidChainCategory={handleAminoAcidChainCategory}
           onOrderHistory={handleOrderHistory}
           onAccount={handleAccount}
           onDocumentation={handleDocumentation}
@@ -170,8 +170,8 @@ export default function AppWithNotifications() {
           onAdmin={handleAdmin}
         />
 
-        {showPeptideCategory && (
-          <PeptideCategoryPage category={showPeptideCategory} onBack={handleBackFromPeptideCategory} />
+        {showAminoAcidChainCategory && (
+          <AminoAcidChainCategoryPage category={showAminoAcidChainCategory} onBack={handleBackFromAminoAcidChainCategory} />
         )}
 
         {showAdmin && (
@@ -222,7 +222,7 @@ export default function AppWithNotifications() {
           <BlogPage onBack={handleBackFromBlog} />
         )}
 
-        {!showPeptideCategory && !showAdmin && !showCheckout && !showOrderHistory && !showAccount && !showDocumentation && !showAbout && !showContact && !showBlog && (
+        {!showAminoAcidChainCategory && !showAdmin && !showCheckout && !showOrderHistory && !showAccount && !showDocumentation && !showAbout && !showContact && !showBlog && (
           <>
             <Hero onResearchGuide={handleDocumentation} />
             <ProductGrid />

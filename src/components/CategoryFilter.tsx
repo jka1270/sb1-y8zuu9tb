@@ -7,11 +7,11 @@ interface CategoryFilterProps {
 }
 
 const categoryNames = [
-  'Therapeutic Peptides',
-  'Cosmetic Peptides',
-  'Research Peptides',
+  'Therapeutic Amino Acid Chains',
+  'Cosmetic Amino Acid Chains',
+  'Research Amino Acid Chains',
   'Custom Synthesis',
-  'Peptide Libraries'
+  'Amino Acid Chain Libraries'
 ];
 
 export default function CategoryFilter({ selectedCategory, onCategoryChange, products }: CategoryFilterProps) {
@@ -32,7 +32,7 @@ export default function CategoryFilter({ selectedCategory, onCategoryChange, pro
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
         >
-          All Peptides
+          All Amino Acid Chains
         </button>
         {categoryNames.map((categoryName, index) => {
           const count = getCategoryCount(categoryName);

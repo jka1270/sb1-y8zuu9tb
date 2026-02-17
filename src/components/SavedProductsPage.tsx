@@ -153,7 +153,7 @@ export default function SavedProductsPage({ onBack }: SavedProductsPageProps) {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Saved Products & Lists</h1>
           <p className="text-gray-600">
-            Organize your research peptides and create custom collections for your projects
+            Organize your research amino acid chains and create custom collections for your projects
           </p>
         </div>
 
@@ -201,7 +201,7 @@ export default function SavedProductsPage({ onBack }: SavedProductsPageProps) {
                 <Heart className="h-16 w-16 text-gray-300 mx-auto mb-4" />
                 <h3 className="text-xl font-medium text-gray-900 mb-2">No saved products</h3>
                 <p className="text-gray-600">
-                  Start browsing peptides and save them for easy access later
+                  Start browsing amino acid chains and save them for easy access later
                 </p>
               </div>
             ) : (
@@ -314,7 +314,7 @@ export default function SavedProductsPage({ onBack }: SavedProductsPageProps) {
                 <List className="h-16 w-16 text-gray-300 mx-auto mb-4" />
                 <h3 className="text-xl font-medium text-gray-900 mb-2">No product lists</h3>
                 <p className="text-gray-600 mb-6">
-                  Create custom lists to organize peptides by project or research area
+                  Create custom lists to organize amino acid chains by project or research area
                 </p>
                 <button
                   onClick={() => setShowNewListModal(true)}

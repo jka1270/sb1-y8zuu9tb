@@ -1,17 +1,17 @@
 import { Product, Category } from '../types';
 
 export const categories: Category[] = [
-  { id: '1', name: 'Therapeutic Peptides', description: 'Bioactive peptides for therapeutic research', productCount: 11 },
-  { id: '2', name: 'Cosmetic Peptides', description: 'Anti-aging and skin care peptides', productCount: 1 },
-  { id: '3', name: 'Research Peptides', description: 'Novel peptides for scientific studies', productCount: 11 },
-  { id: '4', name: 'Custom Synthesis', description: 'Custom peptide synthesis services', productCount: 0 },
-  { id: '5', name: 'Peptide Libraries', description: 'Comprehensive peptide screening libraries', productCount: 0 },
+  { id: '1', name: 'Therapeutic Amino Acid Chains', description: 'Bioactive amino acid chains for therapeutic research', productCount: 11 },
+  { id: '2', name: 'Cosmetic Amino Acid Chains', description: 'Anti-aging and skin care amino acid chains', productCount: 1 },
+  { id: '3', name: 'Research Amino Acid Chains', description: 'Novel amino acid chains for scientific studies', productCount: 11 },
+  { id: '4', name: 'Custom Synthesis', description: 'Custom amino acid chain synthesis services', productCount: 0 },
+  { id: '5', name: 'Amino Acid Chain Libraries', description: 'Comprehensive amino acid chain screening libraries', productCount: 0 },
 ];
 
 export const nadProduct: Product = {
   id: '21',
   name: 'NAD+ (Nicotinamide Adenine Dinucleotide)',
-  category: 'Research Peptides',
+  category: 'Research Amino Acid Chains',
   description: 'Essential coenzyme involved in cellular energy metabolism, DNA repair, and anti-aging research applications.',
   price: 64.99,
   image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -49,7 +49,7 @@ export const products: Product[] = [
   {
     id: '1',
     name: 'BPC-157 (Body Protection Compound)',
-    category: 'Therapeutic Peptides',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Pentadecapeptide with potent healing properties, extensively studied for tissue repair and regeneration. For Research Only - Not for human consumption.',
     price: 89.99,
     image: 'https://images.pexels.com/photos/3786126/pexels-photo-3786126.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -84,7 +84,7 @@ export const products: Product[] = [
   {
     id: '2',
     name: 'CJC-1295',
-    category: 'Research Peptides',
+    category: 'Research Amino Acid Chains',
     description: 'Long-acting growth hormone releasing hormone analog for research applications. For Research Only - Not for human consumption.',
     price: 89.99,
     image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -112,7 +112,7 @@ export const products: Product[] = [
   {
     id: '3',
     name: 'CJC-1295 DAC',
-    category: 'Therapeutic Peptides',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Long-acting growth hormone releasing hormone analog with Drug Affinity Complex for extended half-life and sustained release.',
     price: 79.99,
     image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -147,7 +147,7 @@ export const products: Product[] = [
   {
     id: '22',
     name: 'CJC-1295 (5mg) / Ipamorelin (5mg)',
-    category: 'Research Peptides',
+    category: 'Research Amino Acid Chains',
     description: 'Synergistic combination of CJC-1295 and Ipamorelin for enhanced growth hormone research applications. For Research Only - Not for human consumption.',
     price: 74.99,
     image: 'https://images.pexels.com/photos/5726794/pexels-photo-5726794.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -175,7 +175,7 @@ export const products: Product[] = [
   {
     id: '6',
     name: 'GHK-CU',
-    category: 'Cosmetic Peptides',
+    category: 'Cosmetic Amino Acid Chains',
     description: 'Copper-binding peptide with wound healing and anti-aging properties. For Research Only - Not for human consumption.',
     price: 42.99,
     image: 'https://images.pexels.com/photos/6621462/pexels-photo-6621462.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -217,7 +217,7 @@ export const products: Product[] = [
   {
     id: '5',
     name: 'Ipamorelin',
-    category: 'Research Peptides',
+    category: 'Research Amino Acid Chains',
     description: 'Growth hormone releasing peptide with selective ghrelin receptor activity.',
     price: 59.99,
     image: 'https://images.pexels.com/photos/3735780/pexels-photo-3735780.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -252,7 +252,7 @@ export const products: Product[] = [
   {
     id: '4',
     name: 'Melanotan II',
-    category: 'Research Peptides',
+    category: 'Research Amino Acid Chains',
     description: 'Synthetic analog of melanocyte-stimulating hormone for pigmentation research.',
     price: 38.99,
     image: 'https://images.pexels.com/photos/3735780/pexels-photo-3735780.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -280,7 +280,7 @@ export const products: Product[] = [
   {
     id: '7',
     name: 'PE-22-28',
-    category: 'Research Peptides',
+    category: 'Research Amino Acid Chains',
     description: 'Synthetic peptide with potential cognitive enhancement and neuroprotective properties for research applications.',
     price: 74.99,
     image: 'https://images.pexels.com/photos/3786164/pexels-photo-3786164.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -308,7 +308,7 @@ export const products: Product[] = [
   {
     id: '23',
     name: 'PT-141',
-    category: 'Research Peptides',
+    category: 'Research Amino Acid Chains',
     description: 'Melanocortin receptor agonist peptide for sexual dysfunction and libido research applications.',
     price: 56.99,
     image: 'https://images.pexels.com/photos/3786126/pexels-photo-3786126.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -343,7 +343,7 @@ export const products: Product[] = [
   {
     id: '9',
     name: 'Retatrutide',
-    category: 'Therapeutic Peptides',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Triple agonist peptide targeting GLP-1, GIP, and glucagon receptors for advanced metabolic research.',
     price: 249.99,
     image: 'https://images.pexels.com/photos/3786157/pexels-photo-3786157.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -378,7 +378,7 @@ export const products: Product[] = [
   {
     id: '10',
     name: 'Selank',
-    category: 'Research Peptides',
+    category: 'Research Amino Acid Chains',
     description: 'Synthetic heptapeptide with anxiolytic and nootropic properties for neurological research applications.',
     price: 49.99,
     image: 'https://images.pexels.com/photos/7723564/pexels-photo-7723564.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -413,7 +413,7 @@ export const products: Product[] = [
   {
     id: '24',
     name: 'Semaglutide',
-    category: 'Therapeutic Peptides',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'GLP-1 receptor agonist peptide for metabolic research and diabetes studies.',
     price: 89.99,
     image: 'https://images.pexels.com/photos/3786157/pexels-photo-3786157.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -448,7 +448,7 @@ export const products: Product[] = [
   {
     id: '25',
     name: 'Semax',
-    category: 'Research Peptides',
+    category: 'Research Amino Acid Chains',
     description: 'Synthetic heptapeptide analog of ACTH(4-10) with neuroprotective and cognitive enhancement properties for research applications.',
     price: 129.99,
     image: 'https://images.pexels.com/photos/3786164/pexels-photo-3786164.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -476,7 +476,7 @@ export const products: Product[] = [
   {
     id: '13',
     name: 'Sermorelin',
-    category: 'Therapeutic Peptides',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Growth hormone releasing hormone fragment for endocrine research.',
     price: 139.99,
     image: 'https://images.pexels.com/photos/3786164/pexels-photo-3786164.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -511,7 +511,7 @@ export const products: Product[] = [
   {
     id: '14',
     name: 'SS-31',
-    category: 'Research Peptides',
+    category: 'Research Amino Acid Chains',
     description: 'Mitochondria-targeting peptide with cardioprotective and neuroprotective properties for cellular energy research.',
     price: 49.99,
     image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -546,7 +546,7 @@ export const products: Product[] = [
   {
     id: '15',
     name: 'Survodutide',
-    category: 'Therapeutic Peptides',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Dual GLP-1/glucagon receptor agonist peptide for advanced metabolic research and obesity studies.',
     price: 139.99,
     image: 'https://images.pexels.com/photos/3786157/pexels-photo-3786157.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -574,7 +574,7 @@ export const products: Product[] = [
   {
     id: '16',
     name: 'TB-500 (Thymosin Beta-4)',
-    category: 'Therapeutic Peptides',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Naturally occurring peptide with wound healing and anti-inflammatory properties.',
     price: 24.99,
     image: 'https://images.pexels.com/photos/3786126/pexels-photo-3786126.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -602,7 +602,7 @@ export const products: Product[] = [
   {
     id: '17',
     name: 'Testagen',
-    category: 'Research Peptides',
+    category: 'Research Amino Acid Chains',
     description: 'Synthetic tetrapeptide with potential anti-aging and cellular regeneration properties for research applications.',
     price: 49.99,
     image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -630,7 +630,7 @@ export const products: Product[] = [
   {
     id: '18',
     name: 'Tesamorelin',
-    category: 'Therapeutic Peptides',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Growth hormone releasing hormone analog for lipodystrophy and metabolic research applications.',
     price: 125.99,
     image: 'https://images.pexels.com/photos/3786164/pexels-photo-3786164.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -658,7 +658,7 @@ export const products: Product[] = [
   {
     id: '19',
     name: 'Thymosin Alpha1',
-    category: 'Therapeutic Peptides',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Immunomodulatory peptide with potential therapeutic applications for immune system enhancement and research.',
     price: 54.99,
     image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -693,7 +693,7 @@ export const products: Product[] = [
   {
     id: '20',
     name: 'Thymosin Beta 4 (TB500)',
-    category: 'Therapeutic Peptides',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Naturally occurring peptide for tissue repair and regeneration research applications. For Research Only - Not for human consumption.',
     price: 75.99,
     image: 'https://images.pexels.com/photos/3786126/pexels-photo-3786126.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -721,7 +721,7 @@ export const products: Product[] = [
   {
     id: '21',
     name: 'Tirzepatide',
-    category: 'Therapeutic Peptides',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Dual GIP/GLP-1 receptor agonist peptide for advanced metabolic research and diabetes studies.',
     price: 149.99,
     image: 'https://images.pexels.com/photos/3786157/pexels-photo-3786157.jpeg?auto=compress&cs=tinysrgb&w=600',

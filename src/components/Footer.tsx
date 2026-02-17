@@ -14,12 +14,12 @@ export default function Footer({ onAbout, onContact, onBlog }: FooterProps) {
           <div>
             <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">ResearchRaws</h3>
             <p className="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base leading-relaxed">
-              Leading provider of high-purity research peptides for therapeutic, cosmetic, and scientific applications.
+              Leading provider of high-purity research amino acid chains for therapeutic, cosmetic, and scientific applications.
             </p>
             <div className="space-y-2 sm:space-y-3">
               <div className="flex items-center text-gray-300 text-sm sm:text-base">
                 <Phone className="h-4 w-4 mr-2" />
-                <span>1-800-PEPTIDE</span>
+                <span>1-800-AMINOACID</span>
               </div>
               <div className="flex items-center text-gray-300 text-sm sm:text-base">
                 <Mail className="h-4 w-4 mr-2" />

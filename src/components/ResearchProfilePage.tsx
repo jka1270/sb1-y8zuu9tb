@@ -197,7 +197,7 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Research Profile</h1>
           <p className="text-gray-600">
-            Complete your research profile to access specialized peptides and research resources
+            Complete your research profile to access specialized amino acid chains and research resources
           </p>
         </div>
 
@@ -517,7 +517,7 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
                   <div className="flex items-start">
                     <AlertTriangle className="h-5 w-5 text-yellow-600 mr-2 mt-0.5" />
                     <div className="text-sm text-yellow-800">
-                      <strong>Important:</strong> Compliance training and institutional approval are required for purchasing certain research peptides.
+                      <strong>Important:</strong> Compliance training and institutional approval are required for purchasing certain research amino acid chains.
                     </div>
                   </div>
                 </div>
@@ -597,7 +597,7 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
                     </span>
                   </label>
                   <p className="text-sm text-gray-600 mt-2 ml-6">
-                    Required for certain controlled or restricted peptides
+                    Required for certain controlled or restricted amino acid chains
                   </p>
                 </div>
 
@@ -681,7 +681,7 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
                       </div>
                       <div>
                         <h4 className="font-medium text-gray-900">Verification Complete</h4>
-                        <p className="text-sm text-gray-600">Access to all research peptides and specialized features</p>
+                        <p className="text-sm text-gray-600">Access to all research amino acid chains and specialized features</p>
                       </div>
                     </div>
                   </div>
@@ -694,7 +694,7 @@ export default function ResearchProfilePage({ onBack }: ResearchProfilePageProps
                       <div>
                         <h4 className="font-medium text-green-900">Profile Verified</h4>
                         <p className="text-sm text-green-700">
-                          Your research profile has been verified. You now have access to all peptides and research features.
+                          Your research profile has been verified. You now have access to all amino acid chains and research features.
                         </p>
                         {profile.verified_at && (
                           <p className="text-sm text-green-600 mt-1">

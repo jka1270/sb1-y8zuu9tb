@@ -61,7 +61,7 @@ After adding all three secrets, wait one minute for them to propagate to your ed
 
 ## That's It!
 
-Your peptide e-commerce platform now has:
+Your amino acid chain e-commerce platform now has:
 - ✅ Credit card payment processing (StratosPay)
 - ✅ Cash on delivery option
 - ✅ Automatic order fulfillment (ShipStation)

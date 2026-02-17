@@ -17,7 +17,7 @@ export interface CertificateOfAnalysis {
   purity_ms: string;
   water_content: number;
   acetate_content: number;
-  peptide_content: number;
+  amino_acid_chain_content: number;
   molecular_weight_found: number;
   molecular_weight_expected: number;
   microbiological_tests: Record<string, string>;
@@ -210,7 +210,7 @@ export const useCOA = () => {
             <tr><td>Mass Spectrometry</td><td>${coa.purity_ms}</td><td>Confirmed</td></tr>
             <tr><td>Water Content</td><td>${coa.water_content}%</td><td>≤ 10%</td></tr>
             <tr><td>Acetate Content</td><td>${coa.acetate_content}%</td><td>≤ 15%</td></tr>
-            <tr><td>Peptide Content</td><td>${coa.peptide_content}%</td><td>≥ 80%</td></tr>
+            <tr><td>Amino acid chain Content</td><td>${coa.amino_acid_chain_content}%</td><td>≥ 80%</td></tr>
           </table>
         </div>
 
@@ -287,7 +287,7 @@ export const useCOA = () => {
     <mass_spectrometry>${coa.purity_ms}</mass_spectrometry>
     <water_content>${coa.water_content}</water_content>
     <acetate_content>${coa.acetate_content}</acetate_content>
-    <peptide_content>${coa.peptide_content}</peptide_content>
+    <amino_acid_chain_content>${coa.amino_acid_chain_content}</amino_acid_chain_content>
   </purity_analysis>
   <molecular_weight>
     <found>${coa.molecular_weight_found}</found>
