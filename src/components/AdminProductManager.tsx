@@ -206,10 +206,11 @@ export default function AdminProductManager() {
       setProductImages([]);
     } catch (error) {
       console.error('Error saving product:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to save product. Please try again.';
       setModalState({
         isOpen: true,
         title: 'Error',
-        message: 'Failed to save product. Please try again.',
+        message: errorMessage,
         type: 'warning'
       });
     }
