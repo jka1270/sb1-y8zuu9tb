@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Pencil, Trash2, Search, Filter, Eye, Package, AlertTriangle, CheckCircle, Upload, Download } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, Filter, Eye, Package, AlertTriangle, CheckCircle, Upload, Download, Copy } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Product } from '../types';
 import ImageUpload from './ImageUpload';
@@ -165,6 +165,54 @@ export default function AdminProductManager() {
       style: 'currency',
       currency: 'USD',
     }).format(price);
+  };
+
+  const handleDuplicateProduct = async (product: Product) => {
+    try {
+      // Generate a new SKU by appending "-COPY" and a timestamp
+      const timestamp = Date.now().toString().slice(-6);
+      const newSku = `${product.sku}-COPY-${timestamp}`;
+
+      // Create the duplicate product data
+      const duplicateData = {
+        name: `${product.name} (Copy)`,
+        sku: newSku,
+        category: product.category,
+        description: product.description,
+        price: product.price,
+        sequence: product.sequence,
+        images: product.images || [],
+        in_stock: product.inStock,
+        quantity: product.quantity ?? 0,
+        low_stock_threshold: product.lowStockThreshold ?? 10
+      };
+
+      const { data, error } = await supabase
+        .from('products')
+        .insert([duplicateData])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      await fetchProducts();
+
+      setModalState({
+        isOpen: true,
+        title: 'Success',
+        message: `Product duplicated successfully with SKU: ${newSku}`,
+        type: 'success'
+      });
+    } catch (error) {
+      console.error('Error duplicating product:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to duplicate product. Please try again.';
+      setModalState({
+        isOpen: true,
+        title: 'Error',
+        message: errorMessage,
+        type: 'warning'
+      });
+    }
   };
 
   const handleSaveProduct = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -461,6 +509,13 @@ export default function AdminProductManager() {
                         title="Edit Product"
                       >
                         <Pencil className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDuplicateProduct(product)}
+                        className="text-green-600 hover:text-green-900"
+                        title="Duplicate Product"
+                      >
+                        <Copy className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => handleDeleteProduct(product.id)}
