@@ -706,6 +706,14 @@ export default function AdminProductManager() {
                     maxImages={5}
                   />
 
+                  {productImages.length > 0 && (
+                    <div className="rounded-md bg-blue-50 p-3">
+                      <p className="text-sm text-blue-700">
+                        <strong>{productImages.length}</strong> image{productImages.length > 1 ? 's' : ''} ready. Click "Save Product" to apply changes.
+                      </p>
+                    </div>
+                  )}
+
                   <div>
                     <label className="flex items-center">
                       <input
