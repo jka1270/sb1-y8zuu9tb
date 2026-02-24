@@ -436,6 +436,17 @@ export default function AdminProductManager() {
                                 alt={`${product.name} ${idx + 1}`}
                                 className="w-12 h-12 object-cover rounded-lg border border-gray-200"
                                 title={`Image ${idx + 1} of ${product.images?.length || 0}`}
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.style.display = 'none';
+                                  const parent = target.parentElement;
+                                  if (parent && !parent.querySelector('.fallback-icon')) {
+                                    const fallback = document.createElement('div');
+                                    fallback.className = 'fallback-icon w-12 h-12 rounded-lg border border-gray-300 bg-gray-100 flex items-center justify-center';
+                                    fallback.innerHTML = '<svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>';
+                                    parent.insertBefore(fallback, target);
+                                  }
+                                }}
                               />
                             ))}
                             {product.images.length > 3 && (
@@ -446,12 +457,27 @@ export default function AdminProductManager() {
                               </div>
                             )}
                           </div>
-                        ) : (
+                        ) : product.image ? (
                           <img
                             src={product.image}
                             alt={product.name}
-                            className="w-12 h-12 object-cover rounded-lg"
+                            className="w-12 h-12 object-cover rounded-lg border border-gray-200"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                              const parent = target.parentElement;
+                              if (parent && !parent.querySelector('.fallback-icon')) {
+                                const fallback = document.createElement('div');
+                                fallback.className = 'fallback-icon w-12 h-12 rounded-lg border border-gray-300 bg-gray-100 flex items-center justify-center';
+                                fallback.innerHTML = '<svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>';
+                                parent.appendChild(fallback);
+                              }
+                            }}
                           />
+                        ) : (
+                          <div className="w-12 h-12 rounded-lg border border-gray-300 bg-gray-100 flex items-center justify-center">
+                            <Package className="w-6 h-6 text-gray-400" />
+                          </div>
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
