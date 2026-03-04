@@ -136,7 +136,9 @@ export const useResearchDocuments = () => {
       setSafetyDataSheets(sdsResponse.data || []);
       setTestingReports(reportsResponse.data || []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch documents');
+      console.error('Error fetching research documents:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch documents';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
