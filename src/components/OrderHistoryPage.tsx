@@ -127,7 +127,7 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
 
       pdf.setFontSize(20);
       pdf.setTextColor(37, 99, 235);
-      pdf.text('Research Amino acid chains Direct', pageWidth / 2, yPos, { align: 'center' });
+      pdf.text('Research Amino Acid Chains Direct', pageWidth / 2, yPos, { align: 'center' });
 
       yPos += 10;
       pdf.setFontSize(16);

@@ -29,7 +29,7 @@ export default function OrderTrackingWidget({
     {
       key: 'processing',
       label: 'Processing',
-      description: 'Amino acid chains are being prepared and packaged with cold chain materials',
+      description: 'Amino Acid Chains are being prepared and packaged with cold chain materials',
       icon: Package,
       completed: false
     },

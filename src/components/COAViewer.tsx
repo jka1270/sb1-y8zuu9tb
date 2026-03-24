@@ -289,7 +289,7 @@ export default function COAViewer({ coa, onClose, orderId }: COAViewerProps) {
                     </tr>
                     <tr>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        Amino acid chain Content
+                        Amino Acid Chain Content
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         {coa.amino_acid_chain_content}%

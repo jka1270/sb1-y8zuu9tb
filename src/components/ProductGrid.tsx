@@ -207,7 +207,7 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
     return (
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 px-4">Research Amino acid chain Catalog</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 px-4">Research Amino Acid Chain Catalog</h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
             Explore our comprehensive selection of high-purity Amino Acid Chains for therapeutic, cosmetic, and research applications
           </p>
@@ -229,7 +229,7 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
       </div>
       
       <div className="text-center mb-12">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 px-4">Research Amino acid chain Catalog</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 px-4">Research Amino Acid Chain Catalog</h2>
         <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
           Explore our comprehensive selection of high-purity Amino Acid Chains for therapeutic, cosmetic, and research applications
         </p>

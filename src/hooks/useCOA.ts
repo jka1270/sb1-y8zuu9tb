@@ -210,7 +210,7 @@ export const useCOA = () => {
             <tr><td>Mass Spectrometry</td><td>${coa.purity_ms}</td><td>Confirmed</td></tr>
             <tr><td>Water Content</td><td>${coa.water_content}%</td><td>≤ 10%</td></tr>
             <tr><td>Acetate Content</td><td>${coa.acetate_content}%</td><td>≤ 15%</td></tr>
-            <tr><td>Amino acid chain Content</td><td>${coa.amino_acid_chain_content}%</td><td>≥ 80%</td></tr>
+            <tr><td>Amino Acid Chain Content</td><td>${coa.amino_acid_chain_content}%</td><td>≥ 80%</td></tr>
           </table>
         </div>
 

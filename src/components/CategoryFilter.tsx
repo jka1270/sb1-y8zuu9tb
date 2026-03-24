@@ -7,9 +7,9 @@ interface CategoryFilterProps {
 }
 
 const categoryNames = [
-  'Therapeutic Amino acid chains',
-  'Cosmetic Amino acid chains',
-  'Research Amino acid chains',
+  'Therapeutic Amino Acid Chains',
+  'Cosmetic Amino Acid Chains',
+  'Research Amino Acid Chains',
   'Custom Synthesis',
   'Amino Acid Chain Libraries'
 ];

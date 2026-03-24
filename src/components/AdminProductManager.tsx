@@ -24,7 +24,7 @@ export default function AdminProductManager() {
     onConfirm?: () => void;
   }>({ isOpen: false, title: '', message: '', type: 'info' });
 
-  const categories = ['Therapeutic Amino acid chains', 'Cosmetic Amino acid chains', 'Research Amino acid chains', 'Custom Synthesis'];
+  const categories = ['Therapeutic Amino Acid Chains', 'Cosmetic Amino Acid Chains', 'Research Amino Acid Chains', 'Custom Synthesis'];
 
   useEffect(() => {
     fetchProducts();

@@ -42,7 +42,7 @@ export default function ShippingIntegration() {
               <CheckCircle className="h-8 w-8 text-purple-600" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Quality Guarantee</h3>
-            <p className="text-gray-600">Amino acid chain integrity guarantee with full quality assurance</p>
+            <p className="text-gray-600">Amino Acid Chain integrity guarantee with full quality assurance</p>
           </div>
         </div>
 
@@ -77,7 +77,7 @@ export default function ShippingIntegration() {
             <div>
               <OptimizedImage
                 src="https://images.pexels.com/photos/3735780/pexels-photo-3735780.jpeg?auto=compress&cs=tinysrgb&w=600"
-                alt="Amino acid chain cold chain shipping"
+                alt="Amino Acid Chain cold chain shipping"
                 className="rounded-lg shadow-md"
                 loading="lazy"
                 sizes="(max-width: 1024px) 100vw, 50vw"

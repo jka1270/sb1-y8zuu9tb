@@ -165,7 +165,7 @@ export const sampleBlogPosts: BlogPost[] = [
     slug: 'amino-acid-chain-synthesis-quality-control-2025',
     excerpt: 'Essential quality control measures and analytical techniques for ensuring Amino Acid Chain purity and consistency in research applications.',
     content: `
-      <h2>Quality Control in Amino acid chain Synthesis</h2>
+      <h2>Quality Control in Amino Acid Chain Synthesis</h2>
       <p>Maintaining consistent quality in Amino Acid Chain synthesis requires rigorous analytical testing and adherence to established protocols. This guide outlines current best practices for 2025.</p>
       
       <h2>Analytical Testing Methods</h2>
@@ -183,7 +183,7 @@ export const sampleBlogPosts: BlogPost[] = [
         <li><strong>Purity:</strong> ≥95% by HPLC for research grade Amino Acid Chains</li>
         <li><strong>Water Content:</strong> ≤10% by Karl Fischer titration</li>
         <li><strong>Acetate Content:</strong> ≤15% for TFA-purified Amino Acid Chains</li>
-        <li><strong>Amino acid chain Content:</strong> ≥80% by amino acid analysis</li>
+        <li><strong>Amino Acid Chain Content:</strong> ≥80% by amino acid analysis</li>
       </ul>
       
       <h2>Documentation Requirements</h2>
@@ -312,7 +312,7 @@ export const sampleBlogPosts: BlogPost[] = [
   },
   {
     id: '5',
-    title: 'Regulatory Updates: FDA Guidance on Amino acid chain Research',
+    title: 'Regulatory Updates: FDA Guidance on Amino Acid Chain Research',
     slug: 'fda-guidance-amino-acid-chain-research-2025',
     excerpt: 'Latest FDA guidance documents affecting Amino Acid Chain research, including new requirements for preclinical studies and documentation.',
     content: `
@@ -341,7 +341,7 @@ export const sampleBlogPosts: BlogPost[] = [
     category: 'industry',
     tags: ['FDA', 'regulations', 'compliance', 'quality assurance', 'documentation'],
     author_name: 'Dr. Sarah Chen',
-    author_bio: 'Chief Scientific Officer at Amino acid chainTech Research',
+    author_bio: 'Chief Scientific Officer at Amino Acid ChainTech Research',
     author_image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=400',
     reading_time: 6,
     view_count: 543,
@@ -354,7 +354,7 @@ export const sampleBlogPosts: BlogPost[] = [
   },
   {
     id: '6',
-    title: 'Cold Chain Logistics: Ensuring Amino acid chain Integrity During Transport',
+    title: 'Cold Chain Logistics: Ensuring Amino Acid Chain Integrity During Transport',
     slug: 'cold-chain-logistics-amino-acid-chain-integrity',
     excerpt: 'Best practices for maintaining Amino Acid Chain stability during shipping and storage, including temperature monitoring and packaging solutions.',
     content: `
@@ -413,11 +413,11 @@ export const sampleBlogPosts: BlogPost[] = [
 export const sampleResourceGuides: ResourceGuide[] = [
   {
     id: '1',
-    title: 'Complete Guide to Amino acid chain Reconstitution',
+    title: 'Complete Guide to Amino Acid Chain Reconstitution',
     slug: 'amino-acid-chain-reconstitution-guide',
     description: 'Step-by-step instructions for properly reconstituting lyophilized Amino Acid Chains for research applications.',
     content: `
-      <h2>Introduction to Amino acid chain Reconstitution</h2>
+      <h2>Introduction to Amino Acid Chain Reconstitution</h2>
       <p>Proper reconstitution of lyophilized Amino Acid Chains is crucial for maintaining biological activity and ensuring reproducible research results.</p>
       
       <h2>Before You Begin</h2>
@@ -471,7 +471,7 @@ export const sampleResourceGuides: ResourceGuide[] = [
       </ul>
       
       <h2>Troubleshooting</h2>
-      <h3>Amino acid chain Won't Dissolve</h3>
+      <h3>Amino Acid Chain Won't Dissolve</h3>
       <ul>
         <li>Try different pH (slightly acidic or basic)</li>
         <li>Use DMSO for hydrophobic Amino Acid Chains</li>
@@ -554,7 +554,7 @@ export const sampleResourceGuides: ResourceGuide[] = [
       <h2>Detection Parameters</h2>
       <h3>UV Detection</h3>
       <ul>
-        <li><strong>214 nm:</strong> Amino acid chain bond absorption (universal)</li>
+        <li><strong>214 nm:</strong> Amino Acid Chain bond absorption (universal)</li>
         <li><strong>220 nm:</strong> Alternative wavelength</li>
         <li><strong>280 nm:</strong> Aromatic amino acids (Trp, Tyr, Phe)</li>
       </ul>
@@ -615,11 +615,11 @@ export const sampleResourceGuides: ResourceGuide[] = [
   },
   {
     id: '3',
-    title: 'Amino acid chain Storage and Stability: Laboratory Best Practices',
+    title: 'Amino Acid Chain Storage and Stability: Laboratory Best Practices',
     slug: 'amino-acid-chain-storage-stability-guide',
     description: 'Essential guidelines for proper Amino Acid Chain storage, stability testing, and degradation prevention in research laboratories.',
     content: `
-      <h2>Amino acid chain Stability Fundamentals</h2>
+      <h2>Amino Acid Chain Stability Fundamentals</h2>
       <p>Understanding Amino Acid Chain stability is crucial for maintaining research quality and ensuring reproducible experimental results.</p>
       
       <h2>Degradation Mechanisms</h2>
