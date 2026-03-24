@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mail, Clock, Send, CheckCircle, AlertTriangle, Building, User, HelpCircle, Shield } from 'lucide-react';
+import { Mail, Clock, Send, CheckCircle, AlertTriangle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface ContactPageProps {
@@ -123,42 +123,11 @@ export default function ContactPage({ onBack }: ContactPageProps) {
       icon: Mail,
       title: 'Email Support',
       primary: 'support@researchraws.com',
-      secondary: 'Technical: tech@researchraws.com',
       hours: 'Response within 24 hours',
       color: 'text-green-600'
     }
   ];
 
-  const departments = [
-    {
-      name: 'Technical Support',
-      email: 'tech@researchraws.com',
-      description: 'Product specifications, usage guidelines, analytical data',
-      icon: HelpCircle,
-      color: 'bg-blue-50 text-blue-600'
-    },
-    {
-      name: 'Quality Assurance',
-      email: 'quality@researchraws.com',
-      description: 'COA requests, quality concerns, batch information',
-      icon: Shield,
-      color: 'bg-green-50 text-green-600'
-    },
-    {
-      name: 'Custom Synthesis',
-      email: 'custom@researchraws.com',
-      description: 'Custom Amino Acid Chain projects, quotes, synthesis timelines',
-      icon: Building,
-      color: 'bg-purple-50 text-purple-600'
-    },
-    {
-      name: 'Research Partnerships',
-      email: 'partnerships@researchraws.com',
-      description: 'Collaboration opportunities, bulk orders, academic discounts',
-      icon: User,
-      color: 'bg-orange-50 text-orange-600'
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -173,17 +142,21 @@ export default function ContactPage({ onBack }: ContactPageProps) {
           </p>
         </div>
 
-        {/* Contact Methods */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        {/* Contact Method */}
+        <div className="max-w-md mx-auto mb-16">
           {contactMethods.map((method) => {
             const Icon = method.icon;
             return (
-              <div key={method.title} className="bg-white p-6 rounded-lg shadow-sm text-center">
-                <Icon className={`h-12 w-12 mx-auto mb-4 ${method.color}`} />
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">{method.title}</h3>
+              <div key={method.title} className="bg-white p-8 rounded-lg shadow-sm text-center">
+                <Icon className={`h-16 w-16 mx-auto mb-4 ${method.color}`} />
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">{method.title}</h3>
                 <div className="space-y-2">
-                  <p className="font-medium text-gray-900">{method.primary}</p>
-                  <p className="text-gray-600 text-sm">{method.secondary}</p>
+                  <a
+                    href={`mailto:${method.primary}`}
+                    className="font-medium text-blue-600 hover:text-blue-700 text-lg"
+                  >
+                    {method.primary}
+                  </a>
                   <div className="flex items-center justify-center text-gray-500 text-sm">
                     <Clock className="h-4 w-4 mr-1" />
                     {method.hours}
@@ -192,35 +165,6 @@ export default function ContactPage({ onBack }: ContactPageProps) {
               </div>
             );
           })}
-        </div>
-
-        {/* Department Contacts */}
-        <div className="bg-white rounded-lg shadow-sm p-8 mb-16">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">Department Contacts</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {departments.map((dept) => {
-              const Icon = dept.icon;
-              return (
-                <div key={dept.name} className="border rounded-lg p-6">
-                  <div className="flex items-start">
-                    <div className={`p-3 rounded-lg ${dept.color} mr-4`}>
-                      <Icon className="h-6 w-6" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{dept.name}</h3>
-                      <p className="text-gray-600 text-sm mb-3">{dept.description}</p>
-                      <a 
-                        href={`mailto:${dept.email}`}
-                        className="text-blue-600 hover:text-blue-700 font-medium text-sm"
-                      >
-                        {dept.email}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -415,64 +359,19 @@ export default function ContactPage({ onBack }: ContactPageProps) {
             </form>
           </div>
 
-          {/* Contact Information */}
+          {/* Research Use Notice */}
           <div className="space-y-8">
-            {/* Business Hours */}
             <div className="bg-white rounded-lg shadow-sm p-8">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">Business Hours</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-6">Important Notice</h3>
               <div className="space-y-4">
                 <div className="flex items-start">
-                  <Clock className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
+                  <AlertTriangle className="h-6 w-6 text-yellow-600 mr-3 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-gray-900">Support Availability</h4>
-                    <div className="text-gray-600 mt-1">
-                      <p>Monday - Friday: 8:00 AM - 6:00 PM PST</p>
-                      <p>Saturday: 9:00 AM - 2:00 PM PST</p>
-                      <p>Sunday: Closed</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Response Times */}
-            <div className="bg-white rounded-lg shadow-sm p-8">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">Response Times</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                  <span className="font-medium text-green-900">General Inquiries</span>
-                  <span className="text-green-700">Within 24 hours</span>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                  <span className="font-medium text-blue-900">Technical Support</span>
-                  <span className="text-blue-700">Within 4 hours</span>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
-                  <span className="font-medium text-purple-900">Custom Synthesis</span>
-                  <span className="text-purple-700">Within 48 hours</span>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
-                  <span className="font-medium text-red-900">Quality Issues</span>
-                  <span className="text-red-700">Within 2 hours</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Quality Assurance Contact */}
-            <div className="bg-white rounded-lg shadow-sm p-8">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">Quality Assurance</h3>
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <Shield className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Quality Control Laboratory</h4>
+                    <h4 className="font-semibold text-gray-900">Research Use Only</h4>
                     <p className="text-gray-600 text-sm mt-1">
-                      Direct line to our QC team for Certificate of Analysis requests, 
-                      batch inquiries, and quality concerns.
+                      All Amino Acid Chains are intended for research purposes only and are not for human consumption.
+                      By contacting us, you confirm your understanding of this policy.
                     </p>
-                    <div className="mt-3 space-y-1">
-                      <p className="text-sm"><strong>Email:</strong> quality@researchraws.com</p>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -480,58 +379,6 @@ export default function ContactPage({ onBack }: ContactPageProps) {
           </div>
         </div>
 
-        {/* FAQ Section */}
-        <div className="mt-16 bg-white rounded-lg shadow-sm p-8">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">Frequently Asked Questions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-6">
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">What is your typical lead time for standard Amino Acid Chains?</h4>
-                <p className="text-gray-600 text-sm">
-                  Most standard Amino Acid Chains ship within 1-3 business days. Custom synthesis typically takes 2-4 weeks 
-                  depending on complexity and sequence length.
-                </p>
-              </div>
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Do you provide Certificates of Analysis?</h4>
-                <p className="text-gray-600 text-sm">
-                  Yes, every Amino Acid Chain shipment includes a comprehensive Certificate of Analysis with purity data, 
-                  analytical methods, and quality control information.
-                </p>
-              </div>
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">What are your shipping options?</h4>
-                <p className="text-gray-600 text-sm">
-                  We offer standard and express cold chain shipping worldwide. All Amino Acid Chains are shipped with 
-                  temperature monitoring to ensure product integrity.
-                </p>
-              </div>
-            </div>
-            <div className="space-y-6">
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Can you synthesize custom Amino Acid Chains?</h4>
-                <p className="text-gray-600 text-sm">
-                  Yes, we offer custom Amino Acid Chain synthesis services from mg to gram scale. Contact our custom 
-                  synthesis team for quotes and timelines.
-                </p>
-              </div>
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Do you offer academic discounts?</h4>
-                <p className="text-gray-600 text-sm">
-                  We provide special pricing for academic institutions and non-profit research organizations. 
-                  Contact our partnerships team for more information.
-                </p>
-              </div>
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">What quality standards do you follow?</h4>
-                <p className="text-gray-600 text-sm">
-                  We maintain ISO certification and follow GMP guidelines. All Amino Acid Chains undergo
-                  rigorous quality testing before release.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
