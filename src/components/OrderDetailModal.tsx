@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, Package, Truck, MapPin, CreditCard, FileText, Download, ExternalLink } from 'lucide-react';
+import { X, Package, Truck, CreditCard, FileText, Download, ExternalLink } from 'lucide-react';
 import jsPDF from 'jspdf';
 import { Order } from '../hooks/useOrders';
 import { useCOA } from '../hooks/useCOA';
@@ -325,61 +325,31 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
               </div>
             </div>
 
-            {/* Addresses and Payment */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Shipping Address */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                  <MapPin className="h-5 w-5 mr-2" />
-                  Shipping Address
-                </h3>
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="space-y-1 text-gray-700">
-                    <div className="font-medium">
-                      {order.shipping_address.firstName} {order.shipping_address.lastName}
-                    </div>
-                    <div>{order.shipping_address.company}</div>
-                    <div>{order.shipping_address.address1}</div>
-                    {order.shipping_address.address2 && (
-                      <div>{order.shipping_address.address2}</div>
-                    )}
-                    <div>
-                      {order.shipping_address.city}, {order.shipping_address.state} {order.shipping_address.zipCode}
-                    </div>
-                    <div>{order.shipping_address.country}</div>
-                    <div className="pt-2 text-sm text-gray-600">
-                      Phone: {order.shipping_address.phone}
-                    </div>
+            {/* Payment Information */}
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <CreditCard className="h-5 w-5 mr-2" />
+                Payment Information
+              </h3>
+              <div className="bg-gray-50 rounded-lg p-4">
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Payment Method:</span>
+                    <span className="font-medium capitalize">{order.payment_method}</span>
                   </div>
-                </div>
-              </div>
-
-              {/* Payment Information */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                  <CreditCard className="h-5 w-5 mr-2" />
-                  Payment Information
-                </h3>
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Payment Method:</span>
-                      <span className="font-medium capitalize">{order.payment_method}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Payment Status:</span>
-                      <span className={`font-medium capitalize ${
-                        order.payment_status === 'paid' ? 'text-green-600' : 
-                        order.payment_status === 'pending' ? 'text-yellow-600' : 
-                        'text-red-600'
-                      }`}>
-                        {order.payment_status}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Billing Email:</span>
-                      <span className="font-medium">{order.billing_address.email}</span>
-                    </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Payment Status:</span>
+                    <span className={`font-medium capitalize ${
+                      order.payment_status === 'paid' ? 'text-green-600' :
+                      order.payment_status === 'pending' ? 'text-yellow-600' :
+                      'text-red-600'
+                    }`}>
+                      {order.payment_status}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Billing Email:</span>
+                    <span className="font-medium">{order.billing_address.email}</span>
                   </div>
                 </div>
               </div>

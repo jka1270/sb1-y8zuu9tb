@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mail, MapPin, Clock, Send, CheckCircle, AlertTriangle, Building, User, HelpCircle, Shield } from 'lucide-react';
+import { Mail, Clock, Send, CheckCircle, AlertTriangle, Building, User, HelpCircle, Shield } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface ContactPageProps {
@@ -417,27 +417,14 @@ export default function ContactPage({ onBack }: ContactPageProps) {
 
           {/* Contact Information */}
           <div className="space-y-8">
-            {/* Office Location */}
+            {/* Business Hours */}
             <div className="bg-white rounded-lg shadow-sm p-8">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">Visit Our Facility</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-6">Business Hours</h3>
               <div className="space-y-4">
-                <div className="flex items-start">
-                  <MapPin className="h-6 w-6 text-blue-600 mr-3 mt-0.5" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Amino Acid ChainTech Research Headquarters</h4>
-                    <div className="text-gray-600 mt-1">
-                      <p>10520 Science Center Drive</p>
-                      <p>Suite 300</p>
-                      <p>San Diego, CA 92121</p>
-                      <p>United States</p>
-                    </div>
-                  </div>
-                </div>
-                
                 <div className="flex items-start">
                   <Clock className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-gray-900">Business Hours</h4>
+                    <h4 className="font-semibold text-gray-900">Support Availability</h4>
                     <div className="text-gray-600 mt-1">
                       <p>Monday - Friday: 8:00 AM - 6:00 PM PST</p>
                       <p>Saturday: 9:00 AM - 2:00 PM PST</p>
