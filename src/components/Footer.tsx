@@ -1,4 +1,4 @@
-import { Mail, MapPin } from 'lucide-react';
+import { Mail } from 'lucide-react';
 
 interface FooterProps {
   onAbout?: () => void;
@@ -20,10 +20,6 @@ export default function Footer({ onAbout, onContact, onBlog }: FooterProps) {
               <div className="flex items-center text-gray-300 text-sm sm:text-base">
                 <Mail className="h-4 w-4 mr-2" />
                 <span>info@researchraws.com</span>
-              </div>
-              <div className="flex items-center text-gray-300 text-sm sm:text-base">
-                <MapPin className="h-4 w-4 mr-2" />
-                <span>San Diego, CA 92121</span>
               </div>
             </div>
           </div>
