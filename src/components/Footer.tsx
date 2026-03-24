@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, MapPin } from 'lucide-react';
 
 interface FooterProps {
   onAbout?: () => void;
@@ -17,10 +17,6 @@ export default function Footer({ onAbout, onContact, onBlog }: FooterProps) {
               Leading provider of high-purity research Amino Acid Chains for therapeutic, cosmetic, and scientific applications.
             </p>
             <div className="space-y-2 sm:space-y-3">
-              <div className="flex items-center text-gray-300 text-sm sm:text-base">
-                <Phone className="h-4 w-4 mr-2" />
-                <span>1-800-AMINOACID</span>
-              </div>
               <div className="flex items-center text-gray-300 text-sm sm:text-base">
                 <Mail className="h-4 w-4 mr-2" />
                 <span>info@researchraws.com</span>
