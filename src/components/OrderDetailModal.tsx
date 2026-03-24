@@ -448,7 +448,7 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
               <div className="flex items-start">
                 <FileText className="h-5 w-5 text-yellow-600 mr-2 mt-0.5" />
                 <div className="text-sm text-yellow-800">
-                  <strong>Research Use Only:</strong> This order contains amino acid chains intended solely for research purposes.
+                  <strong>Research Use Only:</strong> This order contains Amino Acid Chains intended solely for research purposes.
                   Not for human consumption. Please ensure proper storage and handling according to safety protocols.
                 </div>
               </div>

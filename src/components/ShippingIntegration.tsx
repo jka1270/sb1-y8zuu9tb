@@ -8,7 +8,7 @@ export default function ShippingIntegration() {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Cold Chain Shipping & Storage</h2>
           <p className="text-xl text-gray-600">
-            Temperature-controlled delivery with integrated ShipStation tracking for amino acid chain integrity
+            Temperature-controlled delivery with integrated ShipStation tracking for Amino Acid Chain integrity
           </p>
         </div>
 
@@ -18,7 +18,7 @@ export default function ShippingIntegration() {
               <Package className="h-8 w-8 text-blue-600" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Cold Chain Packaging</h3>
-            <p className="text-gray-600">Temperature-controlled packaging designed for amino acid chain stability and integrity</p>
+            <p className="text-gray-600">Temperature-controlled packaging designed for Amino Acid Chain stability and integrity</p>
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-sm text-center">
@@ -52,8 +52,8 @@ export default function ShippingIntegration() {
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Cold Chain ShipStation Integration</h3>
               <p className="text-gray-600 mb-6">
                 Our platform integrates seamlessly with ShipStation to provide temperature-controlled shipping
-                solutions for amino acid chains. From automatic cold chain label generation to temperature monitoring,
-                we ensure your amino acid chains arrive in perfect condition.
+                solutions for Amino Acid Chains. From automatic cold chain label generation to temperature monitoring,
+                we ensure your Amino Acid Chains arrive in perfect condition.
               </p>
               <ul className="space-y-3">
                 <li className="flex items-center text-gray-700">

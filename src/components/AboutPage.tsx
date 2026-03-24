@@ -131,7 +131,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
                   <CheckCircle className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
                   <div>
                     <h4 className="font-semibold text-gray-900">≥98% Purity Guarantee</h4>
-                    <p className="text-gray-600 text-sm">Every amino acid chain undergoes rigorous HPLC and mass spectrometry analysis</p>
+                    <p className="text-gray-600 text-sm">Every Amino Acid Chain undergoes rigorous HPLC and mass spectrometry analysis</p>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -186,7 +186,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Synthesis</h3>
               <p className="text-gray-600 text-sm">
-                Solid-phase amino acid chain synthesis using state-of-the-art automated synthesizers
+                Solid-phase Amino Acid Chain synthesis using state-of-the-art automated synthesizers
               </p>
             </div>
 
@@ -227,7 +227,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Research Partnerships</h2>
           <div className="text-center mb-8">
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We collaborate with leading research institutions worldwide to advance amino acid chain science
+              We collaborate with leading research institutions worldwide to advance Amino Acid Chain science
               and support groundbreaking discoveries in medicine and biotechnology.
             </p>
           </div>
@@ -262,7 +262,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
                   <Microscope className="h-6 w-6 text-blue-600 mr-3 mt-0.5" />
                   <div>
                     <h4 className="font-semibold text-gray-900">Research & Development</h4>
-                    <p className="text-gray-600 text-sm">15,000 sq ft facility with automated amino acid chain synthesizers</p>
+                    <p className="text-gray-600 text-sm">15,000 sq ft facility with automated Amino Acid Chain synthesizers</p>
                   </div>
                 </div>
                 <div className="flex items-start">

@@ -279,7 +279,7 @@ export default function AdminProductManager() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">Product Management</h2>
-            <p className="text-gray-600">Manage your amino acid chain catalog and inventory</p>
+            <p className="text-gray-600">Manage your Amino Acid Chain catalog and inventory</p>
           </div>
           <div className="flex space-x-3">
             <button className="flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">

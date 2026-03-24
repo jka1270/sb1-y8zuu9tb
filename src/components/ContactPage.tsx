@@ -155,7 +155,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
     {
       name: 'Custom Synthesis',
       email: 'custom@researchraws.com',
-      description: 'Custom amino acid chain projects, quotes, synthesis timelines',
+      description: 'Custom Amino Acid Chain projects, quotes, synthesis timelines',
       icon: Building,
       color: 'bg-purple-50 text-purple-600'
     },
@@ -379,7 +379,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
                   value={formData.message}
                   onChange={(e) => handleInputChange('message', e.target.value)}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Please provide detailed information about your inquiry, including specific amino acid chains, research objectives, or technical questions..."
+                  placeholder="Please provide detailed information about your inquiry, including specific Amino Acid Chains, research objectives, or technical questions..."
                 />
               </div>
 
@@ -402,7 +402,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
                 <div className="flex items-start">
                   <AlertTriangle className="h-5 w-5 text-yellow-600 mr-2 mt-0.5" />
                   <div className="text-sm text-yellow-800">
-                    <strong>Research Use Only:</strong> By submitting this form, you confirm that any amino acid chains 
+                    <strong>Research Use Only:</strong> By submitting this form, you confirm that any Amino Acid Chains 
                     discussed are for research purposes only and not for human consumption.
                   </div>
                 </div>
@@ -508,32 +508,32 @@ export default function ContactPage({ onBack }: ContactPageProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-6">
               <div>
-                <h4 className="font-semibold text-gray-900 mb-2">What is your typical lead time for standard amino acid chains?</h4>
+                <h4 className="font-semibold text-gray-900 mb-2">What is your typical lead time for standard Amino Acid Chains?</h4>
                 <p className="text-gray-600 text-sm">
-                  Most standard amino acid chains ship within 1-3 business days. Custom synthesis typically takes 2-4 weeks 
+                  Most standard Amino Acid Chains ship within 1-3 business days. Custom synthesis typically takes 2-4 weeks 
                   depending on complexity and sequence length.
                 </p>
               </div>
               <div>
                 <h4 className="font-semibold text-gray-900 mb-2">Do you provide Certificates of Analysis?</h4>
                 <p className="text-gray-600 text-sm">
-                  Yes, every amino acid chain shipment includes a comprehensive Certificate of Analysis with purity data, 
+                  Yes, every Amino Acid Chain shipment includes a comprehensive Certificate of Analysis with purity data, 
                   analytical methods, and quality control information.
                 </p>
               </div>
               <div>
                 <h4 className="font-semibold text-gray-900 mb-2">What are your shipping options?</h4>
                 <p className="text-gray-600 text-sm">
-                  We offer standard and express cold chain shipping worldwide. All amino acid chains are shipped with 
+                  We offer standard and express cold chain shipping worldwide. All Amino Acid Chains are shipped with 
                   temperature monitoring to ensure product integrity.
                 </p>
               </div>
             </div>
             <div className="space-y-6">
               <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Can you synthesize custom amino acid chains?</h4>
+                <h4 className="font-semibold text-gray-900 mb-2">Can you synthesize custom Amino Acid Chains?</h4>
                 <p className="text-gray-600 text-sm">
-                  Yes, we offer custom amino acid chain synthesis services from mg to gram scale. Contact our custom 
+                  Yes, we offer custom Amino Acid Chain synthesis services from mg to gram scale. Contact our custom 
                   synthesis team for quotes and timelines.
                 </p>
               </div>
@@ -547,7 +547,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
               <div>
                 <h4 className="font-semibold text-gray-900 mb-2">What quality standards do you follow?</h4>
                 <p className="text-gray-600 text-sm">
-                  We maintain ISO certification and follow GMP guidelines. All amino acid chains undergo
+                  We maintain ISO certification and follow GMP guidelines. All Amino Acid Chains undergo
                   rigorous quality testing before release.
                 </p>
               </div>

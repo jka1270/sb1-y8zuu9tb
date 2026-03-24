@@ -166,28 +166,28 @@ export const sampleBlogPosts: BlogPost[] = [
     excerpt: 'Essential quality control measures and analytical techniques for ensuring Amino Acid Chain purity and consistency in research applications.',
     content: `
       <h2>Quality Control in Amino acid chain Synthesis</h2>
-      <p>Maintaining consistent quality in amino acid chain synthesis requires rigorous analytical testing and adherence to established protocols. This guide outlines current best practices for 2025.</p>
+      <p>Maintaining consistent quality in Amino Acid Chain synthesis requires rigorous analytical testing and adherence to established protocols. This guide outlines current best practices for 2025.</p>
       
       <h2>Analytical Testing Methods</h2>
       <h3>High-Performance Liquid Chromatography (HPLC)</h3>
-      <p>HPLC remains the gold standard for amino acid chain purity analysis, providing accurate quantification of main product and impurities.</p>
+      <p>HPLC remains the gold standard for Amino Acid Chain purity analysis, providing accurate quantification of main product and impurities.</p>
       
       <h3>Mass Spectrometry (MS)</h3>
       <p>MALDI-TOF and ESI-MS techniques confirm molecular weight and identify potential modifications or degradation products.</p>
       
       <h3>Amino Acid Analysis</h3>
-      <p>Quantitative amino acid analysis validates amino acid chain composition and helps determine amino acid chain content.</p>
+      <p>Quantitative amino acid analysis validates Amino Acid Chain composition and helps determine Amino Acid Chain content.</p>
       
       <h2>Quality Specifications</h2>
       <ul>
-        <li><strong>Purity:</strong> ≥95% by HPLC for research grade amino acid chains</li>
+        <li><strong>Purity:</strong> ≥95% by HPLC for research grade Amino Acid Chains</li>
         <li><strong>Water Content:</strong> ≤10% by Karl Fischer titration</li>
-        <li><strong>Acetate Content:</strong> ≤15% for TFA-purified amino acid chains</li>
+        <li><strong>Acetate Content:</strong> ≤15% for TFA-purified Amino Acid Chains</li>
         <li><strong>Amino acid chain Content:</strong> ≥80% by amino acid analysis</li>
       </ul>
       
       <h2>Documentation Requirements</h2>
-      <p>Each amino acid chain batch should include:</p>
+      <p>Each Amino Acid Chain batch should include:</p>
       <ul>
         <li>Certificate of Analysis (COA)</li>
         <li>HPLC chromatogram</li>
@@ -196,9 +196,9 @@ export const sampleBlogPosts: BlogPost[] = [
       </ul>
       
       <h2>Storage and Stability</h2>
-      <p>Proper storage is crucial for maintaining amino acid chain quality:</p>
+      <p>Proper storage is crucial for maintaining Amino Acid Chain quality:</p>
       <ul>
-        <li>Store lyophilized amino acid chains at -20°C</li>
+        <li>Store lyophilized Amino Acid Chains at -20°C</li>
         <li>Protect from light and moisture</li>
         <li>Use desiccants in storage containers</li>
         <li>Monitor temperature during shipping</li>
@@ -209,7 +209,7 @@ export const sampleBlogPosts: BlogPost[] = [
       <ul>
         <li>Ultra-high resolution mass spectrometry</li>
         <li>Advanced NMR techniques</li>
-        <li>Automated amino acid chain analyzers</li>
+        <li>Automated Amino Acid Chain analyzers</li>
         <li>Real-time stability monitoring</li>
       </ul>
     `,
@@ -235,20 +235,20 @@ export const sampleBlogPosts: BlogPost[] = [
     excerpt: 'Exploring the scientific mechanisms behind cosmetic Amino Acid Chains and their applications in skin care research and anti-aging studies.',
     content: `
       <h2>The Science of Cosmetic Amino Acid Chains</h2>
-      <p>Cosmetic amino acid chains have revolutionized the skincare industry by targeting specific cellular processes involved in aging, wound healing, and skin regeneration.</p>
+      <p>Cosmetic Amino Acid Chains have revolutionized the skincare industry by targeting specific cellular processes involved in aging, wound healing, and skin regeneration.</p>
       
       <h2>Key Mechanisms of Action</h2>
       <h3>Collagen Stimulation</h3>
-      <p>Signal amino acid chains like palmitoyl penta-amino acid chain-4 (Matrixyl) stimulate fibroblast activity, increasing collagen and elastin production.</p>
+      <p>Signal Amino Acid Chains like palmitoyl penta-Amino Acid Chain-4 (Matrixyl) stimulate fibroblast activity, increasing collagen and elastin production.</p>
       
       <h3>Muscle Relaxation</h3>
-      <p>Neurotransmitter-inhibiting amino acid chains reduce muscle contractions, minimizing expression lines and wrinkles.</p>
+      <p>Neurotransmitter-inhibiting Amino Acid Chains reduce muscle contractions, minimizing expression lines and wrinkles.</p>
       
       <h3>Copper Delivery</h3>
-      <p>Copper-binding amino acid chains like GHK-Cu deliver essential trace elements for wound healing and tissue remodeling.</p>
+      <p>Copper-binding Amino Acid Chains like GHK-Cu deliver essential trace elements for wound healing and tissue remodeling.</p>
       
       <h2>Popular Cosmetic Amino Acid Chains</h2>
-      <h3>GHK-Cu (Copper Tri-amino acid chain)</h3>
+      <h3>GHK-Cu (Copper Tri-Amino Acid Chain)</h3>
       <ul>
         <li>Stimulates collagen synthesis</li>
         <li>Promotes wound healing</li>
@@ -256,7 +256,7 @@ export const sampleBlogPosts: BlogPost[] = [
         <li>Improves skin elasticity</li>
       </ul>
       
-      <h3>Acetyl Hexa-amino acid chain-8 (Argireline)</h3>
+      <h3>Acetyl Hexa-Amino Acid Chain-8 (Argireline)</h3>
       <ul>
         <li>Reduces muscle contractions</li>
         <li>Minimizes expression lines</li>
@@ -265,7 +265,7 @@ export const sampleBlogPosts: BlogPost[] = [
       </ul>
       
       <h2>Research Applications</h2>
-      <p>Cosmetic amino acid chains are being studied for:</p>
+      <p>Cosmetic Amino Acid Chains are being studied for:</p>
       <ul>
         <li>Photoaging prevention and repair</li>
         <li>Wound healing acceleration</li>
@@ -275,7 +275,7 @@ export const sampleBlogPosts: BlogPost[] = [
       </ul>
       
       <h2>Formulation Considerations</h2>
-      <p>Successful amino acid chain formulation requires:</p>
+      <p>Successful Amino Acid Chain formulation requires:</p>
       <ul>
         <li>pH optimization (typically 5.5-7.0)</li>
         <li>Penetration enhancers</li>
@@ -284,22 +284,22 @@ export const sampleBlogPosts: BlogPost[] = [
       </ul>
       
       <h2>Clinical Evidence</h2>
-      <p>Recent clinical studies demonstrate significant improvements in skin texture, firmness, and appearance with regular amino acid chain application. Efficacy is typically observed after 4-8 weeks of consistent use.</p>
+      <p>Recent clinical studies demonstrate significant improvements in skin texture, firmness, and appearance with regular Amino Acid Chain application. Efficacy is typically observed after 4-8 weeks of consistent use.</p>
       
       <h2>Future Trends</h2>
       <p>Emerging areas include:</p>
       <ul>
-        <li>Biomimetic amino acid chains</li>
+        <li>Biomimetic Amino Acid Chains</li>
         <li>Microencapsulation technologies</li>
-        <li>Combination amino acid chain therapies</li>
-        <li>Personalized amino acid chain skincare</li>
+        <li>Combination Amino Acid Chain therapies</li>
+        <li>Personalized Amino Acid Chain skincare</li>
       </ul>
     `,
     featured_image: 'https://images.pexels.com/photos/6621462/pexels-photo-6621462.jpeg?auto=compress&cs=tinysrgb&w=800',
     category: 'applications',
-    tags: ['cosmetic amino acid chains', 'anti-aging', 'skincare research', 'GHK-Cu', 'collagen'],
+    tags: ['cosmetic Amino Acid Chains', 'anti-aging', 'skincare research', 'GHK-Cu', 'collagen'],
     author_name: 'Dr. James Liu',
-    author_bio: 'Director of Custom Synthesis specializing in cosmetic amino acid chain applications',
+    author_bio: 'Director of Custom Synthesis specializing in cosmetic Amino Acid Chain applications',
     author_image: 'https://images.pexels.com/photos/3786157/pexels-photo-3786157.jpeg?auto=compress&cs=tinysrgb&w=400',
     reading_time: 15,
     view_count: 1156,
@@ -314,14 +314,14 @@ export const sampleBlogPosts: BlogPost[] = [
     id: '5',
     title: 'Regulatory Updates: FDA Guidance on Amino acid chain Research',
     slug: 'fda-guidance-amino-acid-chain-research-2025',
-    excerpt: 'Latest FDA guidance documents affecting amino acid chain research, including new requirements for preclinical studies and documentation.',
+    excerpt: 'Latest FDA guidance documents affecting Amino Acid Chain research, including new requirements for preclinical studies and documentation.',
     content: `
       <h2>FDA Regulatory Landscape for Amino Acid Chains</h2>
-      <p>The FDA has issued updated guidance for amino acid chain research and development, emphasizing quality, safety, and documentation requirements.</p>
+      <p>The FDA has issued updated guidance for Amino Acid Chain research and development, emphasizing quality, safety, and documentation requirements.</p>
       
       <h2>Key Regulatory Changes</h2>
       <h3>Enhanced Documentation Requirements</h3>
-      <p>New guidelines require comprehensive documentation of amino acid chain synthesis, purification, and analytical testing methods.</p>
+      <p>New guidelines require comprehensive documentation of Amino Acid Chain synthesis, purification, and analytical testing methods.</p>
       
       <h3>Stability Testing Protocols</h3>
       <p>Updated stability testing requirements include accelerated and long-term studies under various storage conditions.</p>
@@ -335,7 +335,7 @@ export const sampleBlogPosts: BlogPost[] = [
       </ul>
       
       <h2>Impact on Research</h2>
-      <p>These changes affect how researchers should approach amino acid chain studies, with increased emphasis on documentation and quality assurance.</p>
+      <p>These changes affect how researchers should approach Amino Acid Chain studies, with increased emphasis on documentation and quality assurance.</p>
     `,
     featured_image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=800',
     category: 'industry',
@@ -356,7 +356,7 @@ export const sampleBlogPosts: BlogPost[] = [
     id: '6',
     title: 'Cold Chain Logistics: Ensuring Amino acid chain Integrity During Transport',
     slug: 'cold-chain-logistics-amino-acid-chain-integrity',
-    excerpt: 'Best practices for maintaining amino acid chain stability during shipping and storage, including temperature monitoring and packaging solutions.',
+    excerpt: 'Best practices for maintaining Amino Acid Chain stability during shipping and storage, including temperature monitoring and packaging solutions.',
     content: `
       <h2>Importance of Cold Chain Management</h2>
       <p>Amino Acid Chains are sensitive biological molecules that require careful temperature control throughout the supply chain to maintain their structural integrity and biological activity.</p>
@@ -364,9 +364,9 @@ export const sampleBlogPosts: BlogPost[] = [
       <h2>Temperature Requirements</h2>
       <h3>Storage Temperatures</h3>
       <ul>
-        <li><strong>-20°C:</strong> Long-term storage for lyophilized amino acid chains</li>
+        <li><strong>-20°C:</strong> Long-term storage for lyophilized Amino Acid Chains</li>
         <li><strong>2-8°C:</strong> Short-term storage for reconstituted solutions</li>
-        <li><strong>Room Temperature:</strong> Only for specific stable amino acid chains</li>
+        <li><strong>Room Temperature:</strong> Only for specific stable Amino Acid Chains</li>
       </ul>
       
       <h2>Packaging Solutions</h2>
@@ -415,10 +415,10 @@ export const sampleResourceGuides: ResourceGuide[] = [
     id: '1',
     title: 'Complete Guide to Amino acid chain Reconstitution',
     slug: 'amino-acid-chain-reconstitution-guide',
-    description: 'Step-by-step instructions for properly reconstituting lyophilized amino acid chains for research applications.',
+    description: 'Step-by-step instructions for properly reconstituting lyophilized Amino Acid Chains for research applications.',
     content: `
       <h2>Introduction to Amino acid chain Reconstitution</h2>
-      <p>Proper reconstitution of lyophilized amino acid chains is crucial for maintaining biological activity and ensuring reproducible research results.</p>
+      <p>Proper reconstitution of lyophilized Amino Acid Chains is crucial for maintaining biological activity and ensuring reproducible research results.</p>
       
       <h2>Before You Begin</h2>
       <h3>Required Materials</h3>
@@ -434,28 +434,28 @@ export const sampleResourceGuides: ResourceGuide[] = [
       <ul>
         <li>Work in a sterile environment</li>
         <li>Wear appropriate PPE</li>
-        <li>Handle amino acid chains as potentially hazardous materials</li>
+        <li>Handle Amino Acid Chains as potentially hazardous materials</li>
       </ul>
       
       <h2>Step-by-Step Procedure</h2>
       <h3>Step 1: Preparation</h3>
-      <p>Allow the lyophilized amino acid chain vial to reach room temperature before opening to prevent condensation.</p>
+      <p>Allow the lyophilized Amino Acid Chain vial to reach room temperature before opening to prevent condensation.</p>
       
       <h3>Step 2: Calculate Volume</h3>
       <p>Determine the appropriate volume of solvent based on desired final concentration. Typical concentrations range from 0.1-10 mg/mL.</p>
       
       <h3>Step 3: Add Solvent</h3>
-      <p>Slowly add the solvent to the side of the vial, avoiding direct contact with the amino acid chain powder. This prevents foaming and aggregation.</p>
+      <p>Slowly add the solvent to the side of the vial, avoiding direct contact with the Amino Acid Chain powder. This prevents foaming and aggregation.</p>
       
       <h3>Step 4: Gentle Mixing</h3>
-      <p>Gently swirl the vial or use brief vortexing. Avoid vigorous shaking which can denature the amino acid chain.</p>
+      <p>Gently swirl the vial or use brief vortexing. Avoid vigorous shaking which can denature the Amino Acid Chain.</p>
       
       <h3>Step 5: Complete Dissolution</h3>
       <p>Allow 5-10 minutes for complete dissolution. If cloudiness persists, centrifuge briefly at low speed.</p>
       
       <h2>Solvent Selection</h2>
       <h3>Sterile Water</h3>
-      <p>Best for immediate use. Store reconstituted amino acid chain at 2-8°C for up to 1 week.</p>
+      <p>Best for immediate use. Store reconstituted Amino Acid Chain at 2-8°C for up to 1 week.</p>
       
       <h3>Bacteriostatic Water</h3>
       <p>Contains preservatives for extended storage. Suitable for multiple-use applications.</p>
@@ -474,7 +474,7 @@ export const sampleResourceGuides: ResourceGuide[] = [
       <h3>Amino acid chain Won't Dissolve</h3>
       <ul>
         <li>Try different pH (slightly acidic or basic)</li>
-        <li>Use DMSO for hydrophobic amino acid chains</li>
+        <li>Use DMSO for hydrophobic Amino Acid Chains</li>
         <li>Sonicate briefly in water bath</li>
       </ul>
       
@@ -482,7 +482,7 @@ export const sampleResourceGuides: ResourceGuide[] = [
       <ul>
         <li>Centrifuge at 10,000 rpm for 5 minutes</li>
         <li>Filter through 0.22 μm filter</li>
-        <li>Check amino acid chain purity and storage conditions</li>
+        <li>Check Amino Acid Chain purity and storage conditions</li>
       </ul>
       
       <h2>Best Practices</h2>
@@ -499,7 +499,7 @@ export const sampleResourceGuides: ResourceGuide[] = [
     estimated_read_time: 12,
     featured_image: 'https://images.pexels.com/photos/3786126/pexels-photo-3786126.jpeg?auto=compress&cs=tinysrgb&w=800',
     download_url: '/downloads/amino-acid-chain-reconstitution-guide.pdf',
-    tags: ['reconstitution', 'amino acid chain handling', 'laboratory techniques', 'storage'],
+    tags: ['reconstitution', 'Amino Acid Chain handling', 'laboratory techniques', 'storage'],
     view_count: 2341,
     download_count: 567,
     rating_average: 4.7,
@@ -513,17 +513,17 @@ export const sampleResourceGuides: ResourceGuide[] = [
     id: '2',
     title: 'HPLC Analysis of Amino Acid Chains: Method Development and Optimization',
     slug: 'hplc-amino-acid-chain-analysis-methods',
-    description: 'Comprehensive guide to developing and optimizing HPLC methods for amino acid chain purity analysis and quality control.',
+    description: 'Comprehensive guide to developing and optimizing HPLC methods for Amino Acid Chain purity analysis and quality control.',
     content: `
       <h2>HPLC Method Development for Amino Acid Chains</h2>
-      <p>High-Performance Liquid Chromatography (HPLC) is the gold standard for amino acid chain analysis, providing accurate purity determination and impurity profiling.</p>
+      <p>High-Performance Liquid Chromatography (HPLC) is the gold standard for Amino Acid Chain analysis, providing accurate purity determination and impurity profiling.</p>
       
       <h2>Column Selection</h2>
       <h3>Reversed-Phase Columns</h3>
       <ul>
-        <li><strong>C18:</strong> Most common, suitable for hydrophobic amino acid chains</li>
-        <li><strong>C8:</strong> Less retention, good for very hydrophobic amino acid chains</li>
-        <li><strong>C4:</strong> Minimal retention, ideal for large amino acid chains</li>
+        <li><strong>C18:</strong> Most common, suitable for hydrophobic Amino Acid Chains</li>
+        <li><strong>C8:</strong> Less retention, good for very hydrophobic Amino Acid Chains</li>
+        <li><strong>C4:</strong> Minimal retention, ideal for large Amino Acid Chains</li>
       </ul>
       
       <h2>Mobile Phase Optimization</h2>
@@ -536,14 +536,14 @@ export const sampleResourceGuides: ResourceGuide[] = [
       
       <h3>Organic Phase (B)</h3>
       <ul>
-        <li>Acetonitrile (preferred for amino acid chains)</li>
+        <li>Acetonitrile (preferred for Amino Acid Chains)</li>
         <li>Methanol (alternative option)</li>
-        <li>Isopropanol (for very hydrophobic amino acid chains)</li>
+        <li>Isopropanol (for very hydrophobic Amino Acid Chains)</li>
       </ul>
       
       <h2>Gradient Development</h2>
       <h3>Initial Conditions</h3>
-      <p>Start with 5-10% organic phase to ensure amino acid chain binding to the column.</p>
+      <p>Start with 5-10% organic phase to ensure Amino Acid Chain binding to the column.</p>
       
       <h3>Gradient Slope</h3>
       <p>Use 1-2% organic per minute for optimal resolution. Steeper gradients may be used for rapid screening.</p>
@@ -617,14 +617,14 @@ export const sampleResourceGuides: ResourceGuide[] = [
     id: '3',
     title: 'Amino acid chain Storage and Stability: Laboratory Best Practices',
     slug: 'amino-acid-chain-storage-stability-guide',
-    description: 'Essential guidelines for proper amino acid chain storage, stability testing, and degradation prevention in research laboratories.',
+    description: 'Essential guidelines for proper Amino Acid Chain storage, stability testing, and degradation prevention in research laboratories.',
     content: `
       <h2>Amino acid chain Stability Fundamentals</h2>
-      <p>Understanding amino acid chain stability is crucial for maintaining research quality and ensuring reproducible experimental results.</p>
+      <p>Understanding Amino Acid Chain stability is crucial for maintaining research quality and ensuring reproducible experimental results.</p>
       
       <h2>Degradation Mechanisms</h2>
       <h3>Hydrolysis</h3>
-      <p>Water-mediated cleavage of amino acid chain bonds, particularly at Asp-Pro and Asp-Gly sequences.</p>
+      <p>Water-mediated cleavage of Amino Acid Chain bonds, particularly at Asp-Pro and Asp-Gly sequences.</p>
       
       <h3>Oxidation</h3>
       <p>Oxidation of methionine, cysteine, and tryptophan residues leading to loss of activity.</p>
@@ -654,7 +654,7 @@ export const sampleResourceGuides: ResourceGuide[] = [
       <p>Test at elevated temperatures (40°C, 60°C) to predict long-term stability.</p>
       
       <h3>Real-Time Stability</h3>
-      <p>Monitor amino acid chain integrity under actual storage conditions over extended periods.</p>
+      <p>Monitor Amino Acid Chain integrity under actual storage conditions over extended periods.</p>
       
       <h2>Analytical Methods</h2>
       <ul>
@@ -676,7 +676,7 @@ export const sampleResourceGuides: ResourceGuide[] = [
       </ul>
       
       <h2>Quality Indicators</h2>
-      <p>Monitor these parameters to assess amino acid chain quality:</p>
+      <p>Monitor these parameters to assess Amino Acid Chain quality:</p>
       <ul>
         <li>Appearance (should remain white/off-white)</li>
         <li>Solubility (should dissolve completely)</li>

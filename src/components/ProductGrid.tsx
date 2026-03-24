@@ -209,11 +209,11 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
         <div className="text-center mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 px-4">Research Amino acid chain Catalog</h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
-            Explore our comprehensive selection of high-purity amino acid chains for therapeutic, cosmetic, and research applications
+            Explore our comprehensive selection of high-purity Amino Acid Chains for therapeutic, cosmetic, and research applications
           </p>
         </div>
         <div className="flex justify-center py-16">
-          <LoadingSpinner size="lg" text="Loading amino acid chain catalog..." />
+          <LoadingSpinner size="lg" text="Loading Amino Acid Chain catalog..." />
         </div>
       </section>
     );
@@ -231,7 +231,7 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
       <div className="text-center mb-12">
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 px-4">Research Amino acid chain Catalog</h2>
         <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
-          Explore our comprehensive selection of high-purity amino acid chains for therapeutic, cosmetic, and research applications
+          Explore our comprehensive selection of high-purity Amino Acid Chains for therapeutic, cosmetic, and research applications
         </p>
       </div>
 
@@ -241,7 +241,7 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
           <input
             type="text"
-            placeholder="Search amino acid chains..."
+            placeholder="Search Amino Acid Chains..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-10 pr-4 py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -264,7 +264,7 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
       {/* Results Count */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2 px-4 sm:px-0">
         <p className="text-sm sm:text-base text-gray-600">
-          Showing {sortedProducts.length} of {products.length} amino acid chains
+          Showing {sortedProducts.length} of {products.length} Amino Acid Chains
         </p>
         <div className="text-xs sm:text-sm text-gray-500">
           Sorted by {filters.sortBy} ({filters.sortOrder === 'asc' ? 'ascending' : 'descending'})
@@ -280,7 +280,7 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
 
       {sortedProducts.length === 0 && (
         <div className="text-center py-12 sm:py-16 px-4">
-          <p className="text-gray-500 text-lg sm:text-xl">No amino acid chains found matching your criteria.</p>
+          <p className="text-gray-500 text-lg sm:text-xl">No Amino Acid Chains found matching your criteria.</p>
           <button
             onClick={handleClearFilters}
             className="mt-4 text-blue-600 hover:text-blue-700 font-medium touch-manipulation"

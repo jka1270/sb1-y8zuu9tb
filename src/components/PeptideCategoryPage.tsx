@@ -8,31 +8,31 @@ interface AminoAcidChainCategoryPageProps {
 const categoryInfo = {
   therapeutic: {
     title: 'Therapeutic Amino Acid Chains',
-    description: 'Explore our comprehensive collection of therapeutic amino acid chains designed for advanced research and development in medical applications.',
+    description: 'Explore our comprehensive collection of therapeutic Amino Acid Chains designed for advanced research and development in medical applications.',
     image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg',
     categoryName: 'Therapeutic Amino Acid Chains'
   },
   cosmetic: {
     title: 'Cosmetic Amino Acid Chains',
-    description: 'Discover premium cosmetic amino acid chains for anti-aging, skin rejuvenation, and beauty research applications.',
+    description: 'Discover premium cosmetic Amino Acid Chains for anti-aging, skin rejuvenation, and beauty research applications.',
     image: 'https://images.pexels.com/photos/3786126/pexels-photo-3786126.jpeg',
     categoryName: 'Cosmetic Amino Acid Chains'
   },
   research: {
     title: 'Research Amino Acid Chains',
-    description: 'High-purity research amino acid chains for cutting-edge scientific studies and laboratory applications.',
+    description: 'High-purity research Amino Acid Chains for cutting-edge scientific studies and laboratory applications.',
     image: 'https://images.pexels.com/photos/3786157/pexels-photo-3786157.jpeg',
     categoryName: 'Research Amino Acid Chains'
   },
   custom: {
     title: 'Custom Synthesis',
-    description: 'Custom amino acid chain synthesis services tailored to your specific research needs with guaranteed purity and quality.',
+    description: 'Custom Amino Acid Chain synthesis services tailored to your specific research needs with guaranteed purity and quality.',
     image: 'https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg',
     categoryName: 'Custom Synthesis'
   },
   libraries: {
     title: 'Amino Acid Chain Libraries',
-    description: 'Comprehensive amino acid chain screening libraries for high-throughput research and drug discovery applications.',
+    description: 'Comprehensive Amino Acid Chain screening libraries for high-throughput research and drug discovery applications.',
     image: 'https://images.pexels.com/photos/3825517/pexels-photo-3825517.jpeg',
     categoryName: 'Amino Acid Chain Libraries'
   }

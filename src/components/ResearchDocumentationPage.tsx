@@ -127,7 +127,7 @@ export default function ResearchDocumentationPage({ onBack, productId }: Researc
           <p className="text-gray-600">
             {productId
               ? 'Technical specifications, safety information, and testing reports for this product'
-              : 'Comprehensive technical documentation and testing reports for all amino acid chain products'
+              : 'Comprehensive technical documentation and testing reports for all Amino Acid Chain products'
             }
           </p>
         </div>
