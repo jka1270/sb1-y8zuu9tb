@@ -67,26 +67,34 @@ export default function AboutPage({ onBack }: AboutPageProps) {
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
               <div className="space-y-4 text-gray-600">
                 <p>
-                  Founded in 2018 by a team of passionate biochemists and entrepreneurs, ResearchRaws
-                  emerged from a shared vision to bridge the gap between cutting-edge Amino Acid Chain science and
-                  practical research applications.
+                  Founded in 2018 by a small team of passionate biochemists and entrepreneurs, ResearchRaws was
+                  created from a shared belief that researchers deserve better access to high-quality amino acid
+                  chain materials.
                 </p>
                 <p>
-                  Our founders, having experienced firsthand the challenges researchers face in obtaining
-                  high-quality Amino Acid Chains with reliable documentation, set out to create a company that would
-                  set new standards for quality, transparency, and customer service in the Amino Acid Chain industry.
+                  Our goal has always been simple: to make well-sourced, dependable raw peptide products more
+                  accessible to the scientific community.
                 </p>
                 <p>
-                  Today, we serve over 2,000 research institutions worldwide, from leading universities to 
-                  innovative biotech companies, providing them with the tools they need to advance human health 
-                  and scientific understanding.
+                  Having experienced the challenges of finding consistent quality and clear documentation firsthand,
+                  our founders set out to build a company grounded in transparency, reliability, and respect for the
+                  research process.
+                </p>
+                <p>
+                  Rather than overcomplicating the mission, we focus on doing the fundamentals well—sourcing carefully,
+                  maintaining high standards, and supporting those who share a genuine interest in peptide science.
+                </p>
+                <p>
+                  ResearchRaws exists for researchers, biochemists, and entrepreneurs who are passionate about
+                  advancing peptide research and who value quality, honesty, and thoughtful sourcing in the materials
+                  they use.
                 </p>
               </div>
             </div>
             <div>
               <OptimizedImage
                 src="https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="ResearchRaws laboratory" 
+                alt="ResearchRaws laboratory"
                 className="rounded-lg shadow-md"
                 loading="lazy"
                 sizes="(max-width: 1024px) 100vw, 50vw"
