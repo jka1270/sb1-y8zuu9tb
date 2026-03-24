@@ -25,7 +25,7 @@ export const nadProduct: Product = {
   sku: 'NAD-500MG',
   purity: '≥98%',
   molecularWeight: '663.43 Da',
-  sequence: 'Nicotinamide adenine dinucleotide',
+  sequence: 'Nicotinamide Adenine Dinucleotide',
   variants: [
     {
       id: 'nad-500mg',
@@ -98,7 +98,7 @@ export const products: Product[] = [
     sku: 'CJC-10MG',
     purity: '≥98%',
     molecularWeight: '3367.97 Da',
-    sequence: 'Tyr-D-Ala-Asp-Ala-Ile-Phe-Thr-Gln-Ser-Tyr-Arg-Lys-Val-Leu-Ala-Gln-Leu-Ser-Ala-Arg-Lys-Leu-Leu-Gln-Asp-Ile-Leu-Ser-Arg-Lys(Maleimidopropionyl)-NH2',
+    sequence: 'Tyr-D-Ala-Asp-Ala-Ile-Phe-Thr-Gln-Ser-Tyr-Arg-Lys-Val-Leu-Ala-Gln-Leu-Ser-Ala-Arg-Lys-Leu-Leu-Gln-Asp-Ile-Leu-Ser-Arg-Lys-(Maleimidopropionyl)-NH2',
     variants: [
       {
         id: 'cjc-10mg',
@@ -126,7 +126,7 @@ export const products: Product[] = [
     sku: 'CJC-DAC-2MG',
     purity: '≥98%',
     molecularWeight: '3367.97 Da',
-    sequence: 'Tyr-D-Ala-Asp-Ala-Ile-Phe-Thr-Gln-Ser-Tyr-Arg-Lys-Val-Leu-Ala-Gln-Leu-Ser-Ala-Arg-Lys-Leu-Leu-Gln-Asp-Ile-Leu-Ser-Arg-Lys(Maleimidopropionyl)-NH2',
+    sequence: 'Tyr-D-Ala-Asp-Ala-Ile-Phe-Thr-Gln-Ser-Tyr-Arg-Lys-Val-Leu-Ala-Gln-Leu-Ser-Ala-Arg-Lys-Leu-Leu-Gln-Asp-Ile-Leu-Ser-Arg-Lys-(Maleimidopropionyl)-NH2',
     variants: [
       {
         id: 'cjc-dac-2mg',
@@ -159,9 +159,9 @@ export const products: Product[] = [
     },
     inStock: true,
     sku: 'CJC-IPA-10MG',
-    purity: '≥98% each amino acid chain',
-    molecularWeight: '4079.82 Da (combined)',
-    sequence: 'CJC-1295 + Ipamorelin combination',
+    purity: '≥98% Each Amino Acid Chain',
+    molecularWeight: '4079.82 Da (Combined)',
+    sequence: 'CJC-1295 + Ipamorelin Combination',
     variants: [
       {
         id: 'cjc-ipa-10mg',
@@ -231,7 +231,7 @@ export const products: Product[] = [
     sku: 'IPA-5MG',
     purity: '≥98%',
     molecularWeight: '711.85 Da',
-    sequence: 'Aib-His-D-2-Nal-D-Phe-Lys-NH2',
+    sequence: 'Aib-His-D-2Nal-D-Phe-Lys-NH2',
     variants: [
       {
         id: 'ipa-5mg',
@@ -294,7 +294,7 @@ export const products: Product[] = [
     sku: 'PE22-10MG',
     purity: '≥98%',
     molecularWeight: '3357.02 Da',
-    sequence: 'Research amino acid chain sequence',
+    sequence: 'Research Amino Acid Chain Sequence',
     variants: [
       {
         id: 'pe22-10mg',
@@ -357,7 +357,7 @@ export const products: Product[] = [
     sku: 'RET-24MG',
     purity: '≥98%',
     molecularWeight: '5055.68 Da',
-    sequence: 'Triple receptor agonist amino acid chain',
+    sequence: 'Triple Receptor Agonist Amino Acid Chain',
     variants: [
       {
         id: 'ret-24mg',
@@ -560,7 +560,7 @@ export const products: Product[] = [
     sku: 'SUR-10MG',
     purity: '≥98%',
     molecularWeight: '5312.76 Da',
-    sequence: 'Dual receptor agonist amino acid chain',
+    sequence: 'Dual Receptor Agonist Amino Acid Chain',
     variants: [
       {
         id: 'sur-10mg',
@@ -735,7 +735,7 @@ export const products: Product[] = [
     sku: 'TIR-10MG',
     purity: '≥98%',
     molecularWeight: '4813.53 Da',
-    sequence: 'Dual GIP/GLP-1 receptor agonist amino acid chain',
+    sequence: 'Dual GIP/GLP-1 Receptor Agonist Amino Acid Chain',
     variants: [
       {
         id: 'tir-10mg',

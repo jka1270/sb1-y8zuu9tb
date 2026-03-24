@@ -43,7 +43,7 @@ export default function Hero({ onBrowseAminoAcidChains, onResearchGuide }: HeroP
         <div className="max-w-sm sm:max-w-md mx-auto mb-6 sm:mb-8">
           <SearchBar
             onSearch={handleSearch}
-            placeholder="Search amino acid chains..."
+            placeholder="Search Amino Acid Chains..."
             className="w-full"
           />
         </div>
@@ -55,7 +55,7 @@ export default function Hero({ onBrowseAminoAcidChains, onResearchGuide }: HeroP
               <span className="text-blue-200"> Scientific Excellence</span>
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-6 leading-relaxed px-4">
-              Discover our comprehensive collection of high-purity amino acid chains, from therapeutic compounds to
+              Discover our comprehensive collection of high-purity Amino Acid Chains, from therapeutic compounds to
               cosmetic applications, designed to advance your research goals.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 px-4 justify-center">

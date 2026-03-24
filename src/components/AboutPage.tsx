@@ -7,12 +7,12 @@ interface AboutPageProps {
 
 export default function AboutPage({ onBack }: AboutPageProps) {
   const milestones = [
-    { year: '2018', title: 'Company Founded', description: 'Established ResearchRaws with focus on high-purity amino acid chains' },
+    { year: '2018', title: 'Company Founded', description: 'Established ResearchRaws with focus on high-purity Amino Acid Chains' },
     { year: '2019', title: 'GMP Certification', description: 'Achieved Good Manufacturing Practice certification' },
     { year: '2020', title: 'Research Partnerships', description: 'Formed partnerships with leading universities and research institutions' },
     { year: '2021', title: 'Quality Expansion', description: 'Expanded quality control laboratory and analytical capabilities' },
     { year: '2022', title: 'Global Reach', description: 'Extended shipping to over 50 countries worldwide' },
-    { year: '2023', title: 'Innovation Center', description: 'Opened dedicated R&D facility for custom amino acid chain synthesis' },
+    { year: '2023', title: 'Innovation Center', description: 'Opened dedicated R&D facility for custom Amino Acid Chain synthesis' },
     { year: '2024', title: 'AI Integration', description: 'Implemented AI-driven quality control and inventory management' },
     { year: '2025', title: 'Sustainability Initiative', description: 'Launched green chemistry and sustainable manufacturing practices' },
   ];
@@ -25,7 +25,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-6">About ResearchRaws</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Leading the future of amino acid chain research with uncompromising quality, innovative solutions,
+            Leading the future of Amino Acid Chain research with uncompromising quality, innovative solutions,
             and unwavering commitment to advancing scientific discovery worldwide.
           </p>
         </div>
@@ -37,7 +37,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
             <h3 className="text-xl font-semibold text-gray-900 mb-4">Our Mission</h3>
             <p className="text-gray-600">
               To accelerate scientific discovery by providing researchers worldwide with the highest quality
-              amino acid chains, comprehensive documentation, and exceptional support services.
+              Amino Acid Chains, comprehensive documentation, and exceptional support services.
             </p>
           </div>
 
@@ -45,7 +45,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
             <Globe className="h-12 w-12 text-green-600 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-4">Our Vision</h3>
             <p className="text-gray-600">
-              To be the global leader in amino acid chain research solutions, enabling breakthrough discoveries
+              To be the global leader in Amino Acid Chain research solutions, enabling breakthrough discoveries
               in therapeutics, diagnostics, and biotechnology applications.
             </p>
           </div>
@@ -68,13 +68,13 @@ export default function AboutPage({ onBack }: AboutPageProps) {
               <div className="space-y-4 text-gray-600">
                 <p>
                   Founded in 2018 by a team of passionate biochemists and entrepreneurs, ResearchRaws
-                  emerged from a shared vision to bridge the gap between cutting-edge amino acid chain science and
+                  emerged from a shared vision to bridge the gap between cutting-edge Amino Acid Chain science and
                   practical research applications.
                 </p>
                 <p>
                   Our founders, having experienced firsthand the challenges researchers face in obtaining
-                  high-quality amino acid chains with reliable documentation, set out to create a company that would
-                  set new standards for quality, transparency, and customer service in the amino acid chain industry.
+                  high-quality Amino Acid Chains with reliable documentation, set out to create a company that would
+                  set new standards for quality, transparency, and customer service in the Amino Acid Chain industry.
                 </p>
                 <p>
                   Today, we serve over 2,000 research institutions worldwide, from leading universities to 

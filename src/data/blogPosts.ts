@@ -44,9 +44,9 @@ export interface ResourceGuide {
 
 export const blogCategories = [
   { id: 'research', name: 'Research Insights', description: 'Latest research findings and scientific discoveries' },
-  { id: 'industry', name: 'Industry News', description: 'Amino acid chain industry trends and market updates' },
-  { id: 'technology', name: 'Technology', description: 'Advances in amino acid chain synthesis and analysis' },
-  { id: 'applications', name: 'Applications', description: 'Real-world amino acid chain applications and case studies' },
+  { id: 'industry', name: 'Industry News', description: 'Amino Acid Chain industry trends and market updates' },
+  { id: 'technology', name: 'Technology', description: 'Advances in Amino Acid Chain synthesis and analysis' },
+  { id: 'applications', name: 'Applications', description: 'Real-world Amino Acid Chain applications and case studies' },
   { id: 'quality', name: 'Quality Assurance', description: 'Quality control and regulatory updates' },
   { id: 'education', name: 'Education', description: 'Educational content and learning resources' }
 ];
@@ -54,43 +54,43 @@ export const blogCategories = [
 export const sampleBlogPosts: BlogPost[] = [
   {
     id: '1',
-    title: 'Advances in Therapeutic Amino acid chain Development: 2025 Outlook',
+    title: 'Advances in Therapeutic Amino Acid Chain Development: 2025 Outlook',
     slug: 'therapeutic-amino-acid-chain-development-2025',
-    excerpt: 'Exploring the latest breakthroughs in therapeutic amino acid chain research and their potential impact on drug development pipelines.',
+    excerpt: 'Exploring the latest breakthroughs in therapeutic Amino Acid Chain research and their potential impact on drug development pipelines.',
     content: `
       <h2>Introduction</h2>
-      <p>The therapeutic amino acid chain market continues to experience unprecedented growth, with over 80 amino acid chain drugs currently in clinical development. This comprehensive analysis examines the key trends shaping the industry in 2025.</p>
-      
+      <p>The therapeutic Amino Acid Chain market continues to experience unprecedented growth, with over 80 Amino Acid Chain drugs currently in clinical development. This comprehensive analysis examines the key trends shaping the industry in 2025.</p>
+
       <h2>Key Developments</h2>
       <h3>1. Enhanced Stability Formulations</h3>
-      <p>Recent advances in amino acid chain stabilization have significantly improved shelf life and bioavailability. Novel excipients and delivery systems are enabling oral administration of previously injection-only amino acid chains.</p>
-      
-      <h3>2. AI-Driven Amino acid chain Design</h3>
-      <p>Machine learning algorithms are revolutionizing amino acid chain discovery, reducing development timelines from years to months. Predictive models for amino acid chain-protein interactions are achieving 95% accuracy rates.</p>
-      
-      <h3>3. Personalized Amino acid chain Medicine</h3>
-      <p>Biomarker-driven amino acid chain selection is enabling personalized treatment approaches, particularly in oncology and metabolic disorders.</p>
-      
+      <p>Recent advances in Amino Acid Chain stabilization have significantly improved shelf life and bioavailability. Novel excipients and delivery systems are enabling oral administration of previously injection-only Amino Acid Chains.</p>
+
+      <h3>2. AI-Driven Amino Acid Chain Design</h3>
+      <p>Machine learning algorithms are revolutionizing Amino Acid Chain discovery, reducing development timelines from years to months. Predictive models for Amino Acid Chain-protein interactions are achieving 95% accuracy rates.</p>
+
+      <h3>3. Personalized Amino Acid Chain Medicine</h3>
+      <p>Biomarker-driven Amino Acid Chain selection is enabling personalized treatment approaches, particularly in oncology and metabolic disorders.</p>
+
       <h2>Market Projections</h2>
-      <p>The global therapeutic amino acid chain market is projected to reach $78.2 billion by 2028, driven by increasing prevalence of chronic diseases and growing acceptance of amino acid chain-based therapies.</p>
-      
+      <p>The global therapeutic Amino Acid Chain market is projected to reach $78.2 billion by 2028, driven by increasing prevalence of chronic diseases and growing acceptance of Amino Acid Chain-based therapies.</p>
+
       <h2>Research Implications</h2>
-      <p>These developments present significant opportunities for researchers working on novel amino acid chain therapeutics. Key areas of focus include:</p>
+      <p>These developments present significant opportunities for researchers working on novel Amino Acid Chain therapeutics. Key areas of focus include:</p>
       <ul>
-        <li>Long-acting amino acid chain formulations</li>
+        <li>Long-acting Amino Acid Chain formulations</li>
         <li>Oral delivery systems</li>
         <li>Targeted drug delivery</li>
         <li>Combination therapies</li>
       </ul>
-      
+
       <h2>Conclusion</h2>
-      <p>The therapeutic amino acid chain landscape is evolving rapidly, with technological advances opening new possibilities for treatment. Researchers should focus on stability, delivery, and personalization to maximize therapeutic potential.</p>
+      <p>The therapeutic Amino Acid Chain landscape is evolving rapidly, with technological advances opening new possibilities for treatment. Researchers should focus on stability, delivery, and personalization to maximize therapeutic potential.</p>
     `,
     featured_image: 'https://images.pexels.com/photos/3786126/pexels-photo-3786126.jpeg?auto=compress&cs=tinysrgb&w=800',
     category: 'research',
-    tags: ['therapeutic amino acid chains', 'drug development', 'clinical trials', 'biotech'],
+    tags: ['therapeutic Amino Acid Chains', 'drug development', 'clinical trials', 'biotech'],
     author_name: 'Dr. Sarah Chen',
-    author_bio: 'Chief Scientific Officer at Amino acid chainTech Research with 15+ years in amino acid chain development',
+    author_bio: 'Chief Scientific Officer at Amino Acid Chain Tech Research with 15+ years in Amino Acid Chain development',
     author_image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=400',
     reading_time: 8,
     view_count: 1247,
@@ -105,18 +105,18 @@ export const sampleBlogPosts: BlogPost[] = [
     id: '2',
     title: 'GLP-1 Receptor Agonists: Mechanism and Research Applications',
     slug: 'glp1-receptor-agonists-research',
-    excerpt: 'A comprehensive guide to GLP-1 receptor agonist amino acid chains, their mechanisms of action, and current research applications in metabolic studies.',
+    excerpt: 'A comprehensive guide to GLP-1 receptor agonist Amino Acid Chains, their mechanisms of action, and current research applications in metabolic studies.',
     content: `
       <h2>Understanding GLP-1 Receptor Agonists</h2>
-      <p>Glucagon-like amino acid chain-1 (GLP-1) receptor agonists represent a revolutionary class of amino acid chain therapeutics with profound implications for metabolic research and diabetes treatment.</p>
-      
+      <p>Glucagon-like Amino Acid Chain-1 (GLP-1) receptor agonists represent a revolutionary class of Amino Acid Chain therapeutics with profound implications for metabolic research and diabetes treatment.</p>
+
       <h2>Mechanism of Action</h2>
       <h3>Glucose-Dependent Insulin Secretion</h3>
       <p>GLP-1 receptor agonists stimulate insulin release only when glucose levels are elevated, reducing the risk of hypoglycemia compared to traditional diabetes medications.</p>
-      
+
       <h3>Gastric Emptying Modulation</h3>
-      <p>These amino acid chains slow gastric emptying, leading to increased satiety and reduced food intake, making them valuable for obesity research.</p>
-      
+      <p>These Amino Acid Chains slow gastric emptying, leading to increased satiety and reduced food intake, making them valuable for obesity research.</p>
+
       <h2>Research Applications</h2>
       <ul>
         <li><strong>Metabolic Studies:</strong> Investigation of glucose homeostasis and insulin sensitivity</li>
@@ -124,23 +124,23 @@ export const sampleBlogPosts: BlogPost[] = [
         <li><strong>Cardiovascular Research:</strong> Cardioprotective effects and vascular health</li>
         <li><strong>Neuroprotection:</strong> Potential applications in neurodegenerative diseases</li>
       </ul>
-      
+
       <h2>Popular GLP-1 Amino Acid Chains in Research</h2>
       <h3>Semaglutide</h3>
       <p>Long-acting GLP-1 analog with enhanced stability and prolonged half-life, ideal for chronic treatment studies.</p>
-      
+
       <h3>Tirzepatide</h3>
       <p>Dual GIP/GLP-1 receptor agonist offering superior efficacy in metabolic research applications.</p>
-      
+
       <h2>Experimental Considerations</h2>
       <p>When working with GLP-1 receptor agonists in research:</p>
       <ul>
-        <li>Store at -20°C to maintain amino acid chain integrity</li>
+        <li>Store at -20°C to maintain Amino Acid Chain integrity</li>
         <li>Use appropriate controls in metabolic studies</li>
         <li>Consider dose-response relationships</li>
         <li>Monitor for potential side effects in animal models</li>
       </ul>
-      
+
       <h2>Future Directions</h2>
       <p>Ongoing research focuses on developing next-generation GLP-1 analogs with improved selectivity, duration of action, and reduced immunogenicity.</p>
     `,
@@ -148,7 +148,7 @@ export const sampleBlogPosts: BlogPost[] = [
     category: 'research',
     tags: ['GLP-1', 'diabetes research', 'metabolic studies', 'semaglutide', 'tirzepatide'],
     author_name: 'Dr. Michael Rodriguez',
-    author_bio: 'Director of Quality Assurance with expertise in amino acid chain pharmacology',
+    author_bio: 'Director of Quality Assurance with expertise in Amino Acid Chain pharmacology',
     author_image: 'https://images.pexels.com/photos/3786164/pexels-photo-3786164.jpeg?auto=compress&cs=tinysrgb&w=400',
     reading_time: 12,
     view_count: 892,
@@ -161,9 +161,9 @@ export const sampleBlogPosts: BlogPost[] = [
   },
   {
     id: '3',
-    title: 'Amino acid chain Synthesis Quality Control: Best Practices for 2025',
+    title: 'Amino Acid Chain Synthesis Quality Control: Best Practices for 2025',
     slug: 'amino-acid-chain-synthesis-quality-control-2025',
-    excerpt: 'Essential quality control measures and analytical techniques for ensuring amino acid chain purity and consistency in research applications.',
+    excerpt: 'Essential quality control measures and analytical techniques for ensuring Amino Acid Chain purity and consistency in research applications.',
     content: `
       <h2>Quality Control in Amino acid chain Synthesis</h2>
       <p>Maintaining consistent quality in amino acid chain synthesis requires rigorous analytical testing and adherence to established protocols. This guide outlines current best practices for 2025.</p>
@@ -215,7 +215,7 @@ export const sampleBlogPosts: BlogPost[] = [
     `,
     featured_image: 'https://images.pexels.com/photos/3735780/pexels-photo-3735780.jpeg?auto=compress&cs=tinysrgb&w=800',
     category: 'quality',
-    tags: ['quality control', 'HPLC', 'mass spectrometry', 'analytical testing', 'amino acid chain purity'],
+    tags: ['quality control', 'HPLC', 'mass spectrometry', 'analytical testing', 'Amino Acid Chain purity'],
     author_name: 'Dr. Emily Watson',
     author_bio: 'Head of Research Partnerships with extensive QC experience',
     author_image: 'https://images.pexels.com/photos/3735780/pexels-photo-3735780.jpeg?auto=compress&cs=tinysrgb&w=400',
@@ -232,7 +232,7 @@ export const sampleBlogPosts: BlogPost[] = [
     id: '4',
     title: 'Cosmetic Amino Acid Chains: Science Behind Anti-Aging Applications',
     slug: 'cosmetic-amino-acid-chains-anti-aging-science',
-    excerpt: 'Exploring the scientific mechanisms behind cosmetic amino acid chains and their applications in skin care research and anti-aging studies.',
+    excerpt: 'Exploring the scientific mechanisms behind cosmetic Amino Acid Chains and their applications in skin care research and anti-aging studies.',
     content: `
       <h2>The Science of Cosmetic Amino Acid Chains</h2>
       <p>Cosmetic amino acid chains have revolutionized the skincare industry by targeting specific cellular processes involved in aging, wound healing, and skin regeneration.</p>
