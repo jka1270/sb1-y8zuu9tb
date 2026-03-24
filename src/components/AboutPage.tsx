@@ -13,7 +13,6 @@ export default function AboutPage({ onBack }: AboutPageProps) {
     { year: '2021', title: 'Quality Expansion', description: 'Expanded quality control laboratory and analytical capabilities' },
     { year: '2022', title: 'Global Reach', description: 'Extended shipping to over 50 countries worldwide' },
     { year: '2023', title: 'Innovation Center', description: 'Opened dedicated R&D facility for custom Amino Acid Chain synthesis' },
-    { year: '2024', title: 'AI Integration', description: 'Implemented AI-driven quality control and inventory management' },
     { year: '2025', title: 'Sustainability Initiative', description: 'Launched green chemistry and sustainable manufacturing practices' },
   ];
 
