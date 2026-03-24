@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle, AlertTriangle, Building, User, HelpCircle, Shield } from 'lucide-react';
+import { Mail, MapPin, Clock, Send, CheckCircle, AlertTriangle, Building, User, HelpCircle, Shield } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface ContactPageProps {
@@ -119,14 +119,6 @@ export default function ContactPage({ onBack }: ContactPageProps) {
   };
 
   const contactMethods = [
-    {
-      icon: Phone,
-      title: 'Phone Support',
-      primary: '1-800-738-8433',
-      secondary: 'International: +1-858-555-0123',
-      hours: 'Mon-Fri: 8:00 AM - 6:00 PM PST',
-      color: 'text-blue-600'
-    },
     {
       icon: Mail,
       title: 'Email Support',
@@ -493,7 +485,6 @@ export default function ContactPage({ onBack }: ContactPageProps) {
                     </p>
                     <div className="mt-3 space-y-1">
                       <p className="text-sm"><strong>Email:</strong> quality@researchraws.com</p>
-                      <p className="text-sm"><strong>Phone:</strong> 1-800-738-8433 ext. 2</p>
                     </div>
                   </div>
                 </div>
