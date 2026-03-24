@@ -47,7 +47,8 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
       const { data, error } = await supabase
         .from('products')
         .select('*')
-        .order('name', { ascending: true });
+        .order('name', { ascending: true })
+        .order('price', { ascending: true });
 
       if (error) throw error;
 
@@ -129,7 +130,7 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
   // Sort filtered products
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     let aValue: any, bValue: any;
-    
+
     switch (filters.sortBy) {
       case 'price':
         aValue = a.price;
@@ -148,15 +149,20 @@ export default function ProductGrid({ initialCategory = '' }: ProductGridProps) 
         bValue = b.category;
         break;
       default: // name
-        aValue = a.name;
-        bValue = b.name;
+        // For name sorting, first sort by name, then by price within each name group
+        const nameCompare = a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+        if (nameCompare !== 0) {
+          return filters.sortOrder === 'desc' ? -nameCompare : nameCompare;
+        }
+        // If names are the same, sort by price (lowest to highest for milligram ordering)
+        return a.price - b.price;
     }
-    
+
     if (typeof aValue === 'string') {
       aValue = aValue.toLowerCase();
       bValue = bValue.toLowerCase();
     }
-    
+
     if (filters.sortOrder === 'desc') {
       return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
     } else {
