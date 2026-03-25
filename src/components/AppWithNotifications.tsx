@@ -21,11 +21,13 @@ import BlogPage from './BlogPage';
 import AdminPanel from './AdminPanel';
 import AminoAcidChainCategoryPage from './PeptideCategoryPage';
 import NotificationContainer from './NotificationContainer';
+import AgeVerificationModal from './AgeVerificationModal';
 import { ArrowLeft } from 'lucide-react';
 import { preloadCriticalResources } from '../lib/performance';
 import { CartItem } from '../types';
 
 export default function AppWithNotifications() {
+  const [isVerified, setIsVerified] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [showOrderHistory, setShowOrderHistory] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
@@ -37,6 +39,13 @@ export default function AppWithNotifications() {
   const [showAminoAcidChainCategory, setShowAminoAcidChainCategory] = useState<'therapeutic' | 'cosmetic' | 'custom' | null>(null);
   const [accountPage, setAccountPage] = useState('dashboard');
   const { showNotification } = useNotification();
+
+  useEffect(() => {
+    const verified = localStorage.getItem('ageVerified');
+    if (verified === 'true') {
+      setIsVerified(true);
+    }
+  }, []);
 
   const handleItemAdded = (item: CartItem, isNewItem: boolean) => {
     if (isNewItem) {
@@ -166,10 +175,15 @@ export default function AppWithNotifications() {
   };
 
   return (
-    <CartProvider onItemAdded={handleItemAdded}>
-      <div className="min-h-screen bg-gray-50">
-        <Header
-          onHome={handleHome}
+    <>
+      {!isVerified && (
+        <AgeVerificationModal onVerified={() => setIsVerified(true)} />
+      )}
+
+      <CartProvider onItemAdded={handleItemAdded}>
+        <div className="min-h-screen bg-gray-50">
+          <Header
+            onHome={handleHome}
           onAminoAcidChainCategory={handleAminoAcidChainCategory}
           onOrderHistory={handleOrderHistory}
           onAccount={handleAccount}
@@ -245,5 +259,6 @@ export default function AppWithNotifications() {
         <NotificationContainer />
       </div>
     </CartProvider>
+    </>
   );
 }
