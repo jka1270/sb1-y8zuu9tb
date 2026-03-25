@@ -1,17 +1,15 @@
 import { Product, Category } from '../types';
 
 export const categories: Category[] = [
-  { id: '1', name: 'Therapeutic Amino Acid Chains', description: 'Bioactive Amino Acid Chains for therapeutic research', productCount: 11 },
+  { id: '1', name: 'Therapeutic Amino Acid Chains', description: 'Bioactive Amino Acid Chains for therapeutic research', productCount: 22 },
   { id: '2', name: 'Cosmetic Amino Acid Chains', description: 'Anti-aging and skin care Amino Acid Chains', productCount: 1 },
-  { id: '3', name: 'Research Amino Acid Chains', description: 'Novel Amino Acid Chains for scientific studies', productCount: 11 },
   { id: '4', name: 'Custom Synthesis', description: 'Custom Amino Acid Chain synthesis services', productCount: 0 },
-  { id: '5', name: 'Amino Acid Chain Libraries', description: 'Comprehensive Amino Acid Chain screening libraries', productCount: 0 },
 ];
 
 export const nadProduct: Product = {
   id: '21',
   name: 'NAD+ (Nicotinamide Adenine Dinucleotide)',
-  category: 'Research Amino Acid Chains',
+  category: 'Therapeutic Amino Acid Chains',
   description: 'Essential coenzyme involved in cellular energy metabolism, DNA repair, and anti-aging research applications.',
   price: 64.99,
   image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -84,7 +82,7 @@ export const products: Product[] = [
   {
     id: '2',
     name: 'CJC-1295',
-    category: 'Research Amino Acid Chains',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Long-acting growth hormone releasing hormone analog for research applications. For Research Only - Not for human consumption.',
     price: 89.99,
     image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -147,7 +145,7 @@ export const products: Product[] = [
   {
     id: '22',
     name: 'CJC-1295 (5mg) / Ipamorelin (5mg)',
-    category: 'Research Amino Acid Chains',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Synergistic combination of CJC-1295 and Ipamorelin for enhanced growth hormone research applications. For Research Only - Not for human consumption.',
     price: 74.99,
     image: 'https://images.pexels.com/photos/5726794/pexels-photo-5726794.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -217,7 +215,7 @@ export const products: Product[] = [
   {
     id: '5',
     name: 'Ipamorelin',
-    category: 'Research Amino Acid Chains',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Growth hormone releasing Amino Acid Chain with selective ghrelin receptor activity.',
     price: 59.99,
     image: 'https://images.pexels.com/photos/3735780/pexels-photo-3735780.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -252,7 +250,7 @@ export const products: Product[] = [
   {
     id: '4',
     name: 'Melanotan II',
-    category: 'Research Amino Acid Chains',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Synthetic analog of melanocyte-stimulating hormone for pigmentation research.',
     price: 38.99,
     image: 'https://images.pexels.com/photos/3735780/pexels-photo-3735780.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -280,7 +278,7 @@ export const products: Product[] = [
   {
     id: '7',
     name: 'PE-22-28',
-    category: 'Research Amino Acid Chains',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Synthetic Amino Acid Chain with potential cognitive enhancement and neuroprotective properties for research applications.',
     price: 74.99,
     image: 'https://images.pexels.com/photos/3786164/pexels-photo-3786164.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -308,7 +306,7 @@ export const products: Product[] = [
   {
     id: '23',
     name: 'PT-141',
-    category: 'Research Amino Acid Chains',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Melanocortin receptor agonist Amino Acid Chain for sexual dysfunction and libido research applications.',
     price: 56.99,
     image: 'https://images.pexels.com/photos/3786126/pexels-photo-3786126.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -378,7 +376,7 @@ export const products: Product[] = [
   {
     id: '10',
     name: 'Selank',
-    category: 'Research Amino Acid Chains',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Synthetic hepta-Amino Acid Chain with anxiolytic and nootropic properties for neurological research applications.',
     price: 49.99,
     image: 'https://images.pexels.com/photos/7723564/pexels-photo-7723564.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -448,7 +446,7 @@ export const products: Product[] = [
   {
     id: '25',
     name: 'Semax',
-    category: 'Research Amino Acid Chains',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Synthetic hepta-Amino Acid Chain analog of ACTH(4-10) with neuroprotective and cognitive enhancement properties for research applications.',
     price: 129.99,
     image: 'https://images.pexels.com/photos/3786164/pexels-photo-3786164.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -511,7 +509,7 @@ export const products: Product[] = [
   {
     id: '14',
     name: 'SS-31',
-    category: 'Research Amino Acid Chains',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Mitochondria-targeting Amino Acid Chain with cardioprotective and neuroprotective properties for cellular energy research.',
     price: 49.99,
     image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -602,7 +600,7 @@ export const products: Product[] = [
   {
     id: '17',
     name: 'Testagen',
-    category: 'Research Amino Acid Chains',
+    category: 'Therapeutic Amino Acid Chains',
     description: 'Synthetic tetra-Amino Acid Chain with potential anti-aging and cellular regeneration properties for research applications.',
     price: 49.99,
     image: 'https://images.pexels.com/photos/3735747/pexels-photo-3735747.jpeg?auto=compress&cs=tinysrgb&w=600',

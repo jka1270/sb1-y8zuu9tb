@@ -34,7 +34,7 @@ export default function AppWithNotifications() {
   const [showContact, setShowContact] = useState(false);
   const [showBlog, setShowBlog] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
-  const [showAminoAcidChainCategory, setShowAminoAcidChainCategory] = useState<'therapeutic' | 'cosmetic' | 'research' | 'custom' | 'libraries' | null>(null);
+  const [showAminoAcidChainCategory, setShowAminoAcidChainCategory] = useState<'therapeutic' | 'cosmetic' | 'custom' | null>(null);
   const [accountPage, setAccountPage] = useState('dashboard');
   const { showNotification } = useNotification();
 
@@ -76,7 +76,7 @@ export default function AppWithNotifications() {
     setAccountPage('dashboard');
   };
 
-  const handleAminoAcidChainCategory = (category: 'therapeutic' | 'cosmetic' | 'research' | 'custom' | 'libraries') => {
+  const handleAminoAcidChainCategory = (category: 'therapeutic' | 'cosmetic' | 'custom') => {
     setShowCheckout(false);
     setShowOrderHistory(false);
     setShowAccount(false);

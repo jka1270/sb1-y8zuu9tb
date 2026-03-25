@@ -1,7 +1,7 @@
 import ProductGrid from './ProductGrid';
 
 interface AminoAcidChainCategoryPageProps {
-  category: 'therapeutic' | 'cosmetic' | 'research' | 'custom' | 'libraries';
+  category: 'therapeutic' | 'cosmetic' | 'custom';
   onBack: () => void;
 }
 
@@ -18,23 +18,11 @@ const categoryInfo = {
     image: 'https://images.pexels.com/photos/3786126/pexels-photo-3786126.jpeg',
     categoryName: 'Cosmetic Amino Acid Chains'
   },
-  research: {
-    title: 'Research Amino Acid Chains',
-    description: 'High-purity research Amino Acid Chains for cutting-edge scientific studies and laboratory applications.',
-    image: 'https://images.pexels.com/photos/3786157/pexels-photo-3786157.jpeg',
-    categoryName: 'Research Amino Acid Chains'
-  },
   custom: {
     title: 'Custom Synthesis',
     description: 'Custom Amino Acid Chain synthesis services tailored to your specific research needs with guaranteed purity and quality.',
     image: 'https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg',
     categoryName: 'Custom Synthesis'
-  },
-  libraries: {
-    title: 'Amino Acid Chain Libraries',
-    description: 'Comprehensive Amino Acid Chain screening libraries for high-throughput research and drug discovery applications.',
-    image: 'https://images.pexels.com/photos/3825517/pexels-photo-3825517.jpeg',
-    categoryName: 'Amino Acid Chain Libraries'
   }
 };
 

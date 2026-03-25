@@ -8,7 +8,7 @@ import UserMenu from './UserMenu';
 
 interface HeaderProps {
   onHome?: () => void;
-  onAminoAcidChainCategory?: (category: 'therapeutic' | 'cosmetic' | 'research' | 'custom' | 'libraries') => void;
+  onAminoAcidChainCategory?: (category: 'therapeutic' | 'cosmetic' | 'custom') => void;
   onOrderHistory?: () => void;
   onAccount?: () => void;
   onDocumentation?: () => void;
@@ -60,9 +60,7 @@ export default function Header({ onHome, onAminoAcidChainCategory, onOrderHistor
                 <div className="absolute left-0 top-full mt-1 w-56 bg-white shadow-lg rounded-lg border py-2 z-50">
                   <button onClick={() => { onAminoAcidChainCategory?.('therapeutic'); setIsAminoAcidChainsOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Therapeutic Amino Acid Chains</button>
                   <button onClick={() => { onAminoAcidChainCategory?.('cosmetic'); setIsAminoAcidChainsOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Cosmetic Amino Acid Chains</button>
-                  <button onClick={() => { onAminoAcidChainCategory?.('research'); setIsAminoAcidChainsOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Research Amino Acid Chains</button>
                   <button onClick={() => { onAminoAcidChainCategory?.('custom'); setIsAminoAcidChainsOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Custom Synthesis</button>
-                  <button onClick={() => { onAminoAcidChainCategory?.('libraries'); setIsAminoAcidChainsOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Amino Acid Chain Libraries</button>
                 </div>
               )}
             </div>
@@ -149,9 +147,7 @@ export default function Header({ onHome, onAminoAcidChainCategory, onOrderHistor
                 <div className="ml-4 mt-1 space-y-1">
                   <button onClick={() => { onAminoAcidChainCategory?.('therapeutic'); setIsMenuOpen(false); setIsAminoAcidChainsOpen(false); }} className="block py-2 px-2 text-white hover:text-blue-200 hover:bg-blue-700 hover:bg-opacity-50 rounded-lg transition-colors touch-manipulation w-full text-left">Therapeutic Amino Acid Chains</button>
                   <button onClick={() => { onAminoAcidChainCategory?.('cosmetic'); setIsMenuOpen(false); setIsAminoAcidChainsOpen(false); }} className="block py-2 px-2 text-white hover:text-blue-200 hover:bg-blue-700 hover:bg-opacity-50 rounded-lg transition-colors touch-manipulation w-full text-left">Cosmetic Amino Acid Chains</button>
-                  <button onClick={() => { onAminoAcidChainCategory?.('research'); setIsMenuOpen(false); setIsAminoAcidChainsOpen(false); }} className="block py-2 px-2 text-white hover:text-blue-200 hover:bg-blue-700 hover:bg-opacity-50 rounded-lg transition-colors touch-manipulation w-full text-left">Research Amino Acid Chains</button>
                   <button onClick={() => { onAminoAcidChainCategory?.('custom'); setIsMenuOpen(false); setIsAminoAcidChainsOpen(false); }} className="block py-2 px-2 text-white hover:text-blue-200 hover:bg-blue-700 hover:bg-opacity-50 rounded-lg transition-colors touch-manipulation w-full text-left">Custom Synthesis</button>
-                  <button onClick={() => { onAminoAcidChainCategory?.('libraries'); setIsMenuOpen(false); setIsAminoAcidChainsOpen(false); }} className="block py-2 px-2 text-white hover:text-blue-200 hover:bg-blue-700 hover:bg-opacity-50 rounded-lg transition-colors touch-manipulation w-full text-left">Amino Acid Chain Libraries</button>
                 </div>
               )}
             </div>
