@@ -176,17 +176,17 @@ export default function AboutPage({ onBack }: AboutPageProps) {
           </div>
         </div>
 
-        {/* Manufacturing Process */}
+        {/* Sourcing Process */}
         <div className="bg-white rounded-lg shadow-sm p-8 mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Manufacturing Excellence</h2>
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Sourcing Excellence</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="text-center">
               <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-blue-600">1</span>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Synthesis</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Supplier Selection</h3>
               <p className="text-gray-600 text-sm">
-                Solid-phase Amino Acid Chain synthesis using state-of-the-art automated synthesizers
+                Rigorous vetting of manufacturing partners with proven track records in peptide synthesis
               </p>
             </div>
 
@@ -194,29 +194,29 @@ export default function AboutPage({ onBack }: AboutPageProps) {
               <div className="bg-green-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-green-600">2</span>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Purification</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Quality Verification</h3>
               <p className="text-gray-600 text-sm">
-                High-performance liquid chromatography (HPLC) purification to achieve ≥98% purity
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="bg-purple-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-purple-600">3</span>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Analysis</h3>
-              <p className="text-gray-600 text-sm">
-                Comprehensive analytical testing including HPLC, MS, and microbiological analysis
+                Independent third-party testing and Certificate of Analysis verification for every batch
               </p>
             </div>
 
             <div className="text-center">
               <div className="bg-orange-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-orange-600">4</span>
+                <span className="text-2xl font-bold text-orange-600">3</span>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Packaging</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Chain of Custody</h3>
               <p className="text-gray-600 text-sm">
-                Lyophilization and sterile packaging in controlled environment facilities
+                Complete traceability from source to delivery with secure handling protocols
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-teal-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-teal-600">4</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Compliance Assurance</h3>
+              <p className="text-gray-600 text-sm">
+                Adherence to regulatory standards and GMP guidelines across the supply chain
               </p>
             </div>
           </div>
