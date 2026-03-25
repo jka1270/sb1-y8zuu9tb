@@ -63,8 +63,8 @@ export default function AdminProductManager() {
         specifications: {},
         inStock: p.in_stock,
         sku: p.sku,
-        purity: '99%',
-        molecularWeight: '0',
+        purity: p.purity || '99%',
+        molecularWeight: p.molecular_weight || '0',
         sequence: p.sequence || '',
         quantity: p.quantity ?? 0,
         lowStockThreshold: p.low_stock_threshold ?? 10
@@ -229,7 +229,9 @@ export default function AdminProductManager() {
       images: productImages,
       in_stock: formData.get('inStock') === 'on',
       quantity: parseInt(formData.get('quantity') as string) || 0,
-      low_stock_threshold: parseInt(formData.get('low_stock_threshold') as string) || 10
+      low_stock_threshold: parseInt(formData.get('low_stock_threshold') as string) || 10,
+      purity: formData.get('purity') as string || '99%',
+      molecular_weight: formData.get('molecular_weight') as string || '0'
     };
 
     try {
@@ -651,6 +653,7 @@ export default function AdminProductManager() {
                       </label>
                       <input
                         type="text"
+                        name="purity"
                         defaultValue={editingProduct?.purity}
                         placeholder="≥98%"
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -662,6 +665,7 @@ export default function AdminProductManager() {
                       </label>
                       <input
                         type="text"
+                        name="molecular_weight"
                         defaultValue={editingProduct?.molecularWeight}
                         placeholder="1000.00 Da"
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -698,6 +702,20 @@ export default function AdminProductManager() {
                       />
                       <p className="text-xs text-gray-500 mt-1">Alert when stock falls below this level</p>
                     </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Amino Acid Sequence
+                    </label>
+                    <input
+                      type="text"
+                      name="sequence"
+                      defaultValue={editingProduct?.sequence}
+                      placeholder="e.g., Gly-His-Lys"
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Optional: Enter the amino acid sequence</p>
                   </div>
 
                   <ImageUpload
