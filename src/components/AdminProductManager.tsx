@@ -16,6 +16,7 @@ export default function AdminProductManager() {
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [productImages, setProductImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [skuError, setSkuError] = useState<string>('');
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
     title: string;
@@ -215,6 +216,28 @@ export default function AdminProductManager() {
     }
   };
 
+  const checkSkuExists = async (sku: string, currentProductId?: string) => {
+    try {
+      let query = supabase
+        .from('products')
+        .select('id, name')
+        .eq('sku', sku);
+
+      if (currentProductId) {
+        query = query.neq('id', currentProductId);
+      }
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+
+      return data && data.length > 0 ? data[0] : null;
+    } catch (error) {
+      console.error('Error checking SKU:', error);
+      return null;
+    }
+  };
+
   const handleSaveProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -233,6 +256,17 @@ export default function AdminProductManager() {
       purity: formData.get('purity') as string || '99%',
       molecular_weight: formData.get('molecular_weight') as string || '0'
     };
+
+    const existingProduct = await checkSkuExists(productData.sku, editingProduct?.id);
+    if (existingProduct) {
+      setModalState({
+        isOpen: true,
+        title: 'SKU Already Exists',
+        message: `SKU "${productData.sku}" is already used by product "${existingProduct.name}". Please use a unique SKU.`,
+        type: 'warning'
+      });
+      return;
+    }
 
     try {
       if (editingProduct) {
@@ -254,9 +288,25 @@ export default function AdminProductManager() {
       setShowAddModal(false);
       setEditingProduct(null);
       setProductImages([]);
-    } catch (error) {
+      setSkuError('');
+
+      setModalState({
+        isOpen: true,
+        title: 'Success',
+        message: `Product ${editingProduct ? 'updated' : 'created'} successfully!`,
+        type: 'success'
+      });
+    } catch (error: any) {
       console.error('Error saving product:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Failed to save product. Please try again.';
+
+      let errorMessage = 'Failed to save product. Please try again.';
+
+      if (error?.message?.includes('duplicate key') || error?.code === '23505') {
+        errorMessage = `SKU "${productData.sku}" is already in use. Please use a unique SKU for this product.`;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
       setModalState({
         isOpen: true,
         title: 'Error',
@@ -568,6 +618,7 @@ export default function AdminProductManager() {
             setShowAddModal(false);
             setEditingProduct(null);
             setProductImages([]);
+            setSkuError('');
           }} />
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -598,8 +649,26 @@ export default function AdminProductManager() {
                         name="sku"
                         defaultValue={editingProduct?.sku}
                         required
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        onChange={async (e) => {
+                          const sku = e.target.value.trim();
+                          if (sku) {
+                            const existing = await checkSkuExists(sku, editingProduct?.id);
+                            if (existing) {
+                              setSkuError(`SKU already used by "${existing.name}"`);
+                            } else {
+                              setSkuError('');
+                            }
+                          } else {
+                            setSkuError('');
+                          }
+                        }}
+                        className={`w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                          skuError ? 'border-red-500' : 'border-gray-300'
+                        }`}
                       />
+                      {skuError && (
+                        <p className="mt-1 text-sm text-red-600">{skuError}</p>
+                      )}
                     </div>
                   </div>
                   
@@ -751,6 +820,7 @@ export default function AdminProductManager() {
                         setShowAddModal(false);
                         setEditingProduct(null);
                         setProductImages([]);
+                        setSkuError('');
                       }}
                       className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
                     >
@@ -758,7 +828,12 @@ export default function AdminProductManager() {
                     </button>
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                      disabled={!!skuError}
+                      className={`px-4 py-2 rounded-lg ${
+                        skuError
+                          ? 'bg-gray-300 cursor-not-allowed text-gray-500'
+                          : 'bg-blue-600 text-white hover:bg-blue-700'
+                      }`}
                     >
                       {editingProduct ? 'Update Product' : 'Add Product'}
                     </button>
