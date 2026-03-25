@@ -33,8 +33,6 @@ const applications = [
 ];
 
 const storageTemperatures = [
-  '-20°C',
-  '2-8°C',
   'Room Temperature',
   'Dry Conditions'
 ];

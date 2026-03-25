@@ -471,21 +471,15 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
             {activeTab === 'storage' && (
               <div>
                 <h3 className="text-xl font-semibold mb-6">Storage & Handling Instructions</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="bg-white p-6 rounded-lg shadow-sm text-center">
-                    <Thermometer className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-                    <h4 className="font-semibold mb-2">Temperature</h4>
-                    <p className="text-gray-600">Store at -20°C for long-term stability</p>
-                  </div>
-                  
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="bg-white p-6 rounded-lg shadow-sm text-center">
                     <Clock className="h-12 w-12 text-green-600 mx-auto mb-4" />
                     <h4 className="font-semibold mb-2">Shelf Life</h4>
                     <p className="text-gray-600">2-3 years when stored properly</p>
                   </div>
-                  
+
                   <div className="bg-white p-6 rounded-lg shadow-sm text-center">
-                    <Shield className="h-12 w-12 text-purple-600 mx-auto mb-4" />
+                    <Shield className="h-12 w-12 text-blue-600 mx-auto mb-4" />
                     <h4 className="font-semibold mb-2">Protection</h4>
                     <p className="text-gray-600">Keep away from light and moisture</p>
                   </div>
@@ -497,19 +491,20 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
                     <div>
                       <strong>Lyophilized Powder:</strong>
                       <ul className="mt-2 ml-4 space-y-1">
-                        <li>• Store at -20°C in original sealed vial</li>
+                        <li>• Store in original sealed vial</li>
                         <li>• Protect from light and moisture</li>
                         <li>• Allow to reach room temperature before opening</li>
                         <li>• Use desiccant packets if available</li>
+                        <li>• Maintain dry conditions</li>
                       </ul>
                     </div>
                     <div>
                       <strong>Reconstituted Solution:</strong>
                       <ul className="mt-2 ml-4 space-y-1">
-                        <li>• Store at 2-8°C for short-term use (up to 1 week)</li>
-                        <li>• For longer storage, aliquot and freeze at -20°C</li>
+                        <li>• Store in appropriate conditions for short-term use</li>
                         <li>• Avoid repeated freeze-thaw cycles</li>
                         <li>• Use sterile technique when handling</li>
+                        <li>• Keep in dry conditions when applicable</li>
                       </ul>
                     </div>
                   </div>
