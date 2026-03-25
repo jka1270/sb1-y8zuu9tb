@@ -38,11 +38,8 @@ export default function ContactPage({ onBack }: ContactPageProps) {
 
   const inquiryTypes = [
     { value: 'product', label: 'Product Information' },
-    { value: 'technical', label: 'Technical Support' },
-    { value: 'custom', label: 'Custom Synthesis' },
     { value: 'quality', label: 'Quality Assurance' },
     { value: 'shipping', label: 'Shipping & Logistics' },
-    { value: 'partnership', label: 'Research Partnership' },
     { value: 'billing', label: 'Billing & Orders' },
     { value: 'other', label: 'Other' }
   ];
@@ -137,13 +134,12 @@ export default function ContactPage({ onBack }: ContactPageProps) {
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-6">Contact Us</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Get in touch with our expert team for technical support, custom synthesis, 
-            or research collaboration opportunities.
+            Get in touch with our team for product information, orders, and general inquiries.
           </p>
         </div>
 
-        {/* Contact Method */}
-        <div className="max-w-md mx-auto mb-16">
+        {/* Contact Method - Centered above form */}
+        <div className="max-w-3xl mx-auto mb-12">
           {contactMethods.map((method) => {
             const Icon = method.icon;
             return (

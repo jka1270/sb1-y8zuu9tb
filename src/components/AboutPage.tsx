@@ -127,54 +127,6 @@ export default function AboutPage({ onBack }: AboutPageProps) {
           </div>
         </div>
 
-        {/* Quality Assurance */}
-        <div className="bg-white rounded-lg shadow-sm p-8 mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Quality Assurance</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Our Quality Promise</h3>
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">≥98% Purity Guarantee</h4>
-                    <p className="text-gray-600 text-sm">Every Amino Acid Chain undergoes rigorous HPLC and mass spectrometry analysis</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Third-Party Verification</h4>
-                    <p className="text-gray-600 text-sm">Independent laboratory testing confirms identity and purity</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Complete Documentation</h4>
-                    <p className="text-gray-600 text-sm">Certificate of Analysis provided with every batch</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Batch Traceability</h4>
-                    <p className="text-gray-600 text-sm">Complete tracking from synthesis to delivery</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div>
-              <OptimizedImage
-                src="https://images.pexels.com/photos/3786157/pexels-photo-3786157.jpeg?auto=compress&cs=tinysrgb&w=600" 
-                alt="Quality control laboratory" 
-                className="rounded-lg shadow-md"
-                loading="lazy"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </div>
-          </div>
-        </div>
 
         {/* Sourcing Process */}
         <div className="bg-white rounded-lg shadow-sm p-8 mb-16">
@@ -223,47 +175,6 @@ export default function AboutPage({ onBack }: AboutPageProps) {
         </div>
 
 
-        {/* Facilities */}
-        <div className="bg-white rounded-lg shadow-sm p-8 mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">State-of-the-Art Facilities</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Researchraws.com Headquarters</h3>
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <Microscope className="h-6 w-6 text-blue-600 mr-3 mt-0.5" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Research & Development</h4>
-                    <p className="text-gray-600 text-sm">15,000 sq ft facility with automated Amino Acid Chain synthesizers</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <Shield className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Quality Control Laboratory</h4>
-                    <p className="text-gray-600 text-sm">ISO-certified analytical testing with advanced instrumentation</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <Building className="h-6 w-6 text-purple-600 mr-3 mt-0.5" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Manufacturing</h4>
-                    <p className="text-gray-600 text-sm">GMP-compliant production with cleanroom environments</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div>
-              <OptimizedImage
-                src="https://images.pexels.com/photos/3786164/pexels-photo-3786164.jpeg?auto=compress&cs=tinysrgb&w=600" 
-                alt="Manufacturing facility" 
-                className="rounded-lg shadow-md"
-                loading="lazy"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
