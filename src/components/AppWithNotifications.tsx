@@ -74,6 +74,7 @@ export default function AppWithNotifications() {
     setShowAdmin(false);
     setShowAminoAcidChainCategory(null);
     setAccountPage('dashboard');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleAminoAcidChainCategory = (category: 'therapeutic' | 'cosmetic' | 'custom') => {
@@ -87,6 +88,7 @@ export default function AppWithNotifications() {
     setShowAdmin(false);
     setAccountPage('dashboard');
     setShowAminoAcidChainCategory(category);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleBackFromAminoAcidChainCategory = () => {
@@ -96,17 +98,20 @@ export default function AppWithNotifications() {
   const handleCheckout = () => {
     handleHome();
     setShowCheckout(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const handleBackFromCheckout = () => setShowCheckout(false);
   const handleOrderHistory = () => {
     handleHome();
     setShowOrderHistory(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const handleBackFromOrderHistory = () => setShowOrderHistory(false);
   const handleAccount = () => {
     handleHome();
     setShowAccount(true);
     setAccountPage('dashboard');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const handleBackFromAccount = () => {
     setShowAccount(false);
@@ -115,21 +120,25 @@ export default function AppWithNotifications() {
   const handleDocumentation = () => {
     handleHome();
     setShowDocumentation(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const handleBackFromDocumentation = () => setShowDocumentation(false);
   const handleAbout = () => {
     handleHome();
     setShowAbout(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const handleBackFromAbout = () => setShowAbout(false);
   const handleContact = () => {
     handleHome();
     setShowContact(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const handleBackFromContact = () => setShowContact(false);
   const handleBlog = () => {
     handleHome();
     setShowBlog(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const handleBackFromBlog = () => setShowBlog(false);
   const handleAdmin = () => {
@@ -143,6 +152,7 @@ export default function AppWithNotifications() {
     setShowAminoAcidChainCategory(null);
     setAccountPage('dashboard');
     setShowAdmin(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const handleBackFromAdmin = () => setShowAdmin(false);
 
