@@ -128,6 +128,36 @@ export default function AboutPage({ onBack }: AboutPageProps) {
         </div>
 
 
+        {/* State of the Art Facilities */}
+        <div className="bg-white rounded-lg shadow-sm p-8 mb-16">
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">State of the Art Facilities</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <Building className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Modern Infrastructure</h3>
+              <p className="text-gray-600">
+                ISO-certified facilities equipped with cutting-edge analytical instruments and quality control systems
+              </p>
+            </div>
+
+            <div className="text-center">
+              <Microscope className="h-12 w-12 text-green-600 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Advanced Testing Labs</h3>
+              <p className="text-gray-600">
+                State-of-the-art HPLC, mass spectrometry, and analytical testing capabilities for comprehensive quality assurance
+              </p>
+            </div>
+
+            <div className="text-center">
+              <Shield className="h-12 w-12 text-purple-600 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Secure Storage</h3>
+              <p className="text-gray-600">
+                Climate-controlled storage facilities with strict environmental monitoring and security protocols
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Sourcing Process */}
         <div className="bg-white rounded-lg shadow-sm p-8 mb-16">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Sourcing Excellence</h2>
