@@ -237,7 +237,7 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
       pdf.text(formatPrice(order.subtotal), pageWidth - 35, yPos, { align: 'right' });
 
       yPos += 6;
-      pdf.text(`Shipping (${order.shipping_method === 'express' ? 'Express' : 'Standard'} Cold Chain):`, pageWidth - 70, yPos);
+      pdf.text(`Shipping (${order.shipping_method === 'express' ? 'Express' : 'Standard'}):`, pageWidth - 70, yPos);
       pdf.text(formatPrice(order.shipping_cost), pageWidth - 35, yPos, { align: 'right' });
 
       yPos += 6;
@@ -436,9 +436,9 @@ export default function OrderHistoryPage({ onBack }: OrderHistoryPageProps) {
                         <div>
                           <h4 className="text-sm font-medium text-gray-700 mb-1">Shipping Method</h4>
                           <div className="text-sm text-gray-600">
-                            {order.shipping_method === 'express' ? 'Express Cold Chain' : 'Standard Cold Chain'}
+                            {order.shipping_method === 'express' ? 'Express Shipping' : 'Standard Shipping'}
                             <div className="text-xs text-gray-500 mt-1">
-                              Temperature controlled shipping
+                              Secure packaging with tracking
                             </div>
                           </div>
                           {order.tracking_number && (

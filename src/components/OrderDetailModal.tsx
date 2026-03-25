@@ -178,7 +178,7 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
       pdf.text(formatPrice(order.subtotal), pageWidth - 35, yPos, { align: 'right' });
 
       yPos += 6;
-      pdf.text(`Shipping (${order.shipping_method === 'express' ? 'Express' : 'Standard'} Cold Chain):`, pageWidth - 70, yPos);
+      pdf.text(`Shipping (${order.shipping_method === 'express' ? 'Express' : 'Standard'}):`, pageWidth - 70, yPos);
       pdf.text(formatPrice(order.shipping_cost), pageWidth - 35, yPos, { align: 'right' });
 
       yPos += 6;
@@ -396,10 +396,10 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
                   <div>
                     <span className="text-gray-600">Shipping Method:</span>
                     <div className="font-medium">
-                      {order.shipping_method === 'express' ? 'Express Cold Chain Shipping' : 'Standard Cold Chain Shipping'}
+                      {order.shipping_method === 'express' ? 'Express Shipping' : 'Standard Shipping'}
                     </div>
                     <div className="text-sm text-gray-600 mt-1">
-                      Temperature controlled • Insulated packaging
+                      Secure packaging • Real-time tracking
                     </div>
                   </div>
                   <div>

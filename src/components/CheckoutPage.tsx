@@ -311,8 +311,8 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
                           className="mr-3 mt-1 sm:mt-0 flex-shrink-0"
                         />
                         <div className="flex-1">
-                          <div className="font-medium text-sm sm:text-base">Standard Cold Chain Shipping</div>
-                          <div className="text-xs sm:text-sm text-gray-600">5-7 business days - Temperature controlled</div>
+                          <div className="font-medium text-sm sm:text-base">Standard Shipping</div>
+                          <div className="text-xs sm:text-sm text-gray-600">5-7 business days</div>
                         </div>
                         <div className="font-semibold text-sm sm:text-base">$49.99</div>
                       </label>
@@ -326,8 +326,8 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
                           className="mr-3 mt-1 sm:mt-0 flex-shrink-0"
                         />
                         <div className="flex-1">
-                          <div className="font-medium text-sm sm:text-base">Express Cold Chain Shipping</div>
-                          <div className="text-xs sm:text-sm text-gray-600">1-2 business days - Temperature controlled</div>
+                          <div className="font-medium text-sm sm:text-base">Express Shipping</div>
+                          <div className="text-xs sm:text-sm text-gray-600">1-2 business days</div>
                         </div>
                         <div className="font-semibold text-sm sm:text-base">$89.99</div>
                       </label>
@@ -542,7 +542,7 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
 
               <div className="mt-4 sm:mt-6 p-3 bg-blue-50 rounded-lg">
                 <div className="text-xs sm:text-sm text-blue-800">
-                  <strong>Cold Chain Shipping:</strong> All Amino Acid Chains are shipped with temperature monitoring to ensure product integrity.
+                  <strong>Quality Shipping:</strong> All Amino Acid Chains are carefully packaged to ensure product integrity during transit.
                 </div>
               </div>
             </div>

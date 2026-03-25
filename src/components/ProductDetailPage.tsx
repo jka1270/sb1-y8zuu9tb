@@ -399,7 +399,7 @@ export default function ProductDetailPage({ product, onBack }: ProductDetailPage
                       <li>• Lyophilized powder for stability</li>
                       <li>• Third-party tested and verified</li>
                       <li>• Certificate of Analysis included</li>
-                      <li>• Cold chain shipping available</li>
+                      <li>• Fast and secure shipping available</li>
                     </ul>
                   </div>
                   

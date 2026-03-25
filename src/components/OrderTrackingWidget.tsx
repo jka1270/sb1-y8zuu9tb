@@ -29,14 +29,14 @@ export default function OrderTrackingWidget({
     {
       key: 'processing',
       label: 'Processing',
-      description: 'Amino Acid Chains are being prepared and packaged with cold chain materials',
+      description: 'Amino Acid Chains are being prepared and securely packaged',
       icon: Package,
       completed: false
     },
     {
       key: 'shipped',
       label: 'Shipped',
-      description: 'Your order is on its way with temperature monitoring',
+      description: 'Your order is on its way with tracking',
       icon: Truck,
       completed: false
     },
@@ -155,21 +155,21 @@ export default function OrderTrackingWidget({
           <div>
             <h5 className="font-medium text-gray-900 mb-1">Shipping Method</h5>
             <p className="text-sm text-gray-600">
-              {shippingMethod === 'express' ? 'Express Cold Chain' : 'Standard Cold Chain'}
+              {shippingMethod === 'express' ? 'Express Shipping' : 'Standard Shipping'}
             </p>
             <p className="text-xs text-gray-500 mt-1">
-              Temperature controlled shipping with monitoring
+              Secure packaging with tracking
             </p>
           </div>
           {status === 'shipped' && (
             <div>
-              <h5 className="font-medium text-gray-900 mb-1">Temperature Status</h5>
+              <h5 className="font-medium text-gray-900 mb-1">Package Status</h5>
               <div className="flex items-center text-sm text-green-600">
                 <CheckCircle className="h-4 w-4 mr-1" />
-                Maintained within range
+                In transit
               </div>
               <p className="text-xs text-gray-500 mt-1">
-                Real-time monitoring active
+                Real-time tracking active
               </p>
             </div>
           )}
@@ -181,8 +181,8 @@ export default function OrderTrackingWidget({
         <div className="flex items-start">
           <AlertCircle className="h-4 w-4 text-blue-600 mr-2 mt-0.5" />
           <div className="text-sm text-blue-800">
-            <strong>Cold Chain Handling:</strong> Your Amino Acid Chains are being shipped with specialized
-            temperature-controlled packaging to ensure product integrity throughout transit.
+            <strong>Quality Handling:</strong> Your Amino Acid Chains are being shipped with specialized
+            packaging to ensure product integrity throughout transit.
           </div>
         </div>
       </div>

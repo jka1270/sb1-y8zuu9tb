@@ -158,13 +158,6 @@ export default function AboutPage({ onBack }: AboutPageProps) {
                 <div className="flex items-start">
                   <CheckCircle className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-gray-900">Cold Chain Integrity</h4>
-                    <p className="text-gray-600 text-sm">Temperature-controlled storage and shipping throughout</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-green-600 mr-3 mt-0.5" />
-                  <div>
                     <h4 className="font-semibold text-gray-900">Batch Traceability</h4>
                     <p className="text-gray-600 text-sm">Complete tracking from synthesis to delivery</p>
                   </div>

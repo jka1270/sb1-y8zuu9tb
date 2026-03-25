@@ -6,9 +6,9 @@ export default function ShippingIntegration() {
     <section className="bg-gray-50 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Cold Chain Shipping & Storage</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Reliable Shipping & Tracking</h2>
           <p className="text-xl text-gray-600">
-            Temperature-controlled delivery with integrated ShipStation tracking for Amino Acid Chain integrity
+            Secure delivery with integrated ShipStation tracking for Amino Acid Chain integrity
           </p>
         </div>
 
@@ -17,8 +17,8 @@ export default function ShippingIntegration() {
             <div className="bg-blue-100 p-3 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
               <Package className="h-8 w-8 text-blue-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Cold Chain Packaging</h3>
-            <p className="text-gray-600">Temperature-controlled packaging designed for Amino Acid Chain stability and integrity</p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Secure Packaging</h3>
+            <p className="text-gray-600">Professional packaging designed for Amino Acid Chain stability and integrity</p>
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-sm text-center">
@@ -26,15 +26,15 @@ export default function ShippingIntegration() {
               <Truck className="h-8 w-8 text-green-600" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Express Delivery</h3>
-            <p className="text-gray-600">FedEx, UPS overnight shipping with temperature monitoring</p>
+            <p className="text-gray-600">Fast FedEx and UPS shipping options available</p>
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-sm text-center">
             <div className="bg-orange-100 p-3 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
               <Clock className="h-8 w-8 text-orange-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Temperature Monitoring</h3>
-            <p className="text-gray-600">Real-time temperature tracking throughout the shipping process</p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Real-Time Tracking</h3>
+            <p className="text-gray-600">Track your shipment in real-time throughout the delivery process</p>
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-sm text-center">
@@ -49,20 +49,20 @@ export default function ShippingIntegration() {
         <div className="mt-12 bg-white p-8 rounded-lg shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Cold Chain ShipStation Integration</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">ShipStation Integration</h3>
               <p className="text-gray-600 mb-6">
-                Our platform integrates seamlessly with ShipStation to provide temperature-controlled shipping
-                solutions for Amino Acid Chains. From automatic cold chain label generation to temperature monitoring,
+                Our platform integrates seamlessly with ShipStation to provide reliable shipping
+                solutions for Amino Acid Chains. From automatic label generation to real-time tracking,
                 we ensure your Amino Acid Chains arrive in perfect condition.
               </p>
               <ul className="space-y-3">
                 <li className="flex items-center text-gray-700">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  Automated cold chain shipping labels
+                  Automated shipping labels
                 </li>
                 <li className="flex items-center text-gray-700">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  Real-time temperature monitoring
+                  Real-time shipment tracking
                 </li>
                 <li className="flex items-center text-gray-700">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
@@ -77,7 +77,7 @@ export default function ShippingIntegration() {
             <div>
               <OptimizedImage
                 src="https://images.pexels.com/photos/3735780/pexels-photo-3735780.jpeg?auto=compress&cs=tinysrgb&w=600"
-                alt="Amino Acid Chain cold chain shipping"
+                alt="Amino Acid Chain shipping"
                 className="rounded-lg shadow-md"
                 loading="lazy"
                 sizes="(max-width: 1024px) 100vw, 50vw"
