@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Package, AlertTriangle, TrendingDown, Clock, Thermometer, MapPin, RefreshCw, CheckCircle, X } from 'lucide-react';
+import { Package, AlertTriangle, TrendingDown, Clock, MapPin, RefreshCw, CheckCircle, X } from 'lucide-react';
 import { useInventory } from '../hooks/useInventory';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -18,7 +18,6 @@ export default function InventoryDashboard() {
 
   const [activeTab, setActiveTab] = useState('overview');
   const [filterLocation, setFilterLocation] = useState('');
-  const [filterTemperature, setFilterTemperature] = useState('');
 
   const lowStockItems = getLowStockItems();
   const outOfStockItems = getOutOfStockItems();
@@ -26,8 +25,7 @@ export default function InventoryDashboard() {
 
   const filteredInventory = inventory.filter(item => {
     const matchesLocation = !filterLocation || item.location.includes(filterLocation);
-    const matchesTemperature = !filterTemperature || item.temperature_zone === filterTemperature;
-    return matchesLocation && matchesTemperature;
+    return matchesLocation;
   });
 
   const getStockStatusColor = (item: any) => {
@@ -82,7 +80,6 @@ export default function InventoryDashboard() {
 
   const totalValue = inventory.reduce((sum, item) => sum + (item.current_stock * item.cost_per_unit), 0);
   const locations = [...new Set(inventory.map(item => item.location))];
-  const temperatureZones = [...new Set(inventory.map(item => item.temperature_zone))];
 
   if (loading) {
     return (
@@ -305,24 +302,10 @@ export default function InventoryDashboard() {
                 ))}
               </select>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Temperature Zone</label>
-              <select
-                value={filterTemperature}
-                onChange={(e) => setFilterTemperature(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="">All Temperatures</option>
-                {temperatureZones.map(zone => (
-                  <option key={zone} value={zone}>{zone}</option>
-                ))}
-              </select>
-            </div>
             <div className="flex items-end">
               <button
                 onClick={() => {
                   setFilterLocation('');
-                  setFilterTemperature('');
                 }}
                 className="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
               >
@@ -401,10 +384,6 @@ export default function InventoryDashboard() {
                         <MapPin className="h-4 w-4 mr-1 text-gray-400" />
                         {item.location}
                       </div>
-                      <div className="flex items-center text-xs text-gray-500 mt-1">
-                        <Thermometer className="h-3 w-3 mr-1" />
-                        {item.temperature_zone}
-                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       <div>Batch: {item.batch_number || 'N/A'}</div>
@@ -431,7 +410,7 @@ export default function InventoryDashboard() {
         {/* Summary Stats */}
         <div className="mt-8 bg-white rounded-lg shadow-sm p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Inventory Summary</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <p className="text-sm text-gray-600">Total Inventory Value</p>
               <p className="text-2xl font-bold text-gray-900">
@@ -441,10 +420,6 @@ export default function InventoryDashboard() {
             <div>
               <p className="text-sm text-gray-600">Storage Locations</p>
               <p className="text-2xl font-bold text-gray-900">{locations.length}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Temperature Zones</p>
-              <p className="text-2xl font-bold text-gray-900">{temperatureZones.length}</p>
             </div>
           </div>
         </div>

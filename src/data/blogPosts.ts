@@ -201,7 +201,6 @@ export const sampleBlogPosts: BlogPost[] = [
         <li>Store lyophilized Amino Acid Chains at -20°C</li>
         <li>Protect from light and moisture</li>
         <li>Use desiccants in storage containers</li>
-        <li>Monitor temperature during shipping</li>
       </ul>
       
       <h2>Emerging Technologies</h2>
