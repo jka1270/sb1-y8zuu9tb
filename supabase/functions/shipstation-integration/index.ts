@@ -144,7 +144,7 @@ Deno.serve(async (req: Request) => {
         shippingAmount: parseFloat(order.shipping_cost),
         taxAmount: parseFloat(order.tax_amount),
         advancedOptions: {
-          customField1: "COLD_CHAIN_REQUIRED",
+          customField1: "RESEARCH_MATERIALS",
           customField2: "PEPTIDE_SHIPMENT",
         },
       };
