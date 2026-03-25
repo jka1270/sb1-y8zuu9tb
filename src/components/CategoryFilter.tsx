@@ -10,8 +10,7 @@ const categoryNames = [
   'Therapeutic Amino Acid Chains',
   'Cosmetic Amino Acid Chains',
   'Research Amino Acid Chains',
-  'Custom Synthesis',
-  'Amino Acid Chain Libraries'
+  'Custom Synthesis'
 ];
 
 export default function CategoryFilter({ selectedCategory, onCategoryChange, products }: CategoryFilterProps) {
