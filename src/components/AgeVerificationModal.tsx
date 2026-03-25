@@ -34,26 +34,26 @@ export default function AgeVerificationModal({ onVerified }: AgeVerificationModa
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-5">
-            <label className="flex items-start gap-3 cursor-pointer group">
+            <label className="flex items-center gap-3 cursor-pointer group">
               <input
                 type="checkbox"
                 checked={isOver21}
                 onChange={(e) => setIsOver21(e.target.checked)}
-                className="flex-shrink-0 mt-1 h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                className="flex-shrink-0 h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
               />
-              <span className="text-gray-700 text-base leading-6 group-hover:text-gray-900 select-none">
+              <span className="text-gray-700 text-base group-hover:text-gray-900 select-none">
                 I certify that I am <strong className="font-semibold">21 years of age or older</strong>
               </span>
             </label>
 
-            <label className="flex items-start gap-3 cursor-pointer group">
+            <label className="flex items-center gap-3 cursor-pointer group">
               <input
                 type="checkbox"
                 checked={isResearchPurpose}
                 onChange={(e) => setIsResearchPurpose(e.target.checked)}
-                className="flex-shrink-0 mt-1 h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                className="flex-shrink-0 h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
               />
-              <span className="text-gray-700 text-base leading-6 group-hover:text-gray-900 select-none">
+              <span className="text-gray-700 text-base group-hover:text-gray-900 select-none">
                 I am using this website for <strong className="font-semibold">research purposes only</strong>
               </span>
             </label>
@@ -63,7 +63,7 @@ export default function AgeVerificationModal({ onVerified }: AgeVerificationModa
                 type="checkbox"
                 checked={agreedToTerms}
                 onChange={(e) => setAgreedToTerms(e.target.checked)}
-                className="flex-shrink-0 mt-1 h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                className="flex-shrink-0 mt-0.5 h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
               />
               <span className="text-gray-700 text-base leading-6 group-hover:text-gray-900 select-none">
                 I agree to the <strong className="font-semibold">Terms of Service</strong> and understand that all products are for research use only and not for human consumption
