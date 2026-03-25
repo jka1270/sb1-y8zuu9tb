@@ -222,34 +222,6 @@ export default function AboutPage({ onBack }: AboutPageProps) {
           </div>
         </div>
 
-        {/* Research Partnerships */}
-        <div className="bg-white rounded-lg shadow-sm p-8 mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Research Partnerships</h2>
-          <div className="text-center mb-8">
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We collaborate with leading research institutions worldwide to advance Amino Acid Chain science
-              and support groundbreaking discoveries in medicine and biotechnology.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <Building className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">500+</h3>
-              <p className="text-gray-600">Research Institutions</p>
-            </div>
-            <div className="text-center">
-              <Users className="h-12 w-12 text-green-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">2,000+</h3>
-              <p className="text-gray-600">Active Researchers</p>
-            </div>
-            <div className="text-center">
-              <Globe className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">50+</h3>
-              <p className="text-gray-600">Countries Served</p>
-            </div>
-          </div>
-        </div>
 
         {/* Facilities */}
         <div className="bg-white rounded-lg shadow-sm p-8 mb-16">
