@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Users, Package, ShoppingBag, BarChart3, Search, Filter, Plus, Pencil, Trash2, Eye, Download, RefreshCw, AlertTriangle, CheckCircle, Clock, TrendingUp, TrendingDown, MessageSquare, FileText } from 'lucide-react';
+import { Users, Package, ShoppingBag, BarChart3, Search, Filter, Plus, Pencil, Trash2, Eye, Download, RefreshCw, AlertTriangle, CheckCircle, Clock, TrendingUp, TrendingDown, MessageSquare, FileText, DollarSign } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useUserRole } from '../hooks/useUserRole';
 import { useOrders } from '../hooks/useOrders';
@@ -9,6 +9,7 @@ import AdminCustomerManager from './AdminCustomerManager';
 import AdminDashboard from './AdminDashboard';
 import AdminMessagesManager from './AdminMessagesManager';
 import AdminDocumentManager from './AdminDocumentManager';
+import AdminPaymentSettings from './AdminPaymentSettings';
 import LoadingSpinner from './LoadingSpinner';
 
 interface AdminPanelProps {
@@ -47,6 +48,7 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
     { id: 'customers', label: 'Customers', icon: Users },
     { id: 'documents', label: 'Documents', icon: FileText },
     { id: 'messages', label: 'Messages', icon: MessageSquare },
+    { id: 'payments', label: 'Payments', icon: DollarSign },
   ];
 
   return (
@@ -104,6 +106,7 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
           {activeTab === 'customers' && <AdminCustomerManager />}
           {activeTab === 'documents' && <AdminDocumentManager />}
           {activeTab === 'messages' && <AdminMessagesManager />}
+          {activeTab === 'payments' && <AdminPaymentSettings />}
         </div>
       </div>
     </div>

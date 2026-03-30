@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { CreditCard, Truck, Shield, AlertTriangle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { CreditCard, Truck, Shield, AlertTriangle, Banknote } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useOrders } from '../hooks/useOrders';
 import { useNotification } from '../contexts/NotificationContext';
 import { ShippingAddress, BillingAddress } from '../types';
+import { supabase } from '../lib/supabase';
 import AuthModal from './AuthModal';
 import PaymentProcessor from './PaymentProcessor';
 import LoadingSpinner from './LoadingSpinner';
@@ -40,6 +41,31 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
   const [shippingMethod, setShippingMethod] = useState('standard');
   const [paymentMethod, setPaymentMethod] = useState('stratospay');
   const [placingOrder, setPlacingOrder] = useState(false);
+  const [codEnabled, setCodEnabled] = useState(false);
+  const [loadingSettings, setLoadingSettings] = useState(true);
+
+  // Fetch payment settings
+  useEffect(() => {
+    const fetchPaymentSettings = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('payment_settings')
+          .select('cod_enabled')
+          .maybeSingle();
+
+        if (error) throw error;
+
+        setCodEnabled(data?.cod_enabled || false);
+      } catch (error) {
+        console.error('Error fetching payment settings:', error);
+        setCodEnabled(false);
+      } finally {
+        setLoadingSettings(false);
+      }
+    };
+
+    fetchPaymentSettings();
+  }, []);
 
   // Pre-fill form with user data if logged in
   useState(() => {
@@ -401,6 +427,20 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
                           <CreditCard className="h-5 w-5 mr-2" />
                           <span className="text-sm sm:text-base">Credit Card (StratosPay)</span>
                         </label>
+                        {codEnabled && (
+                          <label className="flex items-center p-3 sm:p-4 border rounded-lg cursor-pointer hover:bg-gray-50 touch-manipulation">
+                            <input
+                              type="radio"
+                              name="payment"
+                              value="cod"
+                              checked={paymentMethod === 'cod'}
+                              onChange={(e) => setPaymentMethod(e.target.value)}
+                              className="mr-3"
+                            />
+                            <Banknote className="h-5 w-5 mr-2" />
+                            <span className="text-sm sm:text-base">Cash on Delivery</span>
+                          </label>
+                        )}
                       </div>
                     </div>
 
@@ -471,6 +511,84 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
                         }}
                         loading={placingOrder}
                       />
+                    )}
+
+                    {paymentMethod === 'cod' && billingAddress.email && (
+                      <div className="space-y-4">
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                          <div className="flex items-start">
+                            <Banknote className="h-5 w-5 text-green-600 mr-3 mt-0.5" />
+                            <div>
+                              <h4 className="font-semibold text-green-900 mb-1">Cash on Delivery</h4>
+                              <p className="text-sm text-green-800">
+                                You will pay in cash when your order is delivered to your address.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          onClick={async () => {
+                            try {
+                              setPlacingOrder(true);
+
+                              const orderData = {
+                                subtotal,
+                                shipping_cost: shippingCost,
+                                tax_amount: tax,
+                                total_amount: total,
+                                shipping_address: shippingAddress,
+                                billing_address: billingAddress,
+                                shipping_method: shippingMethod,
+                                payment_method: 'cod',
+                                payment_status: 'pending',
+                                items: state.items.map(item => ({
+                                  product_id: item.productId,
+                                  product_name: item.productName,
+                                  product_sku: item.sku,
+                                  variant_id: item.variantId,
+                                  size: item.size,
+                                  quantity: item.quantity,
+                                  unit_price: item.price,
+                                  total_price: item.price * item.quantity,
+                                  purity: item.purity,
+                                  molecular_weight: '1000 Da',
+                                }))
+                              };
+
+                              await createOrder(orderData);
+
+                              showNotification({
+                                type: 'success',
+                                message: 'Order placed successfully! You will pay cash on delivery.',
+                                duration: 7000
+                              });
+
+                              clearCart();
+                              onBack();
+                            } catch (error) {
+                              console.error('Error placing order:', error);
+                              showNotification({
+                                type: 'error',
+                                message: error instanceof Error ? error.message : 'Failed to place order',
+                                duration: 5000
+                              });
+                            } finally {
+                              setPlacingOrder(false);
+                            }
+                          }}
+                          disabled={placingOrder}
+                          className="w-full bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                        >
+                          {placingOrder ? (
+                            <>
+                              <LoadingSpinner size="sm" />
+                              <span className="ml-2">Placing Order...</span>
+                            </>
+                          ) : (
+                            'Place Order (Pay on Delivery)'
+                          )}
+                        </button>
+                      </div>
                     )}
 
                     {!billingAddress.email && (
