@@ -169,8 +169,8 @@ export const useOrders = () => {
         throw itemsError;
       }
 
-      // Automatically sync to ShipStation if payment is successful
-      if (orderData.payment_status === 'paid') {
+      // Automatically sync to ShipStation if payment is successful or COD order
+      if (orderData.payment_status === 'paid' || orderData.payment_method === 'cod') {
         try {
           await syncToShipStationInternal(order.id);
         } catch (syncError) {
