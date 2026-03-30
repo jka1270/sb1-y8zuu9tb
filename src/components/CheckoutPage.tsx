@@ -44,7 +44,7 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
   const [codEnabled, setCodEnabled] = useState(false);
   const [loadingSettings, setLoadingSettings] = useState(true);
 
-  // Fetch payment settings
+  // Fetch payment settings and subscribe to changes
   useEffect(() => {
     const fetchPaymentSettings = async () => {
       try {
@@ -65,6 +65,28 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
     };
 
     fetchPaymentSettings();
+
+    // Subscribe to real-time changes
+    const subscription = supabase
+      .channel('payment_settings_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'payment_settings'
+        },
+        (payload) => {
+          if (payload.new && 'cod_enabled' in payload.new) {
+            setCodEnabled((payload.new as any).cod_enabled || false);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   // Pre-fill form with user data if logged in
