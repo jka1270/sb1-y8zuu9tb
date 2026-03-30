@@ -169,6 +169,15 @@ export const useOrders = () => {
         throw itemsError;
       }
 
+      // Automatically sync to ShipStation if payment is successful
+      if (orderData.payment_status === 'paid') {
+        try {
+          await syncToShipStationInternal(order.id);
+        } catch (syncError) {
+          console.error('Auto-sync to ShipStation failed:', syncError);
+        }
+      }
+
       // Refresh orders
       cache.delete(`${CACHE_KEYS.ORDERS}_${user?.id}`);
       await fetchOrders();
@@ -197,25 +206,31 @@ export const useOrders = () => {
     }
   };
 
+  const syncToShipStationInternal = async (orderId: string) => {
+    const response = await fetch(
+      `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/shipstation-integration?action=create`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orderId }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || data.details || 'Failed to sync to ShipStation');
+    }
+
+    return data;
+  };
+
   const syncToShipStation = async (orderId: string) => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/shipstation-integration?action=create`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ orderId }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || data.details || 'Failed to sync to ShipStation');
-      }
+      const data = await syncToShipStationInternal(orderId);
 
       cache.delete(`${CACHE_KEYS.ORDERS}_${user?.id}`);
       await fetchOrders();
