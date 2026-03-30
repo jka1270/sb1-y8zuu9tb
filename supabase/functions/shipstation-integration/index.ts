@@ -50,25 +50,21 @@ Deno.serve(async (req: Request) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const shipstationApiKey = Deno.env.get("SHIPSTATION_API_KEY");
-    const shipstationApiSecret = Deno.env.get("SHIPSTATION_API_SECRET");
 
     console.log("Environment check:", {
       hasApiKey: !!shipstationApiKey,
-      hasApiSecret: !!shipstationApiSecret,
-      apiKeyLength: shipstationApiKey?.length,
-      apiSecretLength: shipstationApiSecret?.length
+      apiKeyLength: shipstationApiKey?.length
     });
 
-    if (!shipstationApiKey || !shipstationApiSecret) {
-      console.error("Missing credentials - API Key:", !!shipstationApiKey, "API Secret:", !!shipstationApiSecret);
+    if (!shipstationApiKey) {
+      console.error("Missing ShipStation API Key");
       return new Response(
         JSON.stringify({
           error: "ShipStation API credentials not configured in Supabase Edge Function Secrets",
-          details: "Please add SHIPSTATION_API_KEY and SHIPSTATION_API_SECRET to your Supabase project settings",
+          details: "Please add SHIPSTATION_API_KEY to your Supabase project settings",
           setupGuide: "See SHIPSTATION_SETUP.md for complete setup instructions",
           debug: {
-            hasApiKey: !!shipstationApiKey,
-            hasApiSecret: !!shipstationApiSecret
+            hasApiKey: !!shipstationApiKey
           }
         }),
         {
@@ -90,9 +86,7 @@ Deno.serve(async (req: Request) => {
         JSON.stringify({
           message: "Environment check",
           hasApiKey: !!shipstationApiKey,
-          hasApiSecret: !!shipstationApiSecret,
           apiKeyLength: shipstationApiKey?.length || 0,
-          apiSecretLength: shipstationApiSecret?.length || 0,
           allEnvVars: Object.keys(Deno.env.toObject()).filter(k => k.includes('SHIP'))
         }),
         {
@@ -149,13 +143,12 @@ Deno.serve(async (req: Request) => {
         },
       };
 
-      const authHeader = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
       const shipstationResponse = await fetch(
         "https://ssapi.shipstation.com/orders/createorder",
         {
           method: "POST",
           headers: {
-            "Authorization": `Basic ${authHeader}`,
+            "Authorization": `Bearer ${shipstationApiKey}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(shipstationOrder),
@@ -226,12 +219,11 @@ Deno.serve(async (req: Request) => {
         throw new Error("Order not found or not synced with ShipStation");
       }
 
-      const authHeader = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
       const shipstationResponse = await fetch(
         `https://ssapi.shipstation.com/orders/${order.shipstation_order_id}`,
         {
           headers: {
-            "Authorization": `Basic ${authHeader}`,
+            "Authorization": `Bearer ${shipstationApiKey}`,
           },
         }
       );
@@ -278,10 +270,9 @@ Deno.serve(async (req: Request) => {
       const webhookData = await req.json();
 
       if (webhookData.resource_type === "SHIP_NOTIFY") {
-        const authHeader = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
         const shipmentResponse = await fetch(webhookData.resource_url, {
           headers: {
-            "Authorization": `Basic ${authHeader}`,
+            "Authorization": `Bearer ${shipstationApiKey}`,
           },
         });
 

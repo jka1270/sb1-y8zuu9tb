@@ -5,15 +5,17 @@ Research Raws integrates with ShipStation using the REST API, **NOT** through a 
 
 ## Setup Steps
 
-### 1. Get ShipStation API Credentials
+### 1. Get ShipStation API Key
 
 1. Log into your ShipStation account at https://ship.shipstation.com
 2. Navigate to **Settings** (gear icon) → **API Settings**
-3. Click **Generate API Keys** (if you don't have them already)
-4. Copy both:
-   - **API Key**
-   - **API Secret**
-5. Keep these credentials secure
+3. Click **Create new key**
+4. Give it a name (e.g., "Research Shipping V2")
+5. Click **Save**
+6. **Copy the API Key** that appears (it's the only credential you need)
+7. Keep this credential secure
+
+**Note:** ShipStation only requires the API Key for authentication - no separate secret is needed.
 
 ### 2. Remove Store Connection (If Exists)
 
@@ -26,15 +28,15 @@ If you previously tried to set up a Store Connection:
 
 **Important:** We don't need a Store Connection. Our Edge Function creates orders directly via API.
 
-### 3. Configure Supabase Environment Variables
+### 3. Configure Supabase Environment Variable
 
-Add your ShipStation credentials to Supabase:
+Add your ShipStation API Key to Supabase:
 
 1. Go to your Supabase project dashboard
 2. Navigate to **Settings** → **Edge Functions** → **Secrets**
-3. Add these two secrets:
-   - Key: `SHIPSTATION_API_KEY`, Value: [your API key]
-   - Key: `SHIPSTATION_API_SECRET`, Value: [your API secret]
+3. Add one secret:
+   - Key: `SHIPSTATION_API_KEY`
+   - Value: [paste your API key from ShipStation]
 
 ### 4. Test the Integration
 
@@ -85,13 +87,15 @@ To receive automatic updates when orders ship:
 ## Troubleshooting
 
 ### Error: "ShipStation credentials not configured"
-- Verify API Key and Secret are set in Supabase Edge Function Secrets
-- Ensure there are no extra spaces in the credentials
+- Verify API Key is set in Supabase Edge Function Secrets
+- Ensure there are no extra spaces in the credential
+- Confirm the secret name is exactly `SHIPSTATION_API_KEY`
 
 ### Error: "Failed to sync to ShipStation"
-- Check that API credentials are valid
+- Check that API Key is valid and not expired
 - Verify ShipStation account is active
 - Check Supabase Edge Function logs for detailed error
+- Try generating a new API key in ShipStation
 
 ### Orders not appearing in ShipStation
 - Verify order has complete shipping address
