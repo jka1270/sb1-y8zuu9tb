@@ -399,67 +399,152 @@ Deno.serve(async (req: Request) => {
     // }
 
 
+    // if (action === "create" && req.method === "POST") {
+    //   const { orderId } = await req.json();
+
+    //   // 1. Database se order aur uske items uthana
+    //   const { data: order, error: orderError } = await supabase
+    //     .from("orders")
+    //     .select(`*, order_items(*)`)
+    //     .eq("id", orderId)
+    //     .single();
+
+    //   if (orderError || !order) {
+    //     throw new Error("Order not found in database");
+    //   }
+
+    //   // 2. Data cleaning helpers
+    //   const str = (v) => (v ? String(v).trim() : "");
+      
+    //   const bill = order.billing_address || {};
+    //   const ship = order.shipping_address || bill; // Fallback to bill if ship is missing
+
+    //   // 3. Address Builder (Protecting against Nulls)
+    //   const buildAddrJson = (a) => ({
+    //     name: (str(a.firstName || a.first_name) + " " + str(a.lastName || a.last_name)).trim() || "Customer",
+    //     street1: str(a.address1 || a.address || "123 Main St"),
+    //     city: str(a.city || "City"),
+    //     state: str(a.state || "State"),
+    //     postalCode: str(a.zipCode || a.zip_code || "00000"),
+    //     country: str(a.country || "US"),
+    //     phone: str(a.phone || "000-000-0000")
+    //   });
+
+    //   // 4. Final Payload for ShipStation API
+    //   const shipstationOrder = {
+    //     orderNumber: String(order.order_number),
+    //     orderKey: String(order.order_number),
+    //     orderDate: new Date(order.created_at).toISOString(),
+    //     orderStatus: "awaiting_shipment",
+    //     customerEmail: str(bill.email || ship.email) || "customer@example.com",
+    //     billTo: buildAddrJson(bill),
+    //     shipTo: buildAddrJson(ship),
+    //     items: (order.order_items || []).map((item, index) => ({
+    //       lineItemKey: str(item.id || item.product_sku) || `line-${index}`,
+    //       sku: str(item.product_sku) || "SKU",
+    //       name: str(item.product_name) || "Product",
+    //       quantity: Math.max(1, Number(item.quantity) || 1),
+    //       unitPrice: parseFloat(String(item.unit_price)) || 0
+    //     })),
+    //     amountPaid: parseFloat(String(order.total_amount)) || 0,
+    //     taxAmount: parseFloat(String(order.tax_amount)) || 0,
+    //     shippingAmount: parseFloat(String(order.shipping_cost)) || 0
+    //   };
+
+    //   // 5. API Call
+    //   const auth = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
+    //   const ssResponse = await fetch("https://ssapi.shipstation.com/orders/createorder", {
+    //     method: "POST",
+    //     headers: {
+    //       "Authorization": `Basic ${auth}`,
+    //       "Content-Type": "application/json"
+    //     },
+    //     body: JSON.stringify(shipstationOrder)
+    //   });
+
+    //   if (!ssResponse.ok) {
+    //     const errorDetail = await ssResponse.text();
+    //     throw new Error(`ShipStation Error: ${errorDetail}`);
+    //   }
+
+    //   const ssData = await ssResponse.json();
+
+    //   // 6. Update Database with ShipStation ID
+    //   await supabase
+    //     .from("orders")
+    //     .update({ 
+    //       shipstation_order_id: ssData.orderId.toString(),
+    //       shipstation_status: "awaiting_shipment"
+    //     })
+    //     .eq("id", orderId);
+
+    //   return new Response(JSON.stringify({ success: true, shipstationOrderId: ssData.orderId }), {
+    //     headers: { ...corsHeaders, "Content-Type": "application/json" }
+    //   });
+    // }
+    
     if (action === "create" && req.method === "POST") {
       const { orderId } = await req.json();
 
-      // 1. Database se order aur uske items uthana
       const { data: order, error: orderError } = await supabase
         .from("orders")
         .select(`*, order_items(*)`)
         .eq("id", orderId)
         .single();
 
-      if (orderError || !order) {
-        throw new Error("Order not found in database");
-      }
+      if (orderError || !order) throw new Error("Order not found");
 
-      // 2. Data cleaning helpers
       const str = (v) => (v ? String(v).trim() : "");
-      
       const bill = order.billing_address || {};
-      const ship = order.shipping_address || bill; // Fallback to bill if ship is missing
+      const ship = order.shipping_address || bill;
 
-      // 3. Address Builder (Protecting against Nulls)
       const buildAddrJson = (a) => ({
         name: (str(a.firstName || a.first_name) + " " + str(a.lastName || a.last_name)).trim() || "Customer",
+        company: str(a.company) || "",
         street1: str(a.address1 || a.address || "123 Main St"),
-        city: str(a.city || "City"),
-        state: str(a.state || "State"),
-        postalCode: str(a.zipCode || a.zip_code || "00000"),
-        country: str(a.country || "US"),
-        phone: str(a.phone || "000-000-0000")
+        street2: str(a.address2 || a.apartment) || "",
+        city: str(a.city) || "City",
+        state: str(a.state) || "State",
+        postalCode: str(a.zipCode || a.zip_code) || "00000",
+        country: str(a.country) || "US",
+        phone: str(a.phone) || "000-000-0000"
       });
 
-      // 4. Final Payload for ShipStation API
-      const shipstationOrder = {
+      // SHIPSTATION JSON PAYLOAD (MOST ROBUST VERSION)
+      const payload = {
         orderNumber: String(order.order_number),
         orderKey: String(order.order_number),
         orderDate: new Date(order.created_at).toISOString(),
+        paymentDate: new Date(order.created_at).toISOString(),
         orderStatus: "awaiting_shipment",
+        customerUsername: str(bill.email || ship.email) || "customer@example.com",
         customerEmail: str(bill.email || ship.email) || "customer@example.com",
         billTo: buildAddrJson(bill),
         shipTo: buildAddrJson(ship),
         items: (order.order_items || []).map((item, index) => ({
-          lineItemKey: str(item.id || item.product_sku) || `line-${index}`,
           sku: str(item.product_sku) || "SKU",
           name: str(item.product_name) || "Product",
           quantity: Math.max(1, Number(item.quantity) || 1),
-          unitPrice: parseFloat(String(item.unit_price)) || 0
+          unitPrice: parseFloat(String(item.unit_price)) || 0,
+          adjustment: false
         })),
         amountPaid: parseFloat(String(order.total_amount)) || 0,
         taxAmount: parseFloat(String(order.tax_amount)) || 0,
-        shippingAmount: parseFloat(String(order.shipping_cost)) || 0
+        shippingAmount: parseFloat(String(order.shipping_cost)) || 0,
+        internalNotes: str(order.notes) || ""
       };
 
-      // 5. API Call
       const auth = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
+      
+      // Kuch cases mein ShipStation "/orders/createorders" (plural) maangta hai array ke sath
+      // Lekin hum /createorder (single) bhej rahe hain
       const ssResponse = await fetch("https://ssapi.shipstation.com/orders/createorder", {
         method: "POST",
         headers: {
           "Authorization": `Basic ${auth}`,
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(shipstationOrder)
+        body: JSON.stringify(payload)
       });
 
       if (!ssResponse.ok) {
@@ -468,15 +553,7 @@ Deno.serve(async (req: Request) => {
       }
 
       const ssData = await ssResponse.json();
-
-      // 6. Update Database with ShipStation ID
-      await supabase
-        .from("orders")
-        .update({ 
-          shipstation_order_id: ssData.orderId.toString(),
-          shipstation_status: "awaiting_shipment"
-        })
-        .eq("id", orderId);
+      await supabase.from("orders").update({ shipstation_order_id: ssData.orderId.toString() }).eq("id", orderId);
 
       return new Response(JSON.stringify({ success: true, shipstationOrderId: ssData.orderId }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" }
