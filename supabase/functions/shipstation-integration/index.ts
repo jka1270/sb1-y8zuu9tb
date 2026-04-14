@@ -139,31 +139,36 @@ function xmlError(msg: string, status = 500): Response {
   );
 }
 
+interface ShipStationAddress {
+  name: string;
+  company?: string;
+  street1: string;
+  street2?: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+  phone?: string;
+}
+
 interface ShipStationOrder {
   orderId?: number;
   orderKey?: string;
   orderNumber: string;
+  orderDate: string;
   orderStatus: string;
-  shipTo: {
-    name: string;
-    street1: string;
-    street2?: string;
-    city: string;
-    state: string;
-    postalCode: string;
-    country: string;
-    phone?: string;
-  };
+  customerEmail?: string;
+  billTo: ShipStationAddress;
+  shipTo: ShipStationAddress;
   items: Array<{
     sku: string;
     name: string;
     quantity: number;
     unitPrice: number;
   }>;
-  orderTotal: number;
-  shippingAmount: number;
+  amountPaid: number;
   taxAmount: number;
-  customerEmail: string;
+  shippingAmount: number;
   advancedOptions?: {
     customField1?: string;
     customField2?: string;
@@ -285,29 +290,47 @@ Deno.serve(async (req: Request) => {
         throw new Error("Order not found");
       }
 
+      const bill = order.billing_address ?? {};
+      const ship = order.shipping_address ?? {};
+      const billName = `${bill.firstName || bill.first_name || ""} ${bill.lastName || bill.last_name || ""}`.trim() || `${ship.firstName || ""} ${ship.lastName || ""}`.trim();
+      const shipName = `${ship.firstName || ""} ${ship.lastName || ""}`.trim();
+
       const shipstationOrder: ShipStationOrder = {
         orderNumber: order.order_number,
+        orderDate: new Date(order.created_at).toISOString(),
         orderStatus: "awaiting_shipment",
-        customerEmail: order.billing_address.email,
+        customerEmail: bill.email || ship.email || "",
+        billTo: {
+          name: billName,
+          company: bill.company || "",
+          street1: bill.address1 || bill.address || ship.address1 || ship.address || "",
+          street2: bill.address2 || bill.apartment || "",
+          city: bill.city || ship.city || "",
+          state: bill.state || ship.state || "",
+          postalCode: bill.zipCode || bill.zip_code || ship.zipCode || "",
+          country: bill.country || ship.country || "US",
+          phone: bill.phone || ship.phone || "",
+        },
         shipTo: {
-          name: `${order.shipping_address.firstName} ${order.shipping_address.lastName}`,
-          street1: order.shipping_address.address1 || order.shipping_address.address || "",
-          street2: order.shipping_address.address2 || order.shipping_address.apartment || "",
-          city: order.shipping_address.city,
-          state: order.shipping_address.state,
-          postalCode: order.shipping_address.zipCode,
-          country: order.shipping_address.country || "US",
-          phone: order.shipping_address.phone || "",
+          name: shipName,
+          company: ship.company || "",
+          street1: ship.address1 || ship.address || "",
+          street2: ship.address2 || ship.apartment || "",
+          city: ship.city || "",
+          state: ship.state || "",
+          postalCode: ship.zipCode || ship.zip_code || "",
+          country: ship.country || "US",
+          phone: ship.phone || "",
         },
         items: order.order_items.map((item: Record<string, unknown>) => ({
-          sku: item.product_sku,
-          name: item.product_name,
-          quantity: item.quantity,
-          unitPrice: parseFloat(String(item.unit_price)),
+          sku: String(item.product_sku || ""),
+          name: String(item.product_name || ""),
+          quantity: Number(item.quantity) || 1,
+          unitPrice: parseFloat(String(item.unit_price)) || 0,
         })),
-        orderTotal: parseFloat(order.total_amount),
-        shippingAmount: parseFloat(order.shipping_cost),
-        taxAmount: parseFloat(order.tax_amount),
+        amountPaid: parseFloat(order.total_amount) || 0,
+        shippingAmount: parseFloat(order.shipping_cost) || 0,
+        taxAmount: parseFloat(order.tax_amount) || 0,
         advancedOptions: {
           customField1: "RESEARCH_MATERIALS",
           customField2: "PEPTIDE_SHIPMENT",
