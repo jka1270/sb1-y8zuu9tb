@@ -290,51 +290,60 @@ Deno.serve(async (req: Request) => {
         throw new Error("Order not found");
       }
 
-      const bill = order.billing_address ?? {};
-      const ship = order.shipping_address ?? {};
-      const billName = `${bill.firstName || bill.first_name || ""} ${bill.lastName || bill.last_name || ""}`.trim() || `${ship.firstName || ""} ${ship.lastName || ""}`.trim();
-      const shipName = `${ship.firstName || ""} ${ship.lastName || ""}`.trim();
+      const bill = (order.billing_address ?? {}) as Record<string, unknown>;
+      const ship = (order.shipping_address ?? {}) as Record<string, unknown>;
 
-      const shipstationOrder: ShipStationOrder = {
-        orderNumber: order.order_number,
+      const str = (v: unknown) => (v ? String(v).trim() : "");
+
+      const shipName =
+        str(ship.firstName || ship.first_name) + " " + str(ship.lastName || ship.last_name);
+      const billName =
+        str(bill.firstName || bill.first_name) + " " + str(bill.lastName || bill.last_name);
+
+      const buildAddress = (addr: Record<string, unknown>, fallback: Record<string, unknown>) => {
+        const name = (str(addr.firstName || addr.first_name) + " " + str(addr.lastName || addr.last_name)).trim()
+          || (str(fallback.firstName || fallback.first_name) + " " + str(fallback.lastName || fallback.last_name)).trim()
+          || "Customer";
+        const result: Record<string, unknown> = {
+          name,
+          street1: str(addr.address1 || addr.address || addr.street1 || fallback.address1 || fallback.address) || "N/A",
+          city: str(addr.city || fallback.city) || "N/A",
+          state: str(addr.state || fallback.state) || "N/A",
+          postalCode: str(addr.zipCode || addr.zip_code || addr.postalCode || fallback.zipCode || fallback.zip_code) || "00000",
+          country: str(addr.country || fallback.country) || "US",
+        };
+        const street2 = str(addr.address2 || addr.apartment || addr.street2);
+        if (street2) result.street2 = street2;
+        const company = str(addr.company || fallback.company);
+        if (company) result.company = company;
+        const phone = str(addr.phone || fallback.phone);
+        if (phone) result.phone = phone;
+        return result;
+      };
+
+      const items = (order.order_items ?? []) as Record<string, unknown>[];
+
+      const shipstationOrder = {
+        orderNumber: String(order.order_number),
+        orderKey: String(order.order_number),
         orderDate: new Date(order.created_at).toISOString(),
         orderStatus: "awaiting_shipment",
-        customerEmail: bill.email || ship.email || "",
-        billTo: {
-          name: billName,
-          company: bill.company || "",
-          street1: bill.address1 || bill.address || ship.address1 || ship.address || "",
-          street2: bill.address2 || bill.apartment || "",
-          city: bill.city || ship.city || "",
-          state: bill.state || ship.state || "",
-          postalCode: bill.zipCode || bill.zip_code || ship.zipCode || "",
-          country: bill.country || ship.country || "US",
-          phone: bill.phone || ship.phone || "",
-        },
-        shipTo: {
-          name: shipName,
-          company: ship.company || "",
-          street1: ship.address1 || ship.address || "",
-          street2: ship.address2 || ship.apartment || "",
-          city: ship.city || "",
-          state: ship.state || "",
-          postalCode: ship.zipCode || ship.zip_code || "",
-          country: ship.country || "US",
-          phone: ship.phone || "",
-        },
-        items: order.order_items.map((item: Record<string, unknown>) => ({
-          sku: String(item.product_sku || ""),
-          name: String(item.product_name || ""),
-          quantity: Number(item.quantity) || 1,
-          unitPrice: parseFloat(String(item.unit_price)) || 0,
-        })),
-        amountPaid: parseFloat(order.total_amount) || 0,
-        shippingAmount: parseFloat(order.shipping_cost) || 0,
-        taxAmount: parseFloat(order.tax_amount) || 0,
-        advancedOptions: {
-          customField1: "RESEARCH_MATERIALS",
-          customField2: "PEPTIDE_SHIPMENT",
-        },
+        customerEmail: str(bill.email || ship.email) || undefined,
+        billTo: buildAddress(bill, ship),
+        shipTo: buildAddress(ship, bill),
+        items: items.map((item) => {
+          const lineItem: Record<string, unknown> = {
+            lineItemKey: String(item.id || item.product_sku || ""),
+            sku: str(item.product_sku) || "SKU",
+            name: str(item.product_name) || "Product",
+            quantity: Number(item.quantity) || 1,
+            unitPrice: parseFloat(String(item.unit_price)) || 0,
+          };
+          return lineItem;
+        }),
+        amountPaid: parseFloat(String(order.total_amount)) || 0,
+        taxAmount: parseFloat(String(order.tax_amount)) || 0,
+        shippingAmount: parseFloat(String(order.shipping_cost)) || 0,
       };
 
       const basicAuth = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
