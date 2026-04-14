@@ -7,6 +7,138 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
+function cdata(val: unknown): string {
+  if (val === null || val === undefined) return "<![CDATA[]]>";
+  const s = String(val).replace(/]]>/g, "]]]]><![CDATA[>");
+  return "<![CDATA[" + s + "]]>";
+}
+
+function xmlTag(name: string, inner: string): string {
+  return "<" + name + ">" + inner + "</" + name + ">";
+}
+
+function numTag(name: string, val: unknown): string {
+  const num = parseFloat(String(val ?? "0")) || 0;
+  return "<" + name + ">" + num.toFixed(2) + "</" + name + ">";
+}
+
+function intTag(name: string, val: unknown): string {
+  const num = parseInt(String(val ?? "0"), 10) || 0;
+  return "<" + name + ">" + num + "</" + name + ">";
+}
+
+function safeStr(val: unknown): string {
+  if (val === null || val === undefined) return "";
+  return String(val);
+}
+
+function buildItemXml(item: Record<string, unknown>): string {
+  let options = "";
+  if (item.size) {
+    options +=
+      "<Option>" +
+      xmlTag("Name", cdata("Size")) +
+      xmlTag("Value", cdata(item.size)) +
+      "</Option>";
+  }
+  if (item.purity) {
+    options +=
+      "<Option>" +
+      xmlTag("Name", cdata("Purity")) +
+      xmlTag("Value", cdata(item.purity)) +
+      "</Option>";
+  }
+
+  return (
+    "<Item>" +
+    xmlTag("SKU", cdata(item.product_sku)) +
+    xmlTag("Name", cdata(item.product_name)) +
+    intTag("Quantity", item.quantity) +
+    numTag("UnitPrice", item.unit_price) +
+    (options ? "<Options>" + options + "</Options>" : "") +
+    "</Item>"
+  );
+}
+
+function buildOrderXml(order: Record<string, unknown>): string {
+  const ship = (order.shipping_address ?? {}) as Record<string, unknown>;
+  const bill = (order.billing_address ?? {}) as Record<string, unknown>;
+
+  const email = safeStr(bill.email || ship.email);
+  const firstName = safeStr(ship.firstName || ship.first_name);
+  const lastName = safeStr(ship.lastName || ship.last_name);
+  const fullName = (firstName + " " + lastName).trim();
+  const company = safeStr(ship.company || bill.company);
+
+  const d = new Date(safeStr(order.created_at) || Date.now());
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const isoDate =
+    pad(d.getMonth() + 1) + "/" +
+    pad(d.getDate()) + "/" +
+    d.getFullYear() + " " +
+    pad(d.getHours()) + ":" +
+    pad(d.getMinutes()) + ":" +
+    pad(d.getSeconds());
+
+  const items = (order.order_items ?? []) as Record<string, unknown>[];
+  let itemsXml = "";
+  for (const item of items) {
+    itemsXml += buildItemXml(item);
+  }
+
+  const addressBlock = (addr: Record<string, unknown>, includeEmail: boolean): string => {
+    let xml = "";
+    xml += xmlTag("Name", cdata(fullName));
+    xml += xmlTag("Company", cdata(company));
+    xml += xmlTag("Address1", cdata(addr.address1 || addr.address || addr.street1));
+    xml += xmlTag("Address2", cdata(addr.address2 || addr.apartment || addr.street2));
+    xml += xmlTag("City", cdata(addr.city));
+    xml += xmlTag("State", cdata(addr.state));
+    xml += xmlTag("PostalCode", cdata(addr.zipCode || addr.zip_code));
+    xml += xmlTag("Country", cdata(addr.country || "US"));
+    xml += xmlTag("Phone", cdata(addr.phone));
+    if (includeEmail) {
+      xml += xmlTag("Email", cdata(email));
+    }
+    return xml;
+  };
+
+  let xml = "";
+  xml += "<Order>";
+  xml += xmlTag("OrderID", cdata(order.order_number));
+  xml += xmlTag("OrderNumber", cdata(order.order_number));
+  xml += xmlTag("OrderDate", cdata(isoDate));
+  xml += xmlTag("OrderStatus", cdata("awaiting_shipment"));
+  xml += xmlTag("LastModified", cdata(isoDate));
+  xml += numTag("OrderTotal", order.total_amount);
+  xml += numTag("ShippingAmount", order.shipping_cost);
+  xml += numTag("TaxAmount", order.tax_amount);
+  xml += xmlTag("InternalNotes", cdata(order.notes));
+  xml += "<Customer>";
+  xml += xmlTag("CustomerCode", cdata(email));
+  xml += "<BillTo>" + addressBlock(Object.keys(bill).length > 0 ? bill : ship, true) + "</BillTo>";
+  xml += "<ShipTo>" + addressBlock(ship, false) + "</ShipTo>";
+  xml += "</Customer>";
+  xml += "<Items>" + itemsXml + "</Items>";
+  xml += "</Order>";
+
+  return xml;
+}
+
+function xmlResponse(body: string, status = 200): Response {
+  return new Response(body, {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "text/xml; charset=UTF-8" },
+  });
+}
+
+function xmlError(msg: string, status = 500): Response {
+  return xmlResponse(
+    '<?xml version="1.0" encoding="UTF-8"?><Error>' + cdata(msg) + "</Error>",
+    status
+  );
+}
+
 interface ShipStationOrder {
   orderId?: number;
   orderKey?: string;
@@ -40,46 +172,92 @@ interface ShipStationOrder {
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
-    return new Response(null, {
-      status: 200,
-      headers: corsHeaders,
-    });
+    return new Response(null, { status: 200, headers: corsHeaders });
   }
 
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const shipstationApiKey = Deno.env.get("SHIPSTATION_API_KEY");
-
-    console.log("Environment check:", {
-      hasApiKey: !!shipstationApiKey,
-      apiKeyLength: shipstationApiKey?.length
-    });
-
-    if (!shipstationApiKey) {
-      console.error("Missing ShipStation API Key");
-      return new Response(
-        JSON.stringify({
-          error: "ShipStation API credentials not configured in Supabase Edge Function Secrets",
-          details: "Please add SHIPSTATION_API_KEY to your Supabase project settings",
-          setupGuide: "See SHIPSTATION_SETUP.md for complete setup instructions",
-          debug: {
-            hasApiKey: !!shipstationApiKey
-          }
-        }),
-        {
-          status: 500,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    }
+    const shipstationApiSecret = Deno.env.get("SHIPSTATION_API_SECRET");
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     const url = new URL(req.url);
     const action = url.searchParams.get("action");
+
+    if (action === "export" && req.method === "GET") {
+      let ssUser = "";
+      let ssPass = "";
+      for (const [key, val] of url.searchParams.entries()) {
+        if (key.toLowerCase() === "ss-username") ssUser = val;
+        if (key.toLowerCase() === "ss-password") ssPass = val;
+      }
+
+      if (!ssUser || !ssPass) {
+        return xmlError("Missing SS-UserName or SS-Password", 401);
+      }
+
+      if (ssUser !== shipstationApiKey || ssPass !== shipstationApiSecret) {
+        return xmlError("Invalid credentials", 401);
+      }
+
+      const { data: orders, error } = await supabase
+        .from("orders")
+        .select(`
+          id,
+          order_number,
+          created_at,
+          status,
+          total_amount,
+          shipping_cost,
+          tax_amount,
+          shipping_address,
+          billing_address,
+          notes,
+          order_items (
+            product_name,
+            product_sku,
+            quantity,
+            unit_price,
+            total_price,
+            size,
+            purity
+          )
+        `)
+        .order("created_at", { ascending: false })
+        .limit(100);
+
+      if (error) {
+        return xmlError("Database error: " + error.message);
+      }
+
+      const rows = orders ?? [];
+      let ordersXml = "";
+      for (const order of rows) {
+        ordersXml += buildOrderXml(order as Record<string, unknown>);
+      }
+
+      const xml =
+        '<?xml version="1.0" encoding="UTF-8"?>' +
+        '<Orders pages="1">' +
+        ordersXml +
+        "</Orders>";
+
+      return xmlResponse(xml);
+    }
+
+    if (!shipstationApiKey) {
+      return new Response(
+        JSON.stringify({
+          error: "ShipStation API credentials not configured",
+          details: "Please add SHIPSTATION_API_KEY to your Supabase project settings",
+        }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
 
     if (action === "test") {
       return new Response(
@@ -87,13 +265,9 @@ Deno.serve(async (req: Request) => {
           message: "Environment check",
           hasApiKey: !!shipstationApiKey,
           apiKeyLength: shipstationApiKey?.length || 0,
-          allEnvVars: Object.keys(Deno.env.toObject()).filter(k => k.includes('SHIP'))
         }),
         {
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
     }
@@ -103,10 +277,7 @@ Deno.serve(async (req: Request) => {
 
       const { data: order, error: orderError } = await supabase
         .from("orders")
-        .select(`
-          *,
-          order_items(*)
-        `)
+        .select(`*, order_items(*)`)
         .eq("id", orderId)
         .single();
 
@@ -120,19 +291,19 @@ Deno.serve(async (req: Request) => {
         customerEmail: order.billing_address.email,
         shipTo: {
           name: `${order.shipping_address.firstName} ${order.shipping_address.lastName}`,
-          street1: order.shipping_address.address,
-          street2: order.shipping_address.apartment || "",
+          street1: order.shipping_address.address1 || order.shipping_address.address || "",
+          street2: order.shipping_address.address2 || order.shipping_address.apartment || "",
           city: order.shipping_address.city,
           state: order.shipping_address.state,
           postalCode: order.shipping_address.zipCode,
           country: order.shipping_address.country || "US",
           phone: order.shipping_address.phone || "",
         },
-        items: order.order_items.map((item: any) => ({
+        items: order.order_items.map((item: Record<string, unknown>) => ({
           sku: item.product_sku,
           name: item.product_name,
           quantity: item.quantity,
-          unitPrice: parseFloat(item.unit_price),
+          unitPrice: parseFloat(String(item.unit_price)),
         })),
         orderTotal: parseFloat(order.total_amount),
         shippingAmount: parseFloat(order.shipping_cost),
@@ -143,12 +314,13 @@ Deno.serve(async (req: Request) => {
         },
       };
 
+      const basicAuth = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
       const shipstationResponse = await fetch(
         "https://ssapi.shipstation.com/orders/createorder",
         {
           method: "POST",
           headers: {
-            "Authorization": `Bearer ${shipstationApiKey}`,
+            "Authorization": `Basic ${basicAuth}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(shipstationOrder),
@@ -157,20 +329,15 @@ Deno.serve(async (req: Request) => {
 
       if (!shipstationResponse.ok) {
         const errorText = await shipstationResponse.text();
-        console.error("ShipStation API Error:", errorText);
         return new Response(
           JSON.stringify({
             error: "ShipStation API request failed",
             status: shipstationResponse.status,
             details: errorText,
-            hint: "Verify your API credentials are correct and your ShipStation account is active. Do NOT use Store Connection - use API Keys only."
           }),
           {
             status: shipstationResponse.status,
-            headers: {
-              ...corsHeaders,
-              "Content-Type": "application/json",
-            },
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
           }
         );
       }
@@ -194,10 +361,7 @@ Deno.serve(async (req: Request) => {
           message: "Order synced to ShipStation successfully",
         }),
         {
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
     }
@@ -219,12 +383,11 @@ Deno.serve(async (req: Request) => {
         throw new Error("Order not found or not synced with ShipStation");
       }
 
+      const basicAuth2 = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
       const shipstationResponse = await fetch(
         `https://ssapi.shipstation.com/orders/${order.shipstation_order_id}`,
         {
-          headers: {
-            "Authorization": `Bearer ${shipstationApiKey}`,
-          },
+          headers: { "Authorization": `Basic ${basicAuth2}` },
         }
       );
 
@@ -258,10 +421,7 @@ Deno.serve(async (req: Request) => {
           },
         }),
         {
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
     }
@@ -270,10 +430,9 @@ Deno.serve(async (req: Request) => {
       const webhookData = await req.json();
 
       if (webhookData.resource_type === "SHIP_NOTIFY") {
+        const basicAuth3 = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
         const shipmentResponse = await fetch(webhookData.resource_url, {
-          headers: {
-            "Authorization": `Bearer ${shipstationApiKey}`,
-          },
+          headers: { "Authorization": `Basic ${basicAuth3}` },
         });
 
         if (shipmentResponse.ok) {
@@ -295,12 +454,7 @@ Deno.serve(async (req: Request) => {
 
       return new Response(
         JSON.stringify({ success: true }),
-        {
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-        }
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
@@ -308,24 +462,17 @@ Deno.serve(async (req: Request) => {
       JSON.stringify({ error: "Invalid action" }),
       {
         status: 400,
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json",
-        },
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );
   } catch (error) {
-    console.error("ShipStation integration error:", error);
     return new Response(
       JSON.stringify({
         error: error instanceof Error ? error.message : "Unknown error",
       }),
       {
         status: 500,
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json",
-        },
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );
   }
