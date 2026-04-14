@@ -601,8 +601,46 @@ Deno.serve(async (req: Request) => {
         userId: null,
         externallyFulfilled: false,
         externallyFulfilledBy: null,
-      };
+      // };
 
+        const payload = {
+        orderNumber: String(order.order_number),
+        orderKey: String(order.order_number),
+        orderDate: new Date(order.created_at).toISOString(),
+        paymentDate: new Date(order.created_at).toISOString(),
+        orderStatus: "awaiting_shipment",
+        customerUsername: str(bill.email || ship.email) || "customer@example.com",
+        customerEmail: str(bill.email || ship.email) || "customer@example.com",
+        billTo: buildAddrJson(bill),
+        shipTo: buildAddrJson(ship),
+        items: (order.order_items || []).map((item, index) => ({
+          lineItemKey: str(item.id || item.product_sku) || `line-${index}`,
+          sku: str(item.product_sku) || "SKU",
+          name: str(item.product_name) || "Product",
+          quantity: Math.max(1, Number(item.quantity) || 1),
+          unitPrice: parseFloat(String(item.unit_price)) || 0,
+          adjustment: false
+        })),
+        amountPaid: parseFloat(String(order.total_amount)) || 0,
+        taxAmount: parseFloat(String(order.tax_amount)) || 0,
+        shippingAmount: parseFloat(String(order.shipping_cost)) || 0,
+        internalNotes: str(order.notes) || "",
+        // Weight field is mandatory for some accounts, but must not be null
+        weight: {
+          value: 0,
+          units: "ounces"
+        },
+        insuranceOptions: {
+          insureShipment: false,
+          insuredValue: 0
+        },
+        advancedOptions: {
+          customField1: String(order.id || ""),
+          nonMachinable: false,
+          saturdayDelivery: false,
+          containsAlcohol: false
+        }
+      };
       const auth = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
 
       const ssResponse = await fetch("https://ssapi.shipstation.com/orders/createorder", {
