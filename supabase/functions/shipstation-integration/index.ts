@@ -288,34 +288,40 @@ Deno.serve(async (req: Request) => {
 
       if (orderError || !order) throw new Error("Order not found");
 
-      const str = (v) => (v ? String(v).trim() : "");
+      const str = (v: unknown) => (v ? String(v).trim() : "");
+      const ship = order.shipping_address || {};
       const bill = order.billing_address || {};
-      const ship = order.shipping_address || bill;
 
-      const buildAddrJson = (a) => ({
-        name: (str(a.firstName || a.first_name) + " " + str(a.lastName || a.last_name)).trim() || "Customer",
-        company: str(a.company) || "",
-        street1: str(a.address1 || a.address || "123 Main St"),
-        street2: str(a.address2 || a.apartment) || "",
-        city: str(a.city) || "City",
-        state: str(a.state) || "State",
-        postalCode: str(a.zipCode || a.zip_code) || "00000",
-        country: str(a.country) || "US",
-        phone: str(a.phone) || "000-000-0000"
+      const hasAddress = (a: Record<string, unknown>) =>
+        str(a.address1 || a.address) !== "" && str(a.city) !== "" && str(a.state) !== "";
+
+      const effectiveBill = hasAddress(bill) ? bill : ship;
+
+      const buildAddrJson = (a: Record<string, unknown>, fallback: Record<string, unknown>) => ({
+        name: (str(a.firstName || a.first_name || fallback.firstName || fallback.first_name) + " " + str(a.lastName || a.last_name || fallback.lastName || fallback.last_name)).trim() || "Customer",
+        company: str(a.company || fallback.company) || null,
+        street1: str(a.address1 || a.address) || str(fallback.address1 || fallback.address) || "N/A",
+        street2: str(a.address2 || a.apartment) || null,
+        city: str(a.city) || str(fallback.city) || "N/A",
+        state: str(a.state) || str(fallback.state) || "N/A",
+        postalCode: str(a.zipCode || a.zip_code) || str(fallback.zipCode || fallback.zip_code) || "00000",
+        country: str(a.country) || str(fallback.country) || "US",
+        phone: str(a.phone || fallback.phone) || null,
+        residential: true,
       });
 
-      // SHIPSTATION JSON PAYLOAD (MOST ROBUST VERSION)
-      // CLEAN & ROBUST PAYLOAD (No Nulls allowed)
+      const customerEmail = str(bill.email || ship.email) || "noemail@placeholder.com";
+
       const payload = {
         orderNumber: String(order.order_number),
         orderKey: String(order.order_number),
         orderDate: new Date(order.created_at).toISOString(),
         paymentDate: new Date(order.created_at).toISOString(),
         orderStatus: "awaiting_shipment",
-        customerUsername: str(bill.email || ship.email) || "customer@example.com",
-        customerEmail: str(bill.email || ship.email) || "customer@example.com",
-        billTo: buildAddrJson(bill),
-        shipTo: buildAddrJson(ship),
+        customerUsername: customerEmail,
+        customerEmail: customerEmail,
+        billTo: buildAddrJson(effectiveBill, ship),
+        shipTo: buildAddrJson(ship, ship),
         items: (order.order_items || []).map((item, index) => ({
           lineItemKey: str(item.id || item.product_sku) || `line-${index}`,
           sku: str(item.product_sku) || "SKU",
@@ -328,7 +334,6 @@ Deno.serve(async (req: Request) => {
         taxAmount: parseFloat(String(order.tax_amount)) || 0,
         shippingAmount: parseFloat(String(order.shipping_cost)) || 0,
         internalNotes: str(order.notes) || "",
-        // Weight field is mandatory for some accounts, but must not be null
         weight: {
           value: 0,
           units: "ounces"
@@ -345,9 +350,6 @@ Deno.serve(async (req: Request) => {
         }
       };
       const auth = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
-      
-      // Kuch cases mein ShipStation "/orders/createorders" (plural) maangta hai array ke sath
-      // Lekin hum /createorder (single) bhej rahe hain
       const ssResponse = await fetch("https://ssapi.shipstation.com/orders/createorder", {
         method: "POST",
         headers: {
