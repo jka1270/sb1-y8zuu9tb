@@ -169,15 +169,6 @@ export const useOrders = () => {
         throw itemsError;
       }
 
-      // Automatically sync to ShipStation if payment is successful or COD order
-      if (orderData.payment_status === 'paid' || orderData.payment_method === 'cod') {
-        try {
-          await syncToShipStationInternal(order.id);
-        } catch (syncError) {
-          console.error('Auto-sync to ShipStation failed:', syncError);
-        }
-      }
-
       // Refresh orders
       cache.delete(`${CACHE_KEYS.ORDERS}_${user?.id}`);
       await fetchOrders();
@@ -206,65 +197,27 @@ export const useOrders = () => {
     }
   };
 
-  const syncToShipStationInternal = async (orderId: string) => {
-    const response = await fetch(
-      `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/shipstation-integration?action=create`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ orderId }),
-      }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || data.details || 'Failed to sync to ShipStation');
-    }
-
-    return data;
-  };
-
-  const syncToShipStation = async (orderId: string) => {
-    try {
-      const data = await syncToShipStationInternal(orderId);
-
-      cache.delete(`${CACHE_KEYS.ORDERS}_${user?.id}`);
-      await fetchOrders();
-
-      return data;
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to sync to ShipStation';
-      setError(errorMessage);
-      throw new Error(errorMessage);
-    }
-  };
-
   const getTracking = async (orderId: string) => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/shipstation-integration?action=tracking&orderId=${orderId}`,
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          },
-        }
-      );
+      const { data: order, error: trackError } = await supabase
+        .from('orders')
+        .select('tracking_number, carrier, shipstation_status, shipped_at, status')
+        .eq('id', orderId)
+        .maybeSingle();
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to get tracking info');
+      if (trackError || !order) {
+        throw new Error('Order not found');
       }
 
-      cache.delete(`${CACHE_KEYS.ORDERS}_${user?.id}`);
-      await fetchOrders();
-
-      return data;
+      return {
+        success: true,
+        tracking: {
+          trackingNumber: order.tracking_number,
+          carrier: order.carrier,
+          status: order.shipstation_status || order.status,
+          shipDate: order.shipped_at,
+        },
+      };
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to get tracking info';
       setError(errorMessage);
@@ -300,7 +253,6 @@ export const useOrders = () => {
     error,
     createOrder,
     updateOrderStatus,
-    syncToShipStation,
     getTracking,
     updateTracking,
     refetch: () => fetchOrders(true)

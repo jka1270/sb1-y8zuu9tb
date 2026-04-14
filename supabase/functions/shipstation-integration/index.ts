@@ -4,55 +4,96 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
+  "Access-Control-Allow-Headers":
+    "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
-function cdata(val: unknown): string {
-  if (val === null || val === undefined) return "<![CDATA[]]>";
-  const s = String(val).replace(/]]>/g, "]]]]><![CDATA[>");
-  return "<![CDATA[" + s + "]]>";
-}
+const STATE_ABBR: Record<string, string> = {
+  alabama: "AL", alaska: "AK", arizona: "AZ", arkansas: "AR",
+  california: "CA", colorado: "CO", connecticut: "CT", delaware: "DE",
+  florida: "FL", georgia: "GA", hawaii: "HI", idaho: "ID",
+  illinois: "IL", indiana: "IN", iowa: "IA", kansas: "KS",
+  kentucky: "KY", louisiana: "LA", maine: "ME", maryland: "MD",
+  massachusetts: "MA", michigan: "MI", minnesota: "MN", mississippi: "MS",
+  missouri: "MO", montana: "MT", nebraska: "NE", nevada: "NV",
+  "new hampshire": "NH", "new jersey": "NJ", "new mexico": "NM", "new york": "NY",
+  "north carolina": "NC", "north dakota": "ND", ohio: "OH", oklahoma: "OK",
+  oregon: "OR", pennsylvania: "PA", "rhode island": "RI", "south carolina": "SC",
+  "south dakota": "SD", tennessee: "TN", texas: "TX", utah: "UT",
+  vermont: "VT", virginia: "VA", washington: "WA", "west virginia": "WV",
+  wisconsin: "WI", wyoming: "WY", "district of columbia": "DC",
+};
 
-function xmlTag(name: string, inner: string): string {
-  return "<" + name + ">" + inner + "</" + name + ">";
-}
-
-function numTag(name: string, val: unknown): string {
-  const num = parseFloat(String(val ?? "0")) || 0;
-  return "<" + name + ">" + num.toFixed(2) + "</" + name + ">";
-}
-
-function intTag(name: string, val: unknown): string {
-  const num = parseInt(String(val ?? "0"), 10) || 0;
-  return "<" + name + ">" + num + "</" + name + ">";
+function toStateAbbr(val: string): string {
+  const t = val.trim();
+  if (t.length <= 2) return t.toUpperCase();
+  return STATE_ABBR[t.toLowerCase()] || t;
 }
 
 function safeStr(val: unknown): string {
   if (val === null || val === undefined) return "";
-  return String(val);
+  return String(val).trim();
+}
+
+function cdata(val: unknown): string {
+  const s = safeStr(val).replace(/]]>/g, "]]]]><![CDATA[>");
+  return "<![CDATA[" + s + "]]>";
+}
+
+function tag(name: string, inner: string): string {
+  return `<${name}>${inner}</${name}>`;
+}
+
+function numTag(name: string, val: unknown): string {
+  return tag(name, (parseFloat(String(val ?? "0")) || 0).toFixed(2));
+}
+
+function intTag(name: string, val: unknown): string {
+  return tag(name, String(parseInt(String(val ?? "0"), 10) || 0));
+}
+
+function fmtDate(dateStr: string): string {
+  const d = new Date(dateStr || Date.now());
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return (
+    pad(d.getUTCMonth() + 1) + "/" +
+    pad(d.getUTCDate()) + "/" +
+    d.getUTCFullYear() + " " +
+    pad(d.getUTCHours()) + ":" +
+    pad(d.getUTCMinutes())
+  );
+}
+
+function resolveState(val: unknown): string {
+  const raw = safeStr(val);
+  return raw ? toStateAbbr(raw) : "";
+}
+
+function resolveCountry(val: unknown): string {
+  const raw = safeStr(val);
+  if (!raw) return "US";
+  if (raw.length === 2) return raw.toUpperCase();
+  if (raw.toLowerCase() === "united states") return "US";
+  if (raw.toLowerCase() === "canada") return "CA";
+  return raw.substring(0, 2).toUpperCase();
 }
 
 function buildItemXml(item: Record<string, unknown>): string {
   let options = "";
-  if (item.size) {
-    options +=
-      "<Option>" +
-      xmlTag("Name", cdata("Size")) +
-      xmlTag("Value", cdata(item.size)) +
-      "</Option>";
+  if (safeStr(item.size)) {
+    options += "<Option>" + tag("Name", cdata("Size")) + tag("Value", cdata(item.size)) + "</Option>";
   }
-  if (item.purity) {
-    options +=
-      "<Option>" +
-      xmlTag("Name", cdata("Purity")) +
-      xmlTag("Value", cdata(item.purity)) +
-      "</Option>";
+  if (safeStr(item.purity)) {
+    options += "<Option>" + tag("Name", cdata("Purity")) + tag("Value", cdata(item.purity)) + "</Option>";
   }
 
   return (
     "<Item>" +
-    xmlTag("SKU", cdata(item.product_sku)) +
-    xmlTag("Name", cdata(item.product_name)) +
+    tag("LineItemID", cdata(item.id)) +
+    tag("SKU", cdata(safeStr(item.product_sku) || "ITEM")) +
+    tag("Name", cdata(safeStr(item.product_name) || "Product")) +
+    numTag("Weight", 1) +
+    tag("WeightUnits", "Ounces") +
     intTag("Quantity", item.quantity) +
     numTag("UnitPrice", item.unit_price) +
     (options ? "<Options>" + options + "</Options>" : "") +
@@ -62,23 +103,30 @@ function buildItemXml(item: Record<string, unknown>): string {
 
 function buildOrderXml(order: Record<string, unknown>): string {
   const ship = (order.shipping_address ?? {}) as Record<string, unknown>;
-  const bill = (order.billing_address ?? {}) as Record<string, unknown>;
+  const bill = (order.billing_address ?? ship) as Record<string, unknown>;
+
+  const shipFirst = safeStr(ship.firstName || ship.first_name);
+  const shipLast = safeStr(ship.lastName || ship.last_name);
+  const shipName = (shipFirst + " " + shipLast).trim();
+
+  const billFirst = safeStr(bill.firstName || bill.first_name);
+  const billLast = safeStr(bill.lastName || bill.last_name);
+  const billName = (billFirst + " " + billLast).trim();
 
   const email = safeStr(bill.email || ship.email);
-  const firstName = safeStr(ship.firstName || ship.first_name);
-  const lastName = safeStr(ship.lastName || ship.last_name);
-  const fullName = (firstName + " " + lastName).trim();
-  const company = safeStr(ship.company || bill.company);
+  const customerCode = email || safeStr(order.order_number);
 
-  const d = new Date(safeStr(order.created_at) || Date.now());
-  const pad = (n: number) => String(n).padStart(2, "0");
-  const isoDate =
-    pad(d.getMonth() + 1) + "/" +
-    pad(d.getDate()) + "/" +
-    d.getFullYear() + " " +
-    pad(d.getHours()) + ":" +
-    pad(d.getMinutes()) + ":" +
-    pad(d.getSeconds());
+  const dateStr = safeStr(order.created_at);
+  const updatedStr = safeStr(order.updated_at) || dateStr;
+
+  const statusMap: Record<string, string> = {
+    pending: "unpaid",
+    processing: "paid",
+    shipped: "shipped",
+    delivered: "shipped",
+    cancelled: "cancelled",
+  };
+  const orderStatus = statusMap[safeStr(order.status)] || "paid";
 
   const items = (order.order_items ?? []) as Record<string, unknown>[];
   let itemsXml = "";
@@ -86,38 +134,41 @@ function buildOrderXml(order: Record<string, unknown>): string {
     itemsXml += buildItemXml(item);
   }
 
-  const addressBlock = (addr: Record<string, unknown>, includeEmail: boolean): string => {
-    let xml = "";
-    xml += xmlTag("Name", cdata(fullName));
-    xml += xmlTag("Company", cdata(company));
-    xml += xmlTag("Address1", cdata(addr.address1 || addr.address || addr.street1));
-    xml += xmlTag("Address2", cdata(addr.address2 || addr.apartment || addr.street2));
-    xml += xmlTag("City", cdata(addr.city));
-    xml += xmlTag("State", cdata(addr.state));
-    xml += xmlTag("PostalCode", cdata(addr.zipCode || addr.zip_code));
-    xml += xmlTag("Country", cdata(addr.country || "US"));
-    xml += xmlTag("Phone", cdata(addr.phone));
-    if (includeEmail) {
-      xml += xmlTag("Email", cdata(email));
-    }
-    return xml;
-  };
-
-  let xml = "";
-  xml += "<Order>";
-  xml += xmlTag("OrderID", cdata(order.order_number));
-  xml += xmlTag("OrderNumber", cdata(order.order_number));
-  xml += xmlTag("OrderDate", cdata(isoDate));
-  xml += xmlTag("OrderStatus", cdata("awaiting_shipment"));
-  xml += xmlTag("LastModified", cdata(isoDate));
+  let xml = "<Order>";
+  xml += tag("OrderID", cdata(order.id));
+  xml += tag("OrderNumber", cdata(order.order_number));
+  xml += tag("OrderDate", fmtDate(dateStr));
+  xml += tag("OrderStatus", cdata(orderStatus));
+  xml += tag("LastModified", fmtDate(updatedStr));
+  xml += tag("ShippingMethod", cdata(order.shipping_method));
+  xml += tag("PaymentMethod", cdata(order.payment_method));
   xml += numTag("OrderTotal", order.total_amount);
-  xml += numTag("ShippingAmount", order.shipping_cost);
   xml += numTag("TaxAmount", order.tax_amount);
-  xml += xmlTag("InternalNotes", cdata(order.notes));
+  xml += numTag("ShippingAmount", order.shipping_cost);
+  xml += tag("InternalNotes", cdata(order.notes));
+
   xml += "<Customer>";
-  xml += xmlTag("CustomerCode", cdata(email));
-  xml += "<BillTo>" + addressBlock(Object.keys(bill).length > 0 ? bill : ship, true) + "</BillTo>";
-  xml += "<ShipTo>" + addressBlock(ship, false) + "</ShipTo>";
+  xml += tag("CustomerCode", cdata(customerCode));
+
+  xml += "<BillTo>";
+  xml += tag("Name", cdata(billName || shipName || "Customer"));
+  xml += tag("Company", cdata(bill.company));
+  xml += tag("Phone", cdata(bill.phone || ship.phone));
+  xml += tag("Email", cdata(email));
+  xml += "</BillTo>";
+
+  xml += "<ShipTo>";
+  xml += tag("Name", cdata(shipName || billName || "Customer"));
+  xml += tag("Company", cdata(ship.company));
+  xml += tag("Address1", cdata(ship.address1 || ship.street1));
+  xml += tag("Address2", cdata(ship.address2 || ship.apartment));
+  xml += tag("City", cdata(ship.city));
+  xml += tag("State", cdata(resolveState(ship.state)));
+  xml += tag("PostalCode", cdata(ship.zipCode || ship.zip_code || ship.postalCode));
+  xml += tag("Country", cdata(resolveCountry(ship.country)));
+  xml += tag("Phone", cdata(ship.phone || bill.phone));
+  xml += "</ShipTo>";
+
   xml += "</Customer>";
   xml += "<Items>" + itemsXml + "</Items>";
   xml += "</Order>";
@@ -132,91 +183,38 @@ function xmlResponse(body: string, status = 200): Response {
   });
 }
 
-function xmlError(msg: string, status = 500): Response {
-  return xmlResponse(
-    '<?xml version="1.0" encoding="UTF-8"?><Error>' + cdata(msg) + "</Error>",
-    status
-  );
+function jsonResponse(data: unknown, status = 200): Response {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
 }
 
-const cleanStr = (v: unknown): string => (v ? String(v).trim() : "");
-const cleanNum = (v: unknown): number => (parseFloat(String(v)) || 0);
-
-const STATE_ABBR: Record<string, string> = {
-  "alabama": "AL", "alaska": "AK", "arizona": "AZ", "arkansas": "AR",
-  "california": "CA", "colorado": "CO", "connecticut": "CT", "delaware": "DE",
-  "florida": "FL", "georgia": "GA", "hawaii": "HI", "idaho": "ID",
-  "illinois": "IL", "indiana": "IN", "iowa": "IA", "kansas": "KS",
-  "kentucky": "KY", "louisiana": "LA", "maine": "ME", "maryland": "MD",
-  "massachusetts": "MA", "michigan": "MI", "minnesota": "MN", "mississippi": "MS",
-  "missouri": "MO", "montana": "MT", "nebraska": "NE", "nevada": "NV",
-  "new hampshire": "NH", "new jersey": "NJ", "new mexico": "NM", "new york": "NY",
-  "north carolina": "NC", "north dakota": "ND", "ohio": "OH", "oklahoma": "OK",
-  "oregon": "OR", "pennsylvania": "PA", "rhode island": "RI", "south carolina": "SC",
-  "south dakota": "SD", "tennessee": "TN", "texas": "TX", "utah": "UT",
-  "vermont": "VT", "virginia": "VA", "washington": "WA", "west virginia": "WV",
-  "wisconsin": "WI", "wyoming": "WY", "district of columbia": "DC",
-};
-
-function toStateAbbr(val: string): string {
-  const t = val.trim();
-  if (t.length <= 2) return t.toUpperCase();
-  return STATE_ABBR[t.toLowerCase()] || t;
+function parseBasicAuth(req: Request): { username: string; password: string } | null {
+  const authHeader = req.headers.get("Authorization") || "";
+  if (!authHeader.toLowerCase().startsWith("basic ")) return null;
+  try {
+    const decoded = atob(authHeader.substring(6));
+    const colonIdx = decoded.indexOf(":");
+    if (colonIdx < 0) return null;
+    return {
+      username: decoded.substring(0, colonIdx),
+      password: decoded.substring(colonIdx + 1),
+    };
+  } catch {
+    return null;
+  }
 }
 
-function cleanState(val: unknown): string {
-  const raw = cleanStr(val);
-  return raw ? toStateAbbr(raw) : "TX";
-}
-
-function buildCleanPayload(order: Record<string, unknown>): Record<string, unknown> {
-  const bill = (order.billing_address || {}) as Record<string, unknown>;
-  const ship = (order.shipping_address || bill) as Record<string, unknown>;
-
-  const billName = (cleanStr(bill.firstName) + " " + cleanStr(bill.lastName)).trim();
-  const shipName = (cleanStr(ship.firstName) + " " + cleanStr(ship.lastName)).trim();
-
-  return {
-    orderNumber: cleanStr(order.order_number),
-    orderKey: cleanStr(order.order_number),
-    orderDate: new Date(String(order.created_at)).toISOString(),
-    paymentDate: new Date(String(order.created_at)).toISOString(),
-    orderStatus: "awaiting_shipment",
-    customerUsername: cleanStr(bill.email || ship.email) || "customer@example.com",
-    customerEmail: cleanStr(bill.email || ship.email) || "customer@example.com",
-    billTo: {
-      name: billName || shipName || "Customer",
-      street1: cleanStr(bill.address1) || cleanStr(ship.address1) || "123 Main St",
-      city: cleanStr(bill.city) || cleanStr(ship.city) || "City",
-      state: cleanState(bill.state || ship.state),
-      postalCode: cleanStr(bill.zipCode) || cleanStr(ship.zipCode) || "00000",
-      country: cleanStr(bill.country) || cleanStr(ship.country) || "US",
-      phone: cleanStr(bill.phone) || cleanStr(ship.phone) || "0000000000",
-    },
-    shipTo: {
-      name: shipName || billName || "Customer",
-      street1: cleanStr(ship.address1) || "123 Main St",
-      city: cleanStr(ship.city) || "City",
-      state: cleanState(ship.state),
-      postalCode: cleanStr(ship.zipCode) || "00000",
-      country: cleanStr(ship.country) || "US",
-      phone: cleanStr(ship.phone) || "0000000000",
-    },
-    items: (order.order_items as Record<string, unknown>[] || []).map(
-      (item: Record<string, unknown>, idx: number) => ({
-        lineItemKey: cleanStr(item.id) || `line-${idx}`,
-        sku: cleanStr(item.product_sku) || "SKU",
-        name: cleanStr(item.product_name) || "Product",
-        quantity: parseInt(String(item.quantity)) || 1,
-        unitPrice: cleanNum(item.unit_price),
-        weight: { value: 1, units: "ounces" },
-      })
-    ),
-    amountPaid: cleanNum(order.total_amount),
-    taxAmount: cleanNum(order.tax_amount),
-    shippingAmount: cleanNum(order.shipping_cost),
-    weight: { value: 1, units: "ounces" },
-  };
+function parseXmlText(xml: string, tagName: string): string {
+  const openTag = `<${tagName}>`;
+  const closeTag = `</${tagName}>`;
+  const start = xml.indexOf(openTag);
+  if (start < 0) return "";
+  const contentStart = start + openTag.length;
+  const end = xml.indexOf(closeTag, contentStart);
+  if (end < 0) return "";
+  return xml.substring(contentStart, end).trim();
 }
 
 Deno.serve(async (req: Request) => {
@@ -227,60 +225,63 @@ Deno.serve(async (req: Request) => {
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const shipstationApiKey = Deno.env.get("SHIPSTATION_API_KEY");
-    const shipstationApiSecret = Deno.env.get("SHIPSTATION_API_SECRET");
+    const ssUsername = Deno.env.get("SHIPSTATION_CUSTOM_STORE_USERNAME") || Deno.env.get("SHIPSTATION_API_KEY") || "";
+    const ssPassword = Deno.env.get("SHIPSTATION_CUSTOM_STORE_PASSWORD") || Deno.env.get("SHIPSTATION_API_SECRET") || "";
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     const url = new URL(req.url);
     const action = url.searchParams.get("action");
 
     if (action === "export" && req.method === "GET") {
-      let ssUser = "";
-      let ssPass = "";
-      for (const [key, val] of url.searchParams.entries()) {
-        if (key.toLowerCase() === "ss-username") ssUser = val;
-        if (key.toLowerCase() === "ss-password") ssPass = val;
+      const creds = parseBasicAuth(req);
+      if (!creds || creds.username !== ssUsername || creds.password !== ssPassword) {
+        return new Response("Unauthorized", {
+          status: 401,
+          headers: { ...corsHeaders, "WWW-Authenticate": 'Basic realm="ShipStation"' },
+        });
       }
 
-      if (!ssUser || !ssPass) {
-        return xmlError("Missing SS-UserName or SS-Password", 401);
-      }
+      const startDate = url.searchParams.get("start_date");
+      const endDate = url.searchParams.get("end_date");
+      const page = parseInt(url.searchParams.get("page") || "1", 10);
+      const pageSize = 100;
 
-      if (ssUser !== shipstationApiKey || ssPass !== shipstationApiSecret) {
-        return xmlError("Invalid credentials", 401);
-      }
-
-      const { data: orders, error } = await supabase
+      let query = supabase
         .from("orders")
-        .select(`
-          id,
-          order_number,
-          created_at,
-          status,
-          total_amount,
-          shipping_cost,
-          tax_amount,
-          shipping_address,
-          billing_address,
-          notes,
-          order_items (
-            product_name,
-            product_sku,
-            quantity,
-            unit_price,
-            total_price,
-            size,
-            purity
-          )
-        `)
-        .order("created_at", { ascending: false })
-        .limit(100);
+        .select(
+          `id, order_number, created_at, updated_at, status, payment_status, total_amount, shipping_cost, tax_amount, shipping_address, billing_address, shipping_method, payment_method, notes, shipstation_order_id, order_items (id, product_name, product_sku, quantity, unit_price, size, purity)`,
+          { count: "exact" }
+        )
+        .order("updated_at", { ascending: false });
+
+      if (startDate) {
+        const sd = new Date(startDate);
+        if (!isNaN(sd.getTime())) {
+          query = query.gte("updated_at", sd.toISOString());
+        }
+      }
+      if (endDate) {
+        const ed = new Date(endDate);
+        if (!isNaN(ed.getTime())) {
+          query = query.lte("updated_at", ed.toISOString());
+        }
+      }
+
+      const from = (page - 1) * pageSize;
+      const to = from + pageSize - 1;
+      query = query.range(from, to);
+
+      const { data: orders, error, count } = await query;
 
       if (error) {
-        return xmlError("Database error: " + error.message);
+        return xmlResponse(
+          '<?xml version="1.0" encoding="UTF-8"?><Orders pages="0"></Orders>'
+        );
       }
 
       const rows = orders ?? [];
+      const totalPages = Math.max(1, Math.ceil((count ?? rows.length) / pageSize));
+
       let ordersXml = "";
       for (const order of rows) {
         ordersXml += buildOrderXml(order as Record<string, unknown>);
@@ -288,201 +289,123 @@ Deno.serve(async (req: Request) => {
 
       const xml =
         '<?xml version="1.0" encoding="UTF-8"?>' +
-        '<Orders pages="1">' +
+        `<Orders pages="${totalPages}">` +
         ordersXml +
         "</Orders>";
 
       return xmlResponse(xml);
     }
 
-    if (!shipstationApiKey) {
-      return new Response(
-        JSON.stringify({
-          error: "ShipStation API credentials not configured",
-          details: "Please add SHIPSTATION_API_KEY to your Supabase project settings",
-        }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
+    if (action === "shipnotify" && req.method === "POST") {
+      const creds = parseBasicAuth(req);
+      if (!creds || creds.username !== ssUsername || creds.password !== ssPassword) {
+        return new Response("Unauthorized", {
+          status: 401,
+          headers: { ...corsHeaders, "WWW-Authenticate": 'Basic realm="ShipStation"' },
+        });
+      }
+
+      const body = await req.text();
+
+      const orderId = parseXmlText(body, "OrderID");
+      const orderNumber = parseXmlText(body, "OrderNumber");
+      const trackingNumber = parseXmlText(body, "TrackingNumber");
+      const carrier = parseXmlText(body, "Carrier");
+      const service = parseXmlText(body, "Service");
+      const shipDate = parseXmlText(body, "ShipDate");
+      const shippingCost = parseXmlText(body, "ShippingCost");
+
+      const updateData: Record<string, unknown> = {
+        tracking_number: trackingNumber || null,
+        carrier: carrier || null,
+        shipstation_status: "shipped",
+        shipstation_synced_at: new Date().toISOString(),
+        status: "shipped",
+        updated_at: new Date().toISOString(),
+      };
+
+      if (shipDate) {
+        updateData.shipped_at = new Date(shipDate).toISOString();
+      }
+
+      if (shippingCost && parseFloat(shippingCost) > 0) {
+        updateData.shipping_cost = parseFloat(shippingCost);
+      }
+
+      let updated = false;
+
+      if (orderId) {
+        const { error: updateError } = await supabase
+          .from("orders")
+          .update(updateData)
+          .eq("id", orderId);
+        if (!updateError) updated = true;
+      }
+
+      if (!updated && orderNumber) {
+        const { error: updateError } = await supabase
+          .from("orders")
+          .update(updateData)
+          .eq("order_number", orderNumber);
+        if (!updateError) updated = true;
+      }
+
+      return xmlResponse('<?xml version="1.0" encoding="UTF-8"?><Response>OK</Response>');
     }
 
     if (action === "test") {
-      return new Response(
-        JSON.stringify({
-          message: "Environment check",
-          hasApiKey: !!shipstationApiKey,
-          apiKeyLength: shipstationApiKey?.length || 0,
-        }),
-        {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
-    }
-
-    if (action === "debug-payload" && req.method === "POST") {
-      const { orderId } = await req.json();
-      const { data: order, error: orderError } = await supabase
-        .from("orders")
-        .select(`*, order_items(*)`)
-        .eq("id", orderId)
-        .single();
-
-      if (orderError || !order) throw new Error("Order not found");
-
-      const payload = buildCleanPayload(order);
-
-      return new Response(JSON.stringify({ payload, rawOrder: order }, null, 2), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    if (action === "create" && req.method === "POST") {
-      const { orderId } = await req.json();
-
-      const { data: order, error: orderError } = await supabase
-        .from("orders")
-        .select(`*, order_items(*)`)
-        .eq("id", orderId)
-        .single();
-
-      if (orderError || !order) throw new Error("Order not found");
-
-      const payload = buildCleanPayload(order);
-
-      const auth = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
-      const ssResponse = await fetch("https://ssapi.shipstation.com/orders/createorder", {
-        method: "POST",
-        headers: {
-          "Authorization": `Basic ${auth}`,
-          "Content-Type": "application/json",
+      return jsonResponse({
+        message: "ShipStation Custom Store endpoint is active",
+        hasCredentials: !!(ssUsername && ssPassword),
+        endpointUrl: `${supabaseUrl}/functions/v1/shipstation-integration`,
+        instructions: {
+          step1: "In ShipStation, go to Settings > Selling Channels > Store Setup",
+          step2: "Click 'Connect a Store or Marketplace'",
+          step3: "Choose 'Custom Store'",
+          step4: `Set the URL to: ${supabaseUrl}/functions/v1/shipstation-integration`,
+          step5: "Enter the username and password you configured as SHIPSTATION_CUSTOM_STORE_USERNAME and SHIPSTATION_CUSTOM_STORE_PASSWORD",
+          step6: "Set statuses: Unpaid = 'unpaid', Paid = 'paid', Shipped = 'shipped', Cancelled = 'cancelled'",
+          step7: "Click 'Test Connection'",
         },
-        body: JSON.stringify(payload),
-      });
-
-      if (!ssResponse.ok) {
-        const errorDetail = await ssResponse.text();
-        throw new Error(`ShipStation Error: ${errorDetail}`);
-      }
-
-      const ssData = await ssResponse.json();
-      await supabase.from("orders").update({ shipstation_order_id: ssData.orderId.toString() }).eq("id", orderId);
-
-      return new Response(JSON.stringify({ success: true, shipstationOrderId: ssData.orderId }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    
     if (action === "tracking" && req.method === "GET") {
       const orderId = url.searchParams.get("orderId");
-
       if (!orderId) {
-        throw new Error("Order ID is required");
+        return jsonResponse({ error: "Order ID is required" }, 400);
       }
 
       const { data: order, error: orderError } = await supabase
         .from("orders")
-        .select("shipstation_order_id")
+        .select("tracking_number, carrier, shipstation_status, shipped_at, status")
         .eq("id", orderId)
-        .single();
+        .maybeSingle();
 
-      if (orderError || !order || !order.shipstation_order_id) {
-        throw new Error("Order not found or not synced with ShipStation");
+      if (orderError || !order) {
+        return jsonResponse({ error: "Order not found" }, 404);
       }
 
-      const basicAuth2 = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
-      const shipstationResponse = await fetch(
-        `https://ssapi.shipstation.com/orders/${order.shipstation_order_id}`,
-        {
-          headers: { "Authorization": `Basic ${basicAuth2}` },
-        }
-      );
-
-      if (!shipstationResponse.ok) {
-        throw new Error("Failed to fetch tracking from ShipStation");
-      }
-
-      const shipstationData = await shipstationResponse.json();
-
-      if (shipstationData.trackingNumber) {
-        await supabase
-          .from("orders")
-          .update({
-            tracking_number: shipstationData.trackingNumber,
-            carrier: shipstationData.carrierCode,
-            shipstation_status: shipstationData.orderStatus,
-            shipped_at: shipstationData.shipDate,
-            shipstation_synced_at: new Date().toISOString(),
-          })
-          .eq("id", orderId);
-      }
-
-      return new Response(
-        JSON.stringify({
-          success: true,
-          tracking: {
-            trackingNumber: shipstationData.trackingNumber,
-            carrier: shipstationData.carrierCode,
-            status: shipstationData.orderStatus,
-            shipDate: shipstationData.shipDate,
-          },
-        }),
-        {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
+      return jsonResponse({
+        success: true,
+        tracking: {
+          trackingNumber: order.tracking_number,
+          carrier: order.carrier,
+          status: order.shipstation_status || order.status,
+          shipDate: order.shipped_at,
+        },
+      });
     }
 
-    if (action === "webhook" && req.method === "POST") {
-      const webhookData = await req.json();
-
-      if (webhookData.resource_type === "SHIP_NOTIFY") {
-        const basicAuth3 = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
-        const shipmentResponse = await fetch(webhookData.resource_url, {
-          headers: { "Authorization": `Basic ${basicAuth3}` },
-        });
-
-        if (shipmentResponse.ok) {
-          const shipmentData = await shipmentResponse.json();
-
-          await supabase
-            .from("orders")
-            .update({
-              tracking_number: shipmentData.trackingNumber,
-              carrier: shipmentData.carrierCode,
-              shipstation_status: "shipped",
-              shipped_at: shipmentData.shipDate,
-              shipstation_synced_at: new Date().toISOString(),
-              status: "shipped",
-            })
-            .eq("shipstation_order_id", shipmentData.orderId?.toString());
-        }
-      }
-
-      return new Response(
-        JSON.stringify({ success: true }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    return new Response(
-      JSON.stringify({ error: "Invalid action" }),
-      {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
-    );
+    return jsonResponse({ error: "Invalid action. Valid actions: export, shipnotify, test, tracking" }, 400);
   } catch (error) {
-    return new Response(
-      JSON.stringify({
-        error: error instanceof Error ? error.message : "Unknown error",
-      }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
-    );
+    const message = error instanceof Error ? error.message : "Unknown error";
+    if (new URL(req.url).searchParams.get("action") === "export" ||
+        new URL(req.url).searchParams.get("action") === "shipnotify") {
+      return xmlResponse(
+        '<?xml version="1.0" encoding="UTF-8"?><Orders pages="0"></Orders>'
+      );
+    }
+    return jsonResponse({ error: message }, 500);
   }
 });
