@@ -288,7 +288,7 @@ Deno.serve(async (req: Request) => {
 
       if (orderError || !order) throw new Error("Order not found");
 
-      const str = (v: unknown) => (v ? String(v).trim() : "");
+      const str = (v: unknown): string => (v ? String(v).trim() : "");
       const ship = order.shipping_address || {};
       const bill = order.billing_address || {};
 
@@ -299,20 +299,20 @@ Deno.serve(async (req: Request) => {
 
       const buildAddrJson = (a: Record<string, unknown>, fallback: Record<string, unknown>) => ({
         name: (str(a.firstName || a.first_name || fallback.firstName || fallback.first_name) + " " + str(a.lastName || a.last_name || fallback.lastName || fallback.last_name)).trim() || "Customer",
-        company: str(a.company || fallback.company) || null,
+        company: str(a.company || fallback.company) || "",
         street1: str(a.address1 || a.address) || str(fallback.address1 || fallback.address) || "N/A",
-        street2: str(a.address2 || a.apartment) || null,
+        street2: str(a.address2 || a.apartment) || "",
         city: str(a.city) || str(fallback.city) || "N/A",
         state: str(a.state) || str(fallback.state) || "N/A",
         postalCode: str(a.zipCode || a.zip_code) || str(fallback.zipCode || fallback.zip_code) || "00000",
         country: str(a.country) || str(fallback.country) || "US",
-        phone: str(a.phone || fallback.phone) || null,
+        phone: str(a.phone || fallback.phone) || "",
         residential: true,
       });
 
-      const customerEmail = str(bill.email || ship.email) || "noemail@placeholder.com";
+      const customerEmail = str(bill.email || ship.email) || "customer@example.com";
 
-      const payload = {
+      const rawPayload = {
         orderNumber: String(order.order_number),
         orderKey: String(order.order_number),
         orderDate: new Date(order.created_at).toISOString(),
@@ -322,13 +322,12 @@ Deno.serve(async (req: Request) => {
         customerEmail: customerEmail,
         billTo: buildAddrJson(effectiveBill, ship),
         shipTo: buildAddrJson(ship, ship),
-        items: (order.order_items || []).map((item, index) => ({
+        items: (order.order_items || []).map((item: Record<string, unknown>, index: number) => ({
           lineItemKey: str(item.id || item.product_sku) || `line-${index}`,
           sku: str(item.product_sku) || "SKU",
           name: str(item.product_name) || "Product",
           quantity: Math.max(1, Number(item.quantity) || 1),
           unitPrice: parseFloat(String(item.unit_price)) || 0,
-          adjustment: false
         })),
         amountPaid: parseFloat(String(order.total_amount)) || 0,
         taxAmount: parseFloat(String(order.tax_amount)) || 0,
@@ -336,27 +335,27 @@ Deno.serve(async (req: Request) => {
         internalNotes: str(order.notes) || "",
         weight: {
           value: 0,
-          units: "ounces"
-        },
-        insuranceOptions: {
-          insureShipment: false,
-          insuredValue: 0
+          units: "ounces",
         },
         advancedOptions: {
           customField1: String(order.id || ""),
-          nonMachinable: false,
-          saturdayDelivery: false,
-          containsAlcohol: false
-        }
+        },
       };
+
+      const cleanPayload = JSON.parse(
+        JSON.stringify(rawPayload, (_key: string, value: unknown) =>
+          value === null || value === undefined ? undefined : value
+        )
+      );
+
       const auth = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
       const ssResponse = await fetch("https://ssapi.shipstation.com/orders/createorder", {
         method: "POST",
         headers: {
           "Authorization": `Basic ${auth}`,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(cleanPayload),
       });
 
       if (!ssResponse.ok) {
@@ -368,7 +367,7 @@ Deno.serve(async (req: Request) => {
       await supabase.from("orders").update({ shipstation_order_id: ssData.orderId.toString() }).eq("id", orderId);
 
       return new Response(JSON.stringify({ success: true, shipstationOrderId: ssData.orderId }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" }
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
