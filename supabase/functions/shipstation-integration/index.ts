@@ -288,60 +288,110 @@ Deno.serve(async (req: Request) => {
 
       if (orderError || !order) throw new Error("Order not found");
 
-      const str = (v: unknown): string => {
+      const stateAbbreviations: Record<string, string> = {
+        "alabama": "AL", "alaska": "AK", "arizona": "AZ", "arkansas": "AR",
+        "california": "CA", "colorado": "CO", "connecticut": "CT", "delaware": "DE",
+        "florida": "FL", "georgia": "GA", "hawaii": "HI", "idaho": "ID",
+        "illinois": "IL", "indiana": "IN", "iowa": "IA", "kansas": "KS",
+        "kentucky": "KY", "louisiana": "LA", "maine": "ME", "maryland": "MD",
+        "massachusetts": "MA", "michigan": "MI", "minnesota": "MN", "mississippi": "MS",
+        "missouri": "MO", "montana": "MT", "nebraska": "NE", "nevada": "NV",
+        "new hampshire": "NH", "new jersey": "NJ", "new mexico": "NM", "new york": "NY",
+        "north carolina": "NC", "north dakota": "ND", "ohio": "OH", "oklahoma": "OK",
+        "oregon": "OR", "pennsylvania": "PA", "rhode island": "RI", "south carolina": "SC",
+        "south dakota": "SD", "tennessee": "TN", "texas": "TX", "utah": "UT",
+        "vermont": "VT", "virginia": "VA", "washington": "WA", "west virginia": "WV",
+        "wisconsin": "WI", "wyoming": "WY", "district of columbia": "DC",
+      };
+
+      const toStateAbbr = (s: string): string => {
+        const trimmed = s.trim();
+        if (trimmed.length === 2) return trimmed.toUpperCase();
+        return stateAbbreviations[trimmed.toLowerCase()] || trimmed;
+      };
+
+      const str = (v: unknown): string | null => {
+        if (v === null || v === undefined) return null;
+        const s = String(v).trim();
+        return s === "" ? null : s;
+      };
+
+      const strOrEmpty = (v: unknown): string => {
         if (v === null || v === undefined) return "";
         return String(v).trim();
-      };
-
-      const safeFloat = (v: unknown): number => {
-        const n = parseFloat(String(v ?? "0"));
-        return isNaN(n) ? 0 : n;
-      };
-
-      const safeInt = (v: unknown): number => {
-        const n = parseInt(String(v ?? "0"), 10);
-        return isNaN(n) ? 0 : n;
-      };
-
-      const removeNulls = (obj: unknown): unknown => {
-        if (Array.isArray(obj)) {
-          return obj.map(removeNulls);
-        }
-        if (obj !== null && typeof obj === "object") {
-          return Object.fromEntries(
-            Object.entries(obj as Record<string, unknown>)
-              .filter(([_, v]) => v !== null && v !== undefined)
-              .map(([k, v]) => [k, removeNulls(v)])
-          );
-        }
-        return obj;
       };
 
       const ship = order.shipping_address || {};
       const bill = order.billing_address || {};
 
       const hasAddress = (a: Record<string, unknown>) =>
-        str(a.address1 || a.address) !== "" && str(a.city) !== "" && str(a.state) !== "";
+        strOrEmpty(a.address1 || a.address) !== "" &&
+        strOrEmpty(a.city) !== "" &&
+        strOrEmpty(a.state) !== "";
 
       const effectiveBill = hasAddress(bill) ? bill : ship;
 
-      const buildAddrJson = (a: Record<string, unknown>, fallback: Record<string, unknown>) => ({
-        name: (str(a.firstName || a.first_name || fallback.firstName || fallback.first_name) + " " + str(a.lastName || a.last_name || fallback.lastName || fallback.last_name)).trim() || "Customer",
-        company: str(a.company || fallback.company) || "",
-        street1: str(a.address1 || a.address) || str(fallback.address1 || fallback.address) || "N/A",
-        street2: str(a.address2 || a.apartment) || "",
-        street3: "",
-        city: str(a.city) || str(fallback.city) || "N/A",
-        state: str(a.state) || str(fallback.state) || "N/A",
-        postalCode: str(a.zipCode || a.zip_code) || str(fallback.zipCode || fallback.zip_code) || "00000",
-        country: str(a.country) || str(fallback.country) || "US",
-        phone: str(a.phone || fallback.phone) || "",
-        residential: true,
-      });
+      const buildShipTo = (a: Record<string, unknown>, fallback: Record<string, unknown>) => {
+        const firstName = strOrEmpty(a.firstName || a.first_name || fallback.firstName || fallback.first_name);
+        const lastName = strOrEmpty(a.lastName || a.last_name || fallback.lastName || fallback.last_name);
+        const fullName = (firstName + " " + lastName).trim() || "Customer";
+        const rawState = strOrEmpty(a.state) || strOrEmpty(fallback.state);
 
-      const customerEmail = str(bill.email || ship.email) || "customer@example.com";
+        return {
+          name: fullName,
+          company: str(a.company || fallback.company) || null,
+          street1: strOrEmpty(a.address1 || a.address) || strOrEmpty(fallback.address1 || fallback.address) || "N/A",
+          street2: str(a.address2 || a.apartment) || null,
+          street3: null,
+          city: strOrEmpty(a.city) || strOrEmpty(fallback.city) || "N/A",
+          state: rawState ? toStateAbbr(rawState) : "N/A",
+          postalCode: strOrEmpty(a.zipCode || a.zip_code) || strOrEmpty(fallback.zipCode || fallback.zip_code) || "00000",
+          country: strOrEmpty(a.country) || strOrEmpty(fallback.country) || "US",
+          phone: str(a.phone || fallback.phone) || null,
+          residential: true,
+        };
+      };
 
-      const rawPayload = {
+      const buildBillTo = (a: Record<string, unknown>, fallback: Record<string, unknown>) => {
+        const firstName = strOrEmpty(a.firstName || a.first_name || fallback.firstName || fallback.first_name);
+        const lastName = strOrEmpty(a.lastName || a.last_name || fallback.lastName || fallback.last_name);
+        const fullName = (firstName + " " + lastName).trim() || "Customer";
+
+        if (!hasAddress(a)) {
+          return {
+            name: fullName,
+            company: null,
+            street1: null,
+            street2: null,
+            street3: null,
+            city: null,
+            state: null,
+            postalCode: null,
+            country: null,
+            phone: null,
+            residential: null,
+          };
+        }
+
+        const rawState = strOrEmpty(a.state) || strOrEmpty(fallback.state);
+        return {
+          name: fullName,
+          company: str(a.company || fallback.company) || null,
+          street1: strOrEmpty(a.address1 || a.address) || "N/A",
+          street2: str(a.address2 || a.apartment) || null,
+          street3: null,
+          city: strOrEmpty(a.city) || "N/A",
+          state: rawState ? toStateAbbr(rawState) : null,
+          postalCode: strOrEmpty(a.zipCode || a.zip_code) || null,
+          country: strOrEmpty(a.country) || "US",
+          phone: str(a.phone || fallback.phone) || null,
+          residential: true,
+        };
+      };
+
+      const customerEmail = strOrEmpty(bill.email || ship.email) || "noreply@example.com";
+
+      const payload = {
         orderNumber: String(order.order_number),
         orderKey: String(order.order_number),
         orderDate: new Date(order.created_at).toISOString(),
@@ -349,83 +399,76 @@ Deno.serve(async (req: Request) => {
         orderStatus: "awaiting_shipment",
         customerUsername: customerEmail,
         customerEmail: customerEmail,
-        billTo: buildAddrJson(effectiveBill, ship),
-        shipTo: buildAddrJson(ship, ship),
+        billTo: buildBillTo(effectiveBill, ship),
+        shipTo: buildShipTo(ship, ship),
         items: (order.order_items || []).map((item: Record<string, unknown>, index: number) => ({
-          lineItemKey: str(item.id || item.product_sku) || `line-${index}`,
-          sku: str(item.product_sku) || "SKU",
-          name: str(item.product_name) || "Product",
-          imageUrl: "",
+          lineItemKey: strOrEmpty(item.id || item.product_sku) || `line-${index}`,
+          sku: strOrEmpty(item.product_sku) || "SKU",
+          name: strOrEmpty(item.product_name) || "Product",
+          imageUrl: null,
           weight: {
             value: 0,
             units: "ounces",
           },
-          quantity: Math.max(1, safeInt(item.quantity) || 1),
-          unitPrice: safeFloat(item.unit_price),
-          taxAmount: 0,
-          shippingAmount: 0,
-          warehouseLocation: "",
-          options: [] as unknown[],
-          productId: 0,
-          fulfillmentSku: "",
+          quantity: Math.max(1, parseInt(String(item.quantity ?? "1"), 10) || 1),
+          unitPrice: parseFloat(String(item.unit_price ?? "0")) || 0,
+          taxAmount: null,
+          shippingAmount: null,
+          warehouseLocation: null,
+          options: [],
+          productId: null,
+          fulfillmentSku: null,
           adjustment: false,
-          upc: "",
+          upc: null,
         })),
-        amountPaid: safeFloat(order.total_amount),
-        taxAmount: safeFloat(order.tax_amount),
-        shippingAmount: safeFloat(order.shipping_cost),
-        customerNotes: "",
-        internalNotes: str(order.notes),
+        amountPaid: parseFloat(String(order.total_amount ?? "0")) || 0,
+        taxAmount: parseFloat(String(order.tax_amount ?? "0")) || 0,
+        shippingAmount: parseFloat(String(order.shipping_cost ?? "0")) || 0,
+        customerNotes: null,
+        internalNotes: str(order.notes) || null,
         gift: false,
-        giftMessage: "",
-        paymentMethod: "",
-        requestedShippingService: "",
-        carrierCode: "",
-        serviceCode: "",
-        packageCode: "",
+        giftMessage: null,
+        paymentMethod: null,
+        requestedShippingService: null,
+        carrierCode: null,
+        serviceCode: null,
+        packageCode: null,
         confirmation: "none",
         shipDate: new Date(order.created_at).toISOString().split("T")[0],
         weight: {
           value: 0,
           units: "ounces",
         },
-        dimensions: {
-          units: "inches",
-          length: 0,
-          width: 0,
-          height: 0,
-        },
+        dimensions: null,
         insuranceOptions: {
-          provider: "",
+          provider: null,
           insureShipment: false,
           insuredValue: 0,
         },
         internationalOptions: {
-          contents: "",
-          customsItems: [] as unknown[],
+          contents: null,
+          customsItems: null,
         },
         advancedOptions: {
-          warehouseId: 0,
+          warehouseId: null,
           nonMachinable: false,
           saturdayDelivery: false,
           containsAlcohol: false,
           mergedOrSplit: false,
-          mergedIds: [] as unknown[],
-          parentId: 0,
-          storeId: 0,
+          mergedIds: [],
+          parentId: null,
+          storeId: null,
           customField1: String(order.id || ""),
-          customField2: "",
-          customField3: "",
-          source: "",
-          billToParty: "",
-          billToAccount: "",
-          billToPostalCode: "",
-          billToCountryCode: "",
+          customField2: null,
+          customField3: null,
+          source: null,
+          billToParty: null,
+          billToAccount: null,
+          billToPostalCode: null,
+          billToCountryCode: null,
         },
-        tagIds: [] as unknown[],
+        tagIds: null,
       };
-
-      const cleanPayload = removeNulls(rawPayload);
 
       const auth = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
       const ssResponse = await fetch("https://ssapi.shipstation.com/orders/createorder", {
@@ -434,7 +477,7 @@ Deno.serve(async (req: Request) => {
           "Authorization": `Basic ${auth}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(cleanPayload),
+        body: JSON.stringify(payload),
       });
 
       if (!ssResponse.ok) {
