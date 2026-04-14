@@ -4,7 +4,6 @@ import { CartProvider } from '../contexts/CartContext';
 import Header from './Header';
 import Hero from './Hero';
 import ProductGrid from './ProductGrid';
-import ShippingIntegration from './ShippingIntegration';
 import Footer from './Footer';
 import CartSidebar from './CartSidebar';
 import CheckoutPage from './CheckoutPage';
@@ -250,7 +249,6 @@ export default function AppWithNotifications() {
           <>
             <Hero onResearchGuide={handleDocumentation} />
             <ProductGrid />
-            <ShippingIntegration />
           </>
         )}
 
