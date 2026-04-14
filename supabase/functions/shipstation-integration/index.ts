@@ -169,6 +169,56 @@ function cleanState(val: unknown): string {
   return raw ? toStateAbbr(raw) : "TX";
 }
 
+function buildCleanPayload(order: Record<string, unknown>): Record<string, unknown> {
+  const bill = (order.billing_address || {}) as Record<string, unknown>;
+  const ship = (order.shipping_address || bill) as Record<string, unknown>;
+
+  const billName = (cleanStr(bill.firstName) + " " + cleanStr(bill.lastName)).trim();
+  const shipName = (cleanStr(ship.firstName) + " " + cleanStr(ship.lastName)).trim();
+
+  return {
+    orderNumber: cleanStr(order.order_number),
+    orderKey: cleanStr(order.order_number),
+    orderDate: new Date(String(order.created_at)).toISOString(),
+    paymentDate: new Date(String(order.created_at)).toISOString(),
+    orderStatus: "awaiting_shipment",
+    customerUsername: cleanStr(bill.email || ship.email) || "customer@example.com",
+    customerEmail: cleanStr(bill.email || ship.email) || "customer@example.com",
+    billTo: {
+      name: billName || shipName || "Customer",
+      street1: cleanStr(bill.address1) || cleanStr(ship.address1) || "123 Main St",
+      city: cleanStr(bill.city) || cleanStr(ship.city) || "City",
+      state: cleanState(bill.state || ship.state),
+      postalCode: cleanStr(bill.zipCode) || cleanStr(ship.zipCode) || "00000",
+      country: cleanStr(bill.country) || cleanStr(ship.country) || "US",
+      phone: cleanStr(bill.phone) || cleanStr(ship.phone) || "0000000000",
+    },
+    shipTo: {
+      name: shipName || billName || "Customer",
+      street1: cleanStr(ship.address1) || "123 Main St",
+      city: cleanStr(ship.city) || "City",
+      state: cleanState(ship.state),
+      postalCode: cleanStr(ship.zipCode) || "00000",
+      country: cleanStr(ship.country) || "US",
+      phone: cleanStr(ship.phone) || "0000000000",
+    },
+    items: (order.order_items as Record<string, unknown>[] || []).map(
+      (item: Record<string, unknown>, idx: number) => ({
+        lineItemKey: cleanStr(item.id) || `line-${idx}`,
+        sku: cleanStr(item.product_sku) || "SKU",
+        name: cleanStr(item.product_name) || "Product",
+        quantity: parseInt(String(item.quantity)) || 1,
+        unitPrice: cleanNum(item.unit_price),
+        weight: { value: 1, units: "ounces" },
+      })
+    ),
+    amountPaid: cleanNum(order.total_amount),
+    taxAmount: cleanNum(order.tax_amount),
+    shippingAmount: cleanNum(order.shipping_cost),
+    weight: { value: 1, units: "ounces" },
+  };
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 200, headers: corsHeaders });
@@ -281,45 +331,7 @@ Deno.serve(async (req: Request) => {
 
       if (orderError || !order) throw new Error("Order not found");
 
-      const bill = order.billing_address || {};
-      const ship = order.shipping_address || bill;
-
-      const payload = {
-        orderNumber: cleanStr(order.order_number),
-        orderKey: cleanStr(order.order_number),
-        orderDate: new Date(order.created_at).toISOString(),
-        paymentDate: new Date(order.created_at).toISOString(),
-        orderStatus: "awaiting_shipment",
-        customerUsername: cleanStr(bill.email || ship.email) || "customer@example.com",
-        customerEmail: cleanStr(bill.email || ship.email) || "customer@example.com",
-        billTo: {
-          name: (cleanStr(bill.firstName) + " " + cleanStr(bill.lastName)).trim() || (cleanStr(ship.firstName) + " " + cleanStr(ship.lastName)).trim() || "Customer",
-          street1: cleanStr(bill.address1) || cleanStr(ship.address1) || "123 Main St",
-          city: cleanStr(bill.city) || cleanStr(ship.city) || "City",
-          state: cleanState(bill.state || ship.state),
-          postalCode: cleanStr(bill.zipCode) || cleanStr(ship.zipCode) || "00000",
-          country: cleanStr(bill.country) || cleanStr(ship.country) || "US",
-          phone: cleanStr(bill.phone) || cleanStr(ship.phone) || "0000000000",
-        },
-        shipTo: {
-          name: (cleanStr(ship.firstName) + " " + cleanStr(ship.lastName)).trim() || "Customer",
-          street1: cleanStr(ship.address1) || "123 Main St",
-          city: cleanStr(ship.city) || "City",
-          state: cleanState(ship.state),
-          postalCode: cleanStr(ship.zipCode) || "00000",
-          country: cleanStr(ship.country) || "US",
-          phone: cleanStr(ship.phone) || "0000000000",
-        },
-        items: (order.order_items || []).map((item: Record<string, unknown>) => ({
-          sku: cleanStr(item.product_sku) || "SKU",
-          name: cleanStr(item.product_name) || "Product",
-          quantity: parseInt(String(item.quantity)) || 1,
-          unitPrice: cleanNum(item.unit_price),
-        })),
-        amountPaid: cleanNum(order.total_amount),
-        taxAmount: cleanNum(order.tax_amount),
-        shippingAmount: cleanNum(order.shipping_cost),
-      };
+      const payload = buildCleanPayload(order);
 
       return new Response(JSON.stringify({ payload, rawOrder: order }, null, 2), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -337,45 +349,7 @@ Deno.serve(async (req: Request) => {
 
       if (orderError || !order) throw new Error("Order not found");
 
-      const bill = order.billing_address || {};
-      const ship = order.shipping_address || bill;
-
-      const payload = {
-        orderNumber: cleanStr(order.order_number),
-        orderKey: cleanStr(order.order_number),
-        orderDate: new Date(order.created_at).toISOString(),
-        paymentDate: new Date(order.created_at).toISOString(),
-        orderStatus: "awaiting_shipment",
-        customerUsername: cleanStr(bill.email || ship.email) || "customer@example.com",
-        customerEmail: cleanStr(bill.email || ship.email) || "customer@example.com",
-        billTo: {
-          name: (cleanStr(bill.firstName) + " " + cleanStr(bill.lastName)).trim() || (cleanStr(ship.firstName) + " " + cleanStr(ship.lastName)).trim() || "Customer",
-          street1: cleanStr(bill.address1) || cleanStr(ship.address1) || "123 Main St",
-          city: cleanStr(bill.city) || cleanStr(ship.city) || "City",
-          state: cleanState(bill.state || ship.state),
-          postalCode: cleanStr(bill.zipCode) || cleanStr(ship.zipCode) || "00000",
-          country: cleanStr(bill.country) || cleanStr(ship.country) || "US",
-          phone: cleanStr(bill.phone) || cleanStr(ship.phone) || "0000000000",
-        },
-        shipTo: {
-          name: (cleanStr(ship.firstName) + " " + cleanStr(ship.lastName)).trim() || "Customer",
-          street1: cleanStr(ship.address1) || "123 Main St",
-          city: cleanStr(ship.city) || "City",
-          state: cleanState(ship.state),
-          postalCode: cleanStr(ship.zipCode) || "00000",
-          country: cleanStr(ship.country) || "US",
-          phone: cleanStr(ship.phone) || "0000000000",
-        },
-        items: (order.order_items || []).map((item: Record<string, unknown>) => ({
-          sku: cleanStr(item.product_sku) || "SKU",
-          name: cleanStr(item.product_name) || "Product",
-          quantity: parseInt(String(item.quantity)) || 1,
-          unitPrice: cleanNum(item.unit_price),
-        })),
-        amountPaid: cleanNum(order.total_amount),
-        taxAmount: cleanNum(order.tax_amount),
-        shippingAmount: cleanNum(order.shipping_cost),
-      };
+      const payload = buildCleanPayload(order);
 
       const auth = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
       const ssResponse = await fetch("https://ssapi.shipstation.com/orders/createorder", {
