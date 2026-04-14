@@ -288,7 +288,35 @@ Deno.serve(async (req: Request) => {
 
       if (orderError || !order) throw new Error("Order not found");
 
-      const str = (v: unknown): string => (v ? String(v).trim() : "");
+      const str = (v: unknown): string => {
+        if (v === null || v === undefined) return "";
+        return String(v).trim();
+      };
+
+      const safeFloat = (v: unknown): number => {
+        const n = parseFloat(String(v ?? "0"));
+        return isNaN(n) ? 0 : n;
+      };
+
+      const safeInt = (v: unknown): number => {
+        const n = parseInt(String(v ?? "0"), 10);
+        return isNaN(n) ? 0 : n;
+      };
+
+      const removeNulls = (obj: unknown): unknown => {
+        if (Array.isArray(obj)) {
+          return obj.map(removeNulls);
+        }
+        if (obj !== null && typeof obj === "object") {
+          return Object.fromEntries(
+            Object.entries(obj as Record<string, unknown>)
+              .filter(([_, v]) => v !== null && v !== undefined)
+              .map(([k, v]) => [k, removeNulls(v)])
+          );
+        }
+        return obj;
+      };
+
       const ship = order.shipping_address || {};
       const bill = order.billing_address || {};
 
@@ -302,6 +330,7 @@ Deno.serve(async (req: Request) => {
         company: str(a.company || fallback.company) || "",
         street1: str(a.address1 || a.address) || str(fallback.address1 || fallback.address) || "N/A",
         street2: str(a.address2 || a.apartment) || "",
+        street3: "",
         city: str(a.city) || str(fallback.city) || "N/A",
         state: str(a.state) || str(fallback.state) || "N/A",
         postalCode: str(a.zipCode || a.zip_code) || str(fallback.zipCode || fallback.zip_code) || "00000",
@@ -326,27 +355,77 @@ Deno.serve(async (req: Request) => {
           lineItemKey: str(item.id || item.product_sku) || `line-${index}`,
           sku: str(item.product_sku) || "SKU",
           name: str(item.product_name) || "Product",
-          quantity: Math.max(1, Number(item.quantity) || 1),
-          unitPrice: parseFloat(String(item.unit_price)) || 0,
+          imageUrl: "",
+          weight: {
+            value: 0,
+            units: "ounces",
+          },
+          quantity: Math.max(1, safeInt(item.quantity) || 1),
+          unitPrice: safeFloat(item.unit_price),
+          taxAmount: 0,
+          shippingAmount: 0,
+          warehouseLocation: "",
+          options: [] as unknown[],
+          productId: 0,
+          fulfillmentSku: "",
+          adjustment: false,
+          upc: "",
         })),
-        amountPaid: parseFloat(String(order.total_amount)) || 0,
-        taxAmount: parseFloat(String(order.tax_amount)) || 0,
-        shippingAmount: parseFloat(String(order.shipping_cost)) || 0,
-        internalNotes: str(order.notes) || "",
+        amountPaid: safeFloat(order.total_amount),
+        taxAmount: safeFloat(order.tax_amount),
+        shippingAmount: safeFloat(order.shipping_cost),
+        customerNotes: "",
+        internalNotes: str(order.notes),
+        gift: false,
+        giftMessage: "",
+        paymentMethod: "",
+        requestedShippingService: "",
+        carrierCode: "",
+        serviceCode: "",
+        packageCode: "",
+        confirmation: "none",
+        shipDate: new Date(order.created_at).toISOString().split("T")[0],
         weight: {
           value: 0,
           units: "ounces",
         },
-        advancedOptions: {
-          customField1: String(order.id || ""),
+        dimensions: {
+          units: "inches",
+          length: 0,
+          width: 0,
+          height: 0,
         },
+        insuranceOptions: {
+          provider: "",
+          insureShipment: false,
+          insuredValue: 0,
+        },
+        internationalOptions: {
+          contents: "",
+          customsItems: [] as unknown[],
+        },
+        advancedOptions: {
+          warehouseId: 0,
+          nonMachinable: false,
+          saturdayDelivery: false,
+          containsAlcohol: false,
+          mergedOrSplit: false,
+          mergedIds: [] as unknown[],
+          parentId: 0,
+          storeId: 0,
+          customField1: String(order.id || ""),
+          customField2: "",
+          customField3: "",
+          source: "",
+          billToParty: "",
+          billToAccount: "",
+          billToPostalCode: "",
+          billToCountryCode: "",
+        },
+        tagIds: [] as unknown[],
       };
 
-      const cleanPayload = JSON.parse(
-        JSON.stringify(rawPayload, (_key: string, value: unknown) =>
-          value === null || value === undefined ? undefined : value
-        )
-      );
+      const cleanPayload = removeNulls(rawPayload);
 
       const auth = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
       const ssResponse = await fetch("https://ssapi.shipstation.com/orders/createorder", {
