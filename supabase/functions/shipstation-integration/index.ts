@@ -494,23 +494,65 @@ Deno.serve(async (req: Request) => {
 
       if (orderError || !order) throw new Error("Order not found");
 
-      const str = (v) => (v ? String(v).trim() : "");
-      const bill = order.billing_address || {};
-      const ship = order.shipping_address || bill;
+      const str = (v: unknown) => (v ? String(v).trim() : "");
+      const bill = (order.billing_address || {}) as Record<string, unknown>;
+      const ship = (order.shipping_address || bill) as Record<string, unknown>;
 
-      const buildAddrJson = (a) => ({
-        name: (str(a.firstName || a.first_name) + " " + str(a.lastName || a.last_name)).trim() || "Customer",
-        company: str(a.company) || "",
-        street1: str(a.address1 || a.address || "123 Main St"),
-        street2: str(a.address2 || a.apartment) || "",
-        city: str(a.city) || "City",
-        state: str(a.state) || "State",
-        postalCode: str(a.zipCode || a.zip_code) || "00000",
-        country: str(a.country) || "US",
-        phone: str(a.phone) || "000-000-0000"
+      const buildName = (a: Record<string, unknown>, fallback: Record<string, unknown>) => {
+        const n = (str(a.firstName || a.first_name) + " " + str(a.lastName || a.last_name)).trim();
+        if (n) return n;
+        const n2 = (str(fallback.firstName || fallback.first_name) + " " + str(fallback.lastName || fallback.last_name)).trim();
+        return n2 || "Customer";
+      };
+
+      const buildAddr = (a: Record<string, unknown>, fallback: Record<string, unknown>) => ({
+        name: buildName(a, fallback),
+        street1: str(a.address1 || a.address || a.street1 || fallback.address1 || fallback.address) || "N/A",
+        street2: str(a.address2 || a.apartment || a.street2) || "",
+        city: str(a.city || fallback.city) || "N/A",
+        state: str(a.state || fallback.state) || "N/A",
+        postalCode: str(a.zipCode || a.zip_code || a.postalCode || fallback.zipCode || fallback.zip_code) || "00000",
+        country: str(a.country || fallback.country) || "US",
+        phone: str(a.phone || fallback.phone) || "",
+        residential: true,
       });
 
-      // SHIPSTATION JSON PAYLOAD (MOST ROBUST VERSION)
+      const items = (order.order_items || []) as Record<string, unknown>[];
+
+      const mappedItems = items.length > 0
+        ? items.map((item: Record<string, unknown>, index: number) => ({
+            lineItemKey: str(item.id || item.product_sku) || `line-${index + 1}`,
+            sku: str(item.product_sku) || "ITEM",
+            name: str(item.product_name) || "Product",
+            imageUrl: "",
+            quantity: Math.max(1, parseInt(String(item.quantity || 1), 10)),
+            unitPrice: parseFloat(String(item.unit_price || 0)) || 0,
+            taxAmount: 0,
+            shippingAmount: 0,
+            options: [],
+            productId: null,
+            fulfillmentSku: null,
+            adjustment: false,
+            upc: "",
+            weight: { value: 0, units: "ounces" },
+          }))
+        : [{
+            lineItemKey: "default-1",
+            sku: "ITEM",
+            name: "Product",
+            imageUrl: "",
+            quantity: 1,
+            unitPrice: parseFloat(String(order.total_amount || 0)) || 0,
+            taxAmount: 0,
+            shippingAmount: 0,
+            options: [],
+            productId: null,
+            fulfillmentSku: null,
+            adjustment: false,
+            upc: "",
+            weight: { value: 0, units: "ounces" },
+          }];
+
       const payload = {
         orderNumber: String(order.order_number),
         orderKey: String(order.order_number),
@@ -519,45 +561,90 @@ Deno.serve(async (req: Request) => {
         orderStatus: "awaiting_shipment",
         customerUsername: str(bill.email || ship.email) || "customer@example.com",
         customerEmail: str(bill.email || ship.email) || "customer@example.com",
-        billTo: buildAddrJson(bill),
-        shipTo: buildAddrJson(ship),
-        items: (order.order_items || []).map((item, index) => ({
-          sku: str(item.product_sku) || "SKU",
-          name: str(item.product_name) || "Product",
-          quantity: Math.max(1, Number(item.quantity) || 1),
-          unitPrice: parseFloat(String(item.unit_price)) || 0,
-          adjustment: false
-        })),
+        billTo: buildAddr(bill, ship),
+        shipTo: buildAddr(ship, bill),
+        items: mappedItems,
         amountPaid: parseFloat(String(order.total_amount)) || 0,
         taxAmount: parseFloat(String(order.tax_amount)) || 0,
         shippingAmount: parseFloat(String(order.shipping_cost)) || 0,
-        internalNotes: str(order.notes) || ""
+        internalNotes: str(order.notes) || "",
+        gift: false,
+        paymentMethod: "Other",
+        requestedShippingService: "",
+        carrierCode: null,
+        serviceCode: null,
+        packageCode: null,
+        confirmation: "none",
+        weight: { value: 0, units: "ounces" },
+        dimensions: null,
+        insuranceOptions: { provider: "carrier", insureShipment: false, insuredValue: 0 },
+        internationalOptions: { contents: null, customsItems: null },
+        advancedOptions: {
+          warehouseId: null,
+          nonMachinable: false,
+          saturdayDelivery: false,
+          containsAlcohol: false,
+          mergedOrSplit: false,
+          mergedIds: [],
+          parentId: null,
+          storeId: null,
+          customField1: str(order.id) || "",
+          customField2: "",
+          customField3: "",
+          source: "",
+          billToParty: null,
+          billToAccount: null,
+          billToPostalCode: null,
+          billToCountryCode: null,
+        },
+        tagIds: null,
+        userId: null,
+        externallyFulfilled: false,
+        externallyFulfilledBy: null,
       };
 
       const auth = btoa(`${shipstationApiKey}:${shipstationApiSecret}`);
-      
-      // Kuch cases mein ShipStation "/orders/createorders" (plural) maangta hai array ke sath
-      // Lekin hum /createorder (single) bhej rahe hain
+
       const ssResponse = await fetch("https://ssapi.shipstation.com/orders/createorder", {
         method: "POST",
         headers: {
           "Authorization": `Basic ${auth}`,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
+
+      const responseText = await ssResponse.text();
 
       if (!ssResponse.ok) {
-        const errorDetail = await ssResponse.text();
-        throw new Error(`ShipStation Error: ${errorDetail}`);
+        return new Response(
+          JSON.stringify({
+            error: `ShipStation Error: ${responseText}`,
+            debug_payload: payload,
+          }),
+          {
+            status: ssResponse.status,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
       }
 
-      const ssData = await ssResponse.json();
-      await supabase.from("orders").update({ shipstation_order_id: ssData.orderId.toString() }).eq("id", orderId);
+      const ssData = JSON.parse(responseText);
 
-      return new Response(JSON.stringify({ success: true, shipstationOrderId: ssData.orderId }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" }
-      });
+      await supabase
+        .from("orders")
+        .update({
+          shipstation_order_id: ssData.orderId?.toString(),
+          shipstation_order_key: ssData.orderKey,
+          shipstation_status: "awaiting_shipment",
+          shipstation_synced_at: new Date().toISOString(),
+        })
+        .eq("id", orderId);
+
+      return new Response(
+        JSON.stringify({ success: true, shipstationOrderId: ssData.orderId }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
     
     if (action === "tracking" && req.method === "GET") {
